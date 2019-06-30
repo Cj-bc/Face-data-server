@@ -4,6 +4,7 @@
 import cv2
 import dlib
 import numpy
+import functools
 import os
 
 # Cascade files directory path
@@ -139,6 +140,21 @@ def normalization(face_landmarks):
     return return_list
 
 
+red = (0, 0, 255)
+green = (0, 255, 0)
+blue = (255, 0, 0)
+
+LANDMARK_NUM_MOUSE_R = 58
+LANDMARK_NUM_MOUSE_L = 71
+LANDMARK_NUM_MOUSE_TOP = 65
+LANDMARK_NUM_MOUSE_BOTTOM = 79
+LANDMARK_NUM_LEFT_EYE_R = 114
+LANDMARK_NUM_LEFT_EYE_L = 124
+LANDMARK_NUM_RIGHT_EYE_R = 145
+LANDMARK_NUM_RIGHT_EYE_L = 135
+
+
+
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
     while cap.isOpened():
@@ -148,8 +164,18 @@ if __name__ == '__main__':
         landmarks = normalization(facemark(gray))
 
         for landmark in landmarks:
-            for points in landmark:
-                cv2.drawMarker(frame, (points[0], points[1]), (21, 255, 12))
+            functools.reduce(lambda x, points: cv2.drawMarker(frame, (points[0], points[1]), green)
+                            , map(lambda n:landmark[n], [ LANDMARK_NUM_RIGHT_EYE_L
+                                                        , LANDMARK_NUM_LEFT_EYE_R
+                                                        , LANDMARK_NUM_LEFT_EYE_L
+                                                        , LANDMARK_NUM_MOUSE_R
+                                                        , LANDMARK_NUM_MOUSE_L
+                                                        , LANDMARK_NUM_MOUSE_TOP
+                                                        , LANDMARK_NUM_MOUSE_BOTTOM
+                                                        ])
+                            , [])
+            cv2.drawMarker(frame,(landmark[LANDMARK_NUM_RIGHT_EYE_R][0], landmark[LANDMARK_NUM_RIGHT_EYE_R][1]),red)
+
         cv2.imshow("video frame", frame)
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
