@@ -76,7 +76,7 @@ def facemark(gray_img) -> List[Landmark]:
                 numpy.array(
                     [(p.x, p.y) for p in predictor(gray_img, rect).parts()])
             )
-    return landmarks
+    return normalization(landmarks)
 # }}}
 
 
