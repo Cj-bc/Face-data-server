@@ -3,17 +3,30 @@
 #
 import cv2
 import dlib
-import numpy
-import functools
-import os
+from math import sqrt
+import math
 from faceDetection import facemark, faceCalibration, normalization
 
+# type definitions
+Coord = (int, int)
 
 red = (0, 0, 255)
 green = (0, 255, 0)
 blue = (255, 0, 0)
 
 
+# def distance(r: points, l: points) -> float {{{
+def distance(r: Coord, l: Coord) -> float:
+    rx, ry = r
+    lx, ly = l
+    return sqrt((rx - lx) ^ 2 + (ry - ly) ^ 2)
+# }}}
+
+
+def size(leftTop: Coord, rightBottom: Coord) -> float:
+    x1, y1 = leftTop
+    x2, y2 = rightBottom
+    return abs(x2 - x1) * abs(y2 - y1)
 
 
 if __name__ == '__main__':
@@ -23,21 +36,26 @@ if __name__ == '__main__':
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         landmarks = normalization(facemark(gray))
+        if landmarks == []:
+            continue
+        else:
+            landmark = landmarks[0]
 
-        for landmark in landmarks:
-            functools.reduce(lambda x, points: cv2.drawMarker(frame, (points[0], points[1]), green)
-                            , map(lambda n:landmark[n], [ LANDMARK_NUM_RIGHT_EYE_L
-                                                        , LANDMARK_NUM_LEFT_EYE_R
-                                                        , LANDMARK_NUM_LEFT_EYE_L
-                                                        , LANDMARK_NUM_MOUSE_R
-                                                        , LANDMARK_NUM_MOUSE_L
-                                                        , LANDMARK_NUM_MOUSE_TOP
-                                                        , LANDMARK_NUM_MOUSE_BOTTOM
-                                                        ])
-                            , [])
-            cv2.drawMarker(frame,(landmark[LANDMARK_NUM_RIGHT_EYE_R][0], landmark[LANDMARK_NUM_RIGHT_EYE_R][1]),red)
+        eyeDistance = distance(landmark[LANDMARK_NUM_LEFT_EYE_R]
+                                , landmark[LANDMARK_NUM_RIGHT_EYE_L])
+        rightEyeSize = size((landmark[LANDMARK_NUM_RIGHT_EYE_R][0]
+                            , landmark[LANDMARK_NUM_RIGHT_EYE_TOP][1])
+                           , (landmark[LANDMARK_NUM_RIGHT_EYE_L][0]
+                            , landmark[LANDMARK_NUM_RIGHT_EYE_BOTTOM][1])
+                           )
+        leftEyeSize = size((landmark[LANDMARK_NUM_LEFT_EYE_R][0]
+                            , landmark[LANDMARK_NUM_LEFT_EYE_TOP][1])
+                           , (landmark[LANDMARK_NUM_LEFT_EYE_L][0]
+                            , landmark[LANDMARK_NUM_LEFT_EYE_BOTTOM][1])
+                           )
 
-        cv2.imshow("video frame", frame)
+        angle = math.cos(eyeDistance)
+
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
