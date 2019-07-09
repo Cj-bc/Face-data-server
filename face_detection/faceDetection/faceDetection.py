@@ -76,12 +76,12 @@ def facemark(gray_img) -> List[Landmark]:
                 numpy.array(
                     [(p.x, p.y) for p in predictor(gray_img, rect).parts()])
             )
-    return normalization(landmarks)
+    return _normalization(landmarks)
 # }}}
 
 
-# normalization(face_landmarks): {{{
-def normalization(face_landmarks: List[Landmark]) -> List[Landmark]:
+# _normalization(face_landmarks): {{{
+def _normalization(face_landmarks: List[Landmark]) -> List[Landmark]:
     """Normalize facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
 
