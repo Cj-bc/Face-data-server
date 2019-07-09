@@ -82,6 +82,13 @@ def facemark(gray_img) -> List[Landmark]:
 
 # normalization(face_landmarks): {{{
 def normalization(face_landmarks: List[Landmark]) -> List[Landmark]:
+    """Normalize facemark result. FOR INTERNAL USE
+        Please refer to [this image]() [WIP]
+
+        This code was written by @kekeho(Qiita), refer to:
+            https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
+
+    """
     return_list = []
     for facemark in face_landmarks:
         # nose
