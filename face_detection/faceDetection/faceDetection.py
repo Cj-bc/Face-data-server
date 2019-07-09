@@ -81,7 +81,7 @@ def facemark(gray_img) -> List[Landmark]:
 
 
 # normalization(face_landmarks): {{{
-def normalization(face_landmarks):
+def normalization(face_landmarks: List[Landmark]) -> List[Landmark]:
     return_list = []
     for facemark in face_landmarks:
         # nose
