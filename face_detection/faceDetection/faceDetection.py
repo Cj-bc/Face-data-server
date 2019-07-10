@@ -34,6 +34,35 @@ predictor = dlib.shape_predictor(
 face_cascade = cv2.CascadeClassifier(
     CASCADE_PATH + 'haarcascade_frontalface_default.xml')
 
+
+# faceCalibration(cap: cv2.VideoCapture) -> CalibrationData {{{
+def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
+    """Calibrate individuals' differences.
+
+    What this function does are:
+        1. Get distance between eyes
+    """
+    print("=========== Face calibration ===========")
+    input("Please face front and press enter:")
+    faces = waitUntilFaceDetect(cap)[0]
+
+    return {}
+# }}}
+
+
+def waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray:
+    """Wait until face(s) is detected. Return detected face(s).
+    """
+
+    while cap.isOpened():
+        _, frame = cap.read()
+        faces_roi = face_position(frame)
+        if faces_roi != ():
+            break
+
+    return faces_roi
+
+
 # face_position(gray_img) {{{
 def face_position(gray_img: numpy.ndarray) -> Union[numpy.ndarray, Tuple]:
     """Detect faces position

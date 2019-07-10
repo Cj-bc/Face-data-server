@@ -30,6 +30,9 @@ def size(leftTop: Coord, rightBottom: Coord) -> float:
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
+
+    calibrated = faceCalibration(cap)
+
     while cap.isOpened():
         _, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
