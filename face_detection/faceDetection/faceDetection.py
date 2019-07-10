@@ -1,8 +1,9 @@
 import os
 import cv2
 import dlib
-from typing import List
+from typing import List, Union, Tuple
 from Types import CalibrationData, Landmark
+import numpy
 
 
 # -- Variables
@@ -34,7 +35,7 @@ face_cascade = cv2.CascadeClassifier(
     CASCADE_PATH + 'haarcascade_frontalface_default.xml')
 
 # face_position(gray_img) {{{
-def face_position(gray_img):
+def face_position(gray_img: numpy.ndarray) -> Union[numpy.ndarray, Tuple]:
     """Detect faces position
     Return:
         faces: faces position list (x, y, w, h)
@@ -45,7 +46,7 @@ def face_position(gray_img):
 
 
 # facemark(gray_img): {{{
-def facemark(gray_img) -> List[Landmark]:
+def facemark(gray_img: numpy.ndarray) -> List[Landmark]:
     """Recoginize face landmark position by i-bug 300-w dataset
     Return:
         randmarks = [
