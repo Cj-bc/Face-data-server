@@ -2,7 +2,6 @@
 # Refer to: https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 #
 import cv2
-import dlib
 from math import sqrt
 import math
 from faceDetection import facemark, faceCalibration, normalization, LANDMARK_NUM
@@ -32,7 +31,7 @@ def size(leftTop: Coord, rightBottom: Coord) -> float:
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
     while cap.isOpened():
-        ret, frame = cap.read()
+        _, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         landmarks = normalization(facemark(gray))
