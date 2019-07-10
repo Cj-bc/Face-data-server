@@ -9,18 +9,20 @@ from Types import CalibrationData, Landmark
 
 # Those values are defined based on this site image:
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
-LANDMARK_NUM_MOUSE_R = 58
-LANDMARK_NUM_MOUSE_L = 71
-LANDMARK_NUM_MOUSE_TOP = 65
-LANDMARK_NUM_MOUSE_BOTTOM = 79
-LANDMARK_NUM_LEFT_EYE_R = 114
-LANDMARK_NUM_LEFT_EYE_L = 124
-LANDMARK_NUM_LEFT_EYE_TOP = 120
-LANDMARK_NUM_LEFT_EYE_BOTTOM = 129
-LANDMARK_NUM_RIGHT_EYE_R = 145
-LANDMARK_NUM_RIGHT_EYE_L = 135
-LANDMARK_NUM_RIGHT_EYE_TOP = 140
-LANDMARK_NUM_RIGHT_EYE_BOTTOM = 149
+# ignore
+LANDMARK_NUM =  { "MOUSE_R": 58
+                , "MOUSE_L": 71
+                , "MOUSE_TOP": 65
+                , "MOUSE_BOTTOM": 79
+                , "LEFT_EYE_R": 114
+                , "LEFT_EYE_L": 124
+                , "LEFT_EYE_TOP": 120
+                , "LEFT_EYE_BOTTOM": 129
+                , "RIGHT_EYE_R": 145
+                , "RIGHT_EYE_L": 135
+                , "RIGHT_EYE_TOP": 140
+                , "RIGHT_EYE_BOTTOM": 149
+                }
 
 # Cascade files directory path
 CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"

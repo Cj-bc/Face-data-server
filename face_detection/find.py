@@ -5,7 +5,7 @@ import cv2
 import dlib
 from math import sqrt
 import math
-from faceDetection import facemark, faceCalibration, normalization
+from faceDetection import facemark, faceCalibration, normalization, LANDMARK_NUM
 
 # type definitions
 Coord = (int, int)
@@ -41,17 +41,17 @@ if __name__ == '__main__':
         else:
             landmark = landmarks[0]
 
-        eyeDistance = distance(landmark[LANDMARK_NUM_LEFT_EYE_R]
-                                , landmark[LANDMARK_NUM_RIGHT_EYE_L])
-        rightEyeSize = size((landmark[LANDMARK_NUM_RIGHT_EYE_R][0]
-                            , landmark[LANDMARK_NUM_RIGHT_EYE_TOP][1])
-                           , (landmark[LANDMARK_NUM_RIGHT_EYE_L][0]
-                            , landmark[LANDMARK_NUM_RIGHT_EYE_BOTTOM][1])
+        eyeDistance = distance(landmark[LANDMARK_NUM["LEFT_EYE_R"]]
+                              , landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
+        rightEyeSize = size(( landmark[LANDMARK_NUM["RIGHT_EYE_R"]][0]
+                            , landmark[LANDMARK_NUM["RIGHT_EYE_TOP"]][1])
+                           ,( landmark[LANDMARK_NUM["RIGHT_EYE_L"]][0]
+                            , landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]][1])
                            )
-        leftEyeSize = size((landmark[LANDMARK_NUM_LEFT_EYE_R][0]
-                            , landmark[LANDMARK_NUM_LEFT_EYE_TOP][1])
-                           , (landmark[LANDMARK_NUM_LEFT_EYE_L][0]
-                            , landmark[LANDMARK_NUM_LEFT_EYE_BOTTOM][1])
+        leftEyeSize = size((landmark[LANDMARK_NUM["LEFT_EYE_R"]][0]
+                            , landmark[LANDMARK_NUM["LEFT_EYE_TOP"]][1])
+                           , (landmark[LANDMARK_NUM["LEFT_EYE_L"]][0]
+                            , landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]][1])
                            )
 
         angle = math.cos(eyeDistance)
