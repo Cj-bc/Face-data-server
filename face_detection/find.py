@@ -2,10 +2,12 @@
 # Refer to: https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 #
 import cv2
+import dlib
 from math import sqrt
 import math
+from typing import List
 from faceDetection import facemark, faceCalibration,  LANDMARK_NUM
-from Types import FaceDetectionError
+from Types import FaceDetectionError, Cv2Image
 import sys
 
 # type definitions
@@ -42,9 +44,9 @@ if __name__ == '__main__':
 
     while cap.isOpened():
         _, frame = cap.read()
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray: Cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        landmarks = facemark(gray)
+        landmarks: List[dlib.point] = facemark(gray)
         if landmarks == []:
             continue
         else:
