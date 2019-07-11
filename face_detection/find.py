@@ -72,11 +72,15 @@ def main():
                                 , landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
                                  )
 
+        _eyesVector = point_abs(landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] -
+                                landmark[LANDMARK_NUM["Left_EYE_BOTTOM"]])
         
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
         rotateY = math.acos(eyeDistance / calibrated.eyeDistance)
+        # rotateX
+         rotateZ = math.atan(_eyesVector.y / _eyesVector.x)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
