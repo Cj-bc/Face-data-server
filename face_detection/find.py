@@ -32,6 +32,9 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
 
     calibrated = faceCalibration(cap)
+    if type(calibrated) == str:
+        print("The camera connection has been closed. Please try again")
+        sys.exit(1)
 
     while cap.isOpened():
         _, frame = cap.read()

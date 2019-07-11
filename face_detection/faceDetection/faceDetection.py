@@ -36,7 +36,7 @@ face_cascade = cv2.CascadeClassifier(
 
 
 # faceCalibration(cap: cv2.VideoCapture) -> CalibrationData {{{
-def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
+def faceCalibration(cap: cv2.VideoCapture) -> Union[Error, CalibrationData]:
     """Calibrate individuals' differences.
 
     What this function does are:
@@ -44,13 +44,18 @@ def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
     """
     print("=========== Face calibration ===========")
     input("Please face front and press enter:")
-    faces = waitUntilFaceDetect(cap)[0]
+    faces = waitUntilFaceDetect(cap)
+    if type(faces) == str:
+        return Error(faces)
+
+
 
     return {}
 # }}}
 
 
-def waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray:
+# waitUntilFaceDetect(cap: cv2.VideoCapture) -> Union[Error, numpy.ndarray] {{{
+def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Union[Error, numpy.ndarray]:
     """Wait until face(s) is detected. Return detected face(s).
     """
 
@@ -58,10 +63,10 @@ def waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray:
         _, frame = cap.read()
         faces_roi = face_position(frame)
         if faces_roi != ():
-            break
+            return faces_roi
 
-    return faces_roi
-
+    return Error("Cap has been closed.")
+# }}}
 
 # face_position(gray_img) {{{
 def face_position(gray_img: numpy.ndarray) -> Union[numpy.ndarray, Tuple]:
