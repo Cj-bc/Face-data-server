@@ -79,7 +79,7 @@ def main():
         #       user might wink. In that case, I can't recognize properly.
         rotateY = math.acos(eyeDistance / calibrated.eyeDistance)
         # rotateX
-         rotateZ = math.atan(_eyesVector.y / _eyesVector.x)
+        rotateZ = math.atan(_eyesVector.y / _eyesVector.x)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
