@@ -4,6 +4,7 @@
 import cv2
 import dlib
 import math
+from math import sqrt
 from typing import List
 from faceDetection import facemark, faceCalibration,  LANDMARK_NUM
 from Types import FaceDetectionError, Cv2Image, CalibrationData
@@ -32,6 +33,9 @@ def area_rect(a: dlib.point, b: dlib.point,
     return (upper - bottom) * (right - left)
 
 
+def getMagnitude(p: dlib.point):
+    """Get magnitude of given point vector"""
+    return sqrt((p.x ^ 2) + (p.y ^ 2))
 
 def main():
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
@@ -53,8 +57,10 @@ def main():
         else:
             landmark = landmarks[0]
 
-        eyeDistance  = point_abs(landmark[LANDMARK_NUM["LEFT_EYE_R"]] -
-                                 landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
+        eyeDistance  = min(getMagnitude(point_abs(
+                                    landmark[LANDMARK_NUM["LEFT_EYE_R"]] -
+                                    landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
+                          , calibrated.eyeDistance)
         rightEyeSize = area_rect(landmark[LANDMARK_NUM["RIGHT_EYE_R"]]
                                 , landmark[LANDMARK_NUM["RIGHT_EYE_L"]]
                                 , landmark[LANDMARK_NUM["RIGHT_EYE_TOP"]]
