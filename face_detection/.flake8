@@ -1,0 +1,11 @@
+[flake8]
+ignore =  # E128: continuation line under-indented for visual indent
+          #       disabled reason: this privent me using elm-style indent
+          E128
+          # E203: whitespace before ','
+          #       disabled reason: the same as E128
+          E203
+          # E221: multiple spaces before operator
+          #       disabled reason: it prevents me make visual indent be vertical
+          E221
+# vim: ft=toml
