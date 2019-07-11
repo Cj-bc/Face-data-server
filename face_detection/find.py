@@ -28,7 +28,7 @@ def size(leftTop: Coord, rightBottom: Coord) -> float:
     return abs(x2 - x1) * abs(y2 - y1)
 
 
-if __name__ == '__main__':
+def main():
     cap = cv2.VideoCapture(0)
 
     try:
@@ -68,3 +68,7 @@ if __name__ == '__main__':
 
     cap.release()
     cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    main()
