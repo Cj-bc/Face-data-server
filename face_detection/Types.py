@@ -1,8 +1,7 @@
-from typing import List, NewType, Union, TypeVar
+from typing import List, NewType, Union
 import numpy
 
 CalibrationData = {"EyeDistance": float}
-Landmark = List[int]
 Error = NewType('Error', str)
 Cv2Image = numpy.ndarray
 

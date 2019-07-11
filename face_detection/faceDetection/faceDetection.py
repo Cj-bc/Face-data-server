@@ -1,9 +1,10 @@
+# module faceDetection
+# (faceCalibration, facemark, LANDMARK_NUM) where
 import os
 import cv2
 import dlib
 from typing import List
 from Types import (CalibrationData, Cv2Image, CapHasClosedError)
-import numpy
 from functools import reduce
 
 
@@ -27,13 +28,14 @@ LANDMARK_NUM =  { "MOUSE_R": 58
                 }
 
 # Cascade files directory path
-CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"
-LEARNED_MODEL_PATH = os.path.dirname(
+_CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"
+_LEARNED_MODEL_PATH = os.path.dirname(
     os.path.abspath(__file__)) + "/learned-models/"
+
 predictor = dlib.shape_predictor(
-    LEARNED_MODEL_PATH + 'helen-dataset.dat')
+    _LEARNED_MODEL_PATH + 'helen-dataset.dat')
 face_cascade = cv2.CascadeClassifier(
-    CASCADE_PATH + 'haarcascade_frontalface_default.xml')
+    _CASCADE_PATH + 'haarcascade_frontalface_default.xml')
 detector = dlib.get_frontal_face_detector()
 
 
