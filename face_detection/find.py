@@ -57,9 +57,8 @@ def main():
         else:
             landmark = landmarks[0]
 
-        eyeDistance  = min(getMagnitude(point_abs(
-                                    landmark[LANDMARK_NUM["LEFT_EYE_R"]] -
-                                    landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
+        eyeDistance  = min(abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x -
+                               landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
                           , calibrated.eyeDistance)
         rightEyeSize = area_rect(landmark[LANDMARK_NUM["RIGHT_EYE_R"]]
                                 , landmark[LANDMARK_NUM["RIGHT_EYE_L"]]
