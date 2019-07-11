@@ -55,7 +55,7 @@ def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
 
 # waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image {{{
 def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
-    """Wait until face(s) is detected. Return detected face(s).
+    """Wait until face(s) is detected. Return frame if it contains faces.
 
         Raise Exception:
             CapHasClosedError : this exception might be raised
@@ -63,9 +63,8 @@ def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
     """
     while cap.isOpened():
         _, frame = cap.read()
-        faces_roi = face_position(frame)
-        if faces_roi != ():
-            return faces_roi
+        if isFaceExist(frame):
+            return frame
 
     raise CapHasClosedError()
 # }}}
