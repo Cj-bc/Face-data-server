@@ -33,6 +33,7 @@ predictor = dlib.shape_predictor(
     LEARNED_MODEL_PATH + 'helen-dataset.dat')
 face_cascade = cv2.CascadeClassifier(
     CASCADE_PATH + 'haarcascade_frontalface_default.xml')
+detector = dlib.get_frontal_face_detector()
 
 
 # faceCalibration(cap: cv2.VideoCapture) -> CalibrationData {{{
@@ -100,7 +101,6 @@ def facemark(gray_img: Cv2Image) -> List[Landmark]:
     """
     landmarks: List[Landmark] = []
 
-    detector = dlib.get_frontal_face_detector()
     rects = detector(gray_img, 1)
 
     landmarks = []
