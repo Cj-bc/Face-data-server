@@ -53,8 +53,8 @@ def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
 # }}}
 
 
-# waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray {{{
-def waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray:
+# waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image {{{
+def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
     """Wait until face(s) is detected. Return detected face(s).
 
         Raise Exception:
@@ -81,8 +81,8 @@ def face_position(gray_img: numpy.ndarray) -> Union[numpy.ndarray, Tuple]:
 # }}}
 
 
-# facemark(gray_img): {{{
-def facemark(gray_img: numpy.ndarray) -> List[Landmark]:
+# facemark(gray_img: Cv2Image) -> List[Landmark] {{{
+def facemark(gray_img: Cv2Image) -> List[Landmark]:
     """Recoginize face landmark position by i-bug 300-w dataset
     Return:
         randmarks = [
@@ -119,7 +119,7 @@ def facemark(gray_img: numpy.ndarray) -> List[Landmark]:
 # }}}
 
 
-# _normalization(face_landmarks): {{{
+# _normalization(face_landmarks: List[Landmark]) -> List[Landmark] {{{
 def _normalization(face_landmarks: List[Landmark]) -> List[Landmark]:
     """Normalize facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]

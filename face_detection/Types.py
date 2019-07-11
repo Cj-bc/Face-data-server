@@ -1,8 +1,10 @@
 from typing import List, NewType, Union, TypeVar
+import numpy
 
 CalibrationData = {"EyeDistance": float}
 Landmark = List[int]
 Error = NewType('Error', str)
+Cv2Image = numpy.ndarray
 
 
 class FaceDetectionError(Exception):
