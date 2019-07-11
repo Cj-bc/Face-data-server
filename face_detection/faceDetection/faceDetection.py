@@ -2,7 +2,7 @@ import os
 import cv2
 import dlib
 from typing import List, Union, Tuple
-from Types import CalibrationData, Landmark
+from Types import (CalibrationData, Landmark, Cv2Image, CapHasClosedError)
 import numpy
 
 
@@ -36,7 +36,7 @@ face_cascade = cv2.CascadeClassifier(
 
 
 # faceCalibration(cap: cv2.VideoCapture) -> CalibrationData {{{
-def faceCalibration(cap: cv2.VideoCapture) -> Union[Error, CalibrationData]:
+def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
     """Calibrate individuals' differences.
 
     What this function does are:
@@ -44,28 +44,30 @@ def faceCalibration(cap: cv2.VideoCapture) -> Union[Error, CalibrationData]:
     """
     print("=========== Face calibration ===========")
     input("Please face front and press enter:")
-    faces = waitUntilFaceDetect(cap)
-    if type(faces) == str:
-        return Error(faces)
-
+    frame = waitUntilFaceDetect(cap)
+    print("got your face... wait for a second...")
+    landmarks = facemark(frame)
 
 
     return {}
 # }}}
 
 
-# waitUntilFaceDetect(cap: cv2.VideoCapture) -> Union[Error, numpy.ndarray] {{{
-def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Union[Error, numpy.ndarray]:
+# waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray {{{
+def waitUntilFaceDetect(cap: cv2.VideoCapture) -> numpy.ndarray:
     """Wait until face(s) is detected. Return detected face(s).
-    """
 
+        Raise Exception:
+            CapHasClosedError : this exception might be raised
+                                when 'cap' has been closed by some reason
+    """
     while cap.isOpened():
         _, frame = cap.read()
         faces_roi = face_position(frame)
         if faces_roi != ():
             return faces_roi
 
-    return Error("Cap has been closed.")
+    raise CapHasClosedError()
 # }}}
 
 # face_position(gray_img) {{{

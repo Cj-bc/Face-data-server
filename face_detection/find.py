@@ -5,6 +5,7 @@ import cv2
 from math import sqrt
 import math
 from faceDetection import facemark, faceCalibration, normalization, LANDMARK_NUM
+from Types import FaceDetectionError
 
 # type definitions
 Coord = (int, int)
@@ -31,9 +32,11 @@ def size(leftTop: Coord, rightBottom: Coord) -> float:
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
 
-    calibrated = faceCalibration(cap)
-    if type(calibrated) == str:
-        print("The camera connection has been closed. Please try again")
+    try:
+        calibrated = faceCalibration(cap)
+    except FaceDetectionError as e:
+        print(f"ERROR: Unexpected things are happened: {e}")
+        print("Aborting")
         sys.exit(1)
 
     while cap.isOpened():
