@@ -1,9 +1,14 @@
 from typing import List, NewType, Union
 import numpy
 
-CalibrationData = {"EyeDistance": float}
 Error = NewType('Error', str)
 Cv2Image = numpy.ndarray
+
+
+class CalibrationData:
+    EyeDistance: float
+    RightEyeSize: float
+    LeftEyeSize: float
 
 
 class FaceDetectionError(Exception):
