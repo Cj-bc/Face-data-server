@@ -4,8 +4,9 @@
 import cv2
 from math import sqrt
 import math
-from faceDetection import facemark, faceCalibration, normalization, LANDMARK_NUM
+from faceDetection import facemark, faceCalibration,  LANDMARK_NUM
 from Types import FaceDetectionError
+import sys
 
 # type definitions
 Coord = (int, int)
@@ -43,7 +44,7 @@ if __name__ == '__main__':
         _, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        landmarks = normalization(facemark(gray))
+        landmarks = facemark(gray)
         if landmarks == []:
             continue
         else:

@@ -1,7 +1,7 @@
 import os
 import cv2
 import dlib
-from typing import List, Union, Tuple
+from typing import List
 from Types import (CalibrationData, Landmark, Cv2Image, CapHasClosedError)
 import numpy
 
