@@ -2,8 +2,9 @@ import os
 import cv2
 import dlib
 from typing import List
-from Types import (CalibrationData, Landmark, Cv2Image, CapHasClosedError)
+from Types import (CalibrationData, Cv2Image, CapHasClosedError)
 import numpy
+from functools import reduce
 
 
 # -- Variables
@@ -49,7 +50,6 @@ def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
     print("got your face... wait for a second...")
     landmarks = facemark(frame)
 
-
     return {}
 # }}}
 
@@ -82,7 +82,7 @@ def isFaceExist(gray_img: Cv2Image) -> bool:
 
 
 # facemark(gray_img: Cv2Image) -> List[Landmark] {{{
-def facemark(gray_img: Cv2Image) -> List[Landmark]:
+def facemark(gray_img: Cv2Image) -> List[dlib.point]:
     """Recoginize face landmark position by i-bug 300-w dataset
     Return:
         randmarks = [
@@ -99,22 +99,17 @@ def facemark(gray_img: Cv2Image) -> List[Landmark]:
         [154-173]: right eyebrows
         [174-193]: left eyebrows
     """
-    landmarks: List[Landmark] = []
+    rects: dlib.rectangles = detector(gray_img, 1)
 
-    rects = detector(gray_img, 1)
-
-    landmarks = []
     for rect in rects:
-        landmarks.append(
-            numpy.array(
-                [(p.x, p.y) for p in predictor(gray_img, rect).parts()])
-        )
-    return _normalization(landmarks)
+        parts: dlib.points = predictor(gray_img, rect).parts()
+        wholeFace: List[dlib.point] = reduce(lambda l, n: l + [n], parts, [])
+    return _normalization(wholeFace)
 # }}}
 
 
-# _normalization(face_landmarks: List[Landmark]) -> List[Landmark] {{{
-def _normalization(face_landmarks: List[Landmark]) -> List[Landmark]:
+# _normalization(face_landmarks: List[dlib.point]) -> List[dlib.point] {{{
+def _normalization(face_landmarks: List[dlib.point]) -> List[dlib.point]:
     """Normalize facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
 
