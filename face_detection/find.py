@@ -22,10 +22,14 @@ def point_abs(a: dlib.point) -> dlib.point:
     return dlib.point(abs(a.x), abs(a.y))
 
 
-def size(leftTop: Coord, rightBottom: Coord) -> float:
-    x1, y1 = leftTop
-    x2, y2 = rightBottom
-    return abs(x2 - x1) * abs(y2 - y1)
+def area_rect(a: dlib.point, b: dlib.point,
+              c: dlib.point, d: dlib.point) -> int:
+    """Calculate region of given points """
+    upper  = max(map(lambda n: n.y, [a, b, c, d]))
+    bottom = min(map(lambda n: n.y, [a, b, c, d]))
+    right  = max(map(lambda n: n.x, [a, b, c, d]))
+    left   = min(map(lambda n: n.x, [a, b, c, d]))
+    return (upper - bottom) * (right - left)
 
 
 def main():
@@ -48,18 +52,18 @@ def main():
         else:
             landmark = landmarks[0]
 
-        eyeDistance = point_abs(landmark[LANDMARK_NUM["LEFT_EYE_R"]]
-                                - landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
-        rightEyeSize = size(( landmark[LANDMARK_NUM["RIGHT_EYE_R"]][0]
-                            , landmark[LANDMARK_NUM["RIGHT_EYE_TOP"]][1])
-                           ,( landmark[LANDMARK_NUM["RIGHT_EYE_L"]][0]
-                            , landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]][1])
-                           )
-        leftEyeSize = size((landmark[LANDMARK_NUM["LEFT_EYE_R"]][0]
-                            , landmark[LANDMARK_NUM["LEFT_EYE_TOP"]][1])
-                           , (landmark[LANDMARK_NUM["LEFT_EYE_L"]][0]
-                            , landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]][1])
-                           )
+        eyeDistance  = point_abs(landmark[LANDMARK_NUM["LEFT_EYE_R"]] -
+                                 landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
+        rightEyeSize = area_rect(landmark[LANDMARK_NUM["RIGHT_EYE_R"]]
+                                , landmark[LANDMARK_NUM["RIGHT_EYE_L"]]
+                                , landmark[LANDMARK_NUM["RIGHT_EYE_TOP"]]
+                                , landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
+                                 )
+        leftEyeSize  = area_rect(landmark[LANDMARK_NUM["LEFT_EYE_R"]]
+                                , landmark[LANDMARK_NUM["LEFT_EYE_TOP"]]
+                                , landmark[LANDMARK_NUM["LEFT_EYE_L"]]
+                                , landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
+                                 )
 
         angle = math.cos(eyeDistance)
 
