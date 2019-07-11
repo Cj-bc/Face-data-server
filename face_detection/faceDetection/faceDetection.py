@@ -70,14 +70,14 @@ def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
     raise CapHasClosedError()
 # }}}
 
-# face_position(gray_img) {{{
-def face_position(gray_img: numpy.ndarray) -> Union[numpy.ndarray, Tuple]:
-    """Detect faces position
-    Return:
-        faces: faces position list (x, y, w, h)
+
+# isFaceExist(gray_img: Cv2Image) -> bool {{{
+def isFaceExist(gray_img: Cv2Image) -> bool:
+    """True if faces are exist in image
     """
     faces = face_cascade.detectMultiScale(gray_img, minSize=(100, 100))
-    return faces
+    return faces.size() != 0
+
 # }}}
 
 
