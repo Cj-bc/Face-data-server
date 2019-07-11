@@ -3,7 +3,6 @@
 #
 import cv2
 import dlib
-from math import sqrt
 import math
 from typing import List
 from faceDetection import facemark, faceCalibration,  LANDMARK_NUM
@@ -19,6 +18,7 @@ blue = (255, 0, 0)
 
 
 def point_abs(a: dlib.point) -> dlib.point:
+    """return 'dlib.point' which x,y are both absolute value """
     return dlib.point(abs(a.x), abs(a.y))
 
 
@@ -32,8 +32,9 @@ def area_rect(a: dlib.point, b: dlib.point,
     return (upper - bottom) * (right - left)
 
 
+
 def main():
-    cap = cv2.VideoCapture(0)
+    cap: cv2.VideoCapture = cv2.VideoCapture(0)
 
     try:
         calibrated: CalibrationData = faceCalibration(cap)
