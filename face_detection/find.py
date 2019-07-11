@@ -18,12 +18,8 @@ green = (0, 255, 0)
 blue = (255, 0, 0)
 
 
-# def distance(r: points, l: points) -> float {{{
-def distance(r: Coord, l: Coord) -> float:
-    rx, ry = r
-    lx, ly = l
-    return sqrt((rx - lx) ^ 2 + (ry - ly) ^ 2)
-# }}}
+def point_abs(a: dlib.point) -> dlib.point:
+    return dlib.point(abs(a.x), abs(a.y))
 
 
 def size(leftTop: Coord, rightBottom: Coord) -> float:
@@ -52,8 +48,8 @@ if __name__ == '__main__':
         else:
             landmark = landmarks[0]
 
-        eyeDistance = distance(landmark[LANDMARK_NUM["LEFT_EYE_R"]]
-                              , landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
+        eyeDistance = point_abs(landmark[LANDMARK_NUM["LEFT_EYE_R"]]
+                                - landmark[LANDMARK_NUM["RIGHT_EYE_L"]])
         rightEyeSize = size(( landmark[LANDMARK_NUM["RIGHT_EYE_R"]][0]
                             , landmark[LANDMARK_NUM["RIGHT_EYE_TOP"]][1])
                            ,( landmark[LANDMARK_NUM["RIGHT_EYE_L"]][0]
