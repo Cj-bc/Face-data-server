@@ -99,22 +99,17 @@ def facemark(gray_img: Cv2Image) -> List[Landmark]:
         [154-173]: right eyebrows
         [174-193]: left eyebrows
     """
-    faces_roi = face_position(gray_img)
+    landmarks: List[Landmark] = []
+
+    detector = dlib.get_frontal_face_detector()
+    rects = detector(gray_img, 1)
+
     landmarks = []
-
-    for face in faces_roi:
-        x, y, w, h = face
-        face_img = gray_img[y: y + h, x: x + w];
-
-        detector = dlib.get_frontal_face_detector()
-        rects = detector(gray_img, 1)
-
-        landmarks = []
-        for rect in rects:
-            landmarks.append(
-                numpy.array(
-                    [(p.x, p.y) for p in predictor(gray_img, rect).parts()])
-            )
+    for rect in rects:
+        landmarks.append(
+            numpy.array(
+                [(p.x, p.y) for p in predictor(gray_img, rect).parts()])
+        )
     return _normalization(landmarks)
 # }}}
 
