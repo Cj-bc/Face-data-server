@@ -13,19 +13,22 @@ from functools import reduce
 # Those values are defined based on this site image:
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 # ignore
-LANDMARK_NUM =  { "MOUSE_R": 58
-                , "MOUSE_L": 71
-                , "MOUSE_TOP": 65
-                , "MOUSE_BOTTOM": 79
-                , "LEFT_EYE_R": 114
-                , "LEFT_EYE_L": 124
-                , "LEFT_EYE_TOP": 120
-                , "LEFT_EYE_BOTTOM": 129
-                , "RIGHT_EYE_R": 145
-                , "RIGHT_EYE_L": 135
-                , "RIGHT_EYE_TOP": 140
-                , "RIGHT_EYE_BOTTOM": 149
-                }
+LANDMARK_NUM = {"TIN_CENTER": 19
+               , "MOUSE_R": 58
+               , "MOUSE_L": 71
+               , "MOUSE_TOP": 65
+               , "MOUSE_BOTTOM": 79
+               , "LEFT_EYE_R": 114
+               , "LEFT_EYE_L": 124
+               , "LEFT_EYE_TOP": 120
+               , "LEFT_EYE_BOTTOM": 129
+               , "RIGHT_EYE_R": 145
+               , "RIGHT_EYE_L": 135
+               , "RIGHT_EYE_TOP": 140
+               , "RIGHT_EYE_BOTTOM": 149
+               , "LEFT_EYEBROW_R": 154
+               , "RIGHT_EYEBROW_L": 174
+               }
 
 # Cascade files directory path
 _CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"
