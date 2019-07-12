@@ -72,12 +72,20 @@ def main():
                                  )
         eyeLineVector = point_abs(landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] -
                                   landmark[LANDMARK_NUM["Left_EYE_BOTTOM"]])
+                         , calibrated.faceHeigh)
+        _faceCenterX = (max(map(lambda p: p.x, landmark)) +
+                        min(map(lambda p: p.x, landmark))) / 2
+        _faceCenterY = (max(map(lambda p: p.y, landmark)) +
+                        min(map(lambda p: p.y, landmark))) / 2
+        faceCenter = dlib.point(_faceCenterX, _faceCenterY)
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
         degreeY = math.acos(eyeDistance / calibrated.eyeDistance)
         degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
 
+        rotateY = degreeY if faceCenter.x < calibrated.faceCenter.x\
+                            else math.pi - degreeY
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
