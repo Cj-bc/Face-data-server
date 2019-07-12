@@ -75,9 +75,8 @@ def main():
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
-        rotateY = math.acos(eyeDistance / calibrated.eyeDistance)
-        # rotateX
-        rotateZ = math.atan(eyeLineVector.y / eyeLineVector.x)
+        degreeY = math.acos(eyeDistance / calibrated.eyeDistance)
+        degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
