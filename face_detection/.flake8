@@ -1,5 +1,8 @@
 [flake8]
-ignore =  # E128: continuation line under-indented for visual indent
+ignore =  # E127: continuation line over-indented for visual indent
+          #       disabled reason: I'm not sure how to fix this!!
+          E127
+          # E128: continuation line under-indented for visual indent
           #       disabled reason: this privent me using elm-style indent
           E128
           # E203: whitespace before ','
