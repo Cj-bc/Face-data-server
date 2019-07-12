@@ -72,6 +72,10 @@ def main():
                                  )
         eyeLineVector = point_abs(landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] -
                                   landmark[LANDMARK_NUM["Left_EYE_BOTTOM"]])
+        eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]] +
+                    landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
+        faceHeigh  = min(abs(eyebrowY -
+                              landmark[LANDMARK_NUM["TIN_CENTER"]])
                          , calibrated.faceHeigh)
         _faceCenterX = (max(map(lambda p: p.x, landmark)) +
                         min(map(lambda p: p.x, landmark))) / 2
@@ -82,6 +86,7 @@ def main():
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
         degreeY = math.acos(eyeDistance / calibrated.eyeDistance)
+        degreeX = faceHeigh
         degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
 
         rotateY = degreeY if faceCenter.x < calibrated.faceCenter.x\
