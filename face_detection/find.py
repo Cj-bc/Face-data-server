@@ -6,7 +6,8 @@ import dlib
 import math
 from math import sqrt
 from typing import List
-from faceDetection.faceDetection import facemark, faceCalibration, LANDMARK_NUM
+from faceDetection.faceDetection import (facemark, faceCalibration, LANDMARK_NUM,
+                                         getRawFaceData)
 from Types import FaceDetectionError, Cv2Image, RawFaceData
 import sys
 
@@ -51,47 +52,22 @@ def main():
         _, frame = cap.read()
         gray: Cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        landmarks: List[dlib.point] = facemark(gray)
-        if landmarks == []:
-            continue
-        else:
-            landmark = landmarks[0]
+        landmark: dlib.points = facemark(gray)
 
-        eyeDistance  = min(abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x -
-                               landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
-                          , calibrated.eyeDistance)
-        rightEyeSize = area_rect(landmark[LANDMARK_NUM["RIGHT_EYE_R"]]
-                                , landmark[LANDMARK_NUM["RIGHT_EYE_L"]]
-                                , landmark[LANDMARK_NUM["RIGHT_EYE_TOP"]]
-                                , landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
-                                 )
-        leftEyeSize  = area_rect(landmark[LANDMARK_NUM["LEFT_EYE_R"]]
-                                , landmark[LANDMARK_NUM["LEFT_EYE_TOP"]]
-                                , landmark[LANDMARK_NUM["LEFT_EYE_L"]]
-                                , landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
-                                 )
-        eyeLineVector = point_abs(landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] -
-                                  landmark[LANDMARK_NUM["Left_EYE_BOTTOM"]])
-        eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]] +
-                    landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
-        faceHeigh  = min(abs(eyebrowY -
-                              landmark[LANDMARK_NUM["TIN_CENTER"]])
-                         , calibrated.faceHeigh)
-        _faceCenterX = (max(map(lambda p: p.x, landmark)) +
-                        min(map(lambda p: p.x, landmark))) / 2
-        _faceCenterY = (max(map(lambda p: p.y, landmark)) +
-                        min(map(lambda p: p.y, landmark))) / 2
-        faceCenter = dlib.point(_faceCenterX, _faceCenterY)
+        eyeLineVector = abs((landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] -
+                              landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]).y)
+        raw = getRawFaceData(landmark).thresholded(calibrated)
+
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
-        degreeY = math.acos(eyeDistance / calibrated.eyeDistance)
-        degreeX = math.acos(faceHeigh / calibrated.faceHeigh)
+        degreeY = math.acos(raw.eyeDistance / calibrated.eyeDistance)
+        degreeX = math.acos(raw.faceHeigh / calibrated.faceHeigh)
         degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
 
-        rotateX = degreeX if faceCenter.y > calibrated.faceCenter.y\
+        rotateX = degreeX if raw.faceCenter.y > calibrated.faceCenter.y\
                             else -1 * degreeX
-        rotateY = degreeY if faceCenter.x < calibrated.faceCenter.x\
+        rotateY = degreeY if raw.faceCenter.x < calibrated.faceCenter.x\
                             else -1 * degreeY
         # v Is this correct code? v
         rotateZ = degreeZ
