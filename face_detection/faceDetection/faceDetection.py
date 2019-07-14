@@ -43,6 +43,25 @@ face_cascade = cv2.CascadeClassifier(
 detector = dlib.get_frontal_face_detector()
 
 
+# getRawFaceData(landmark: dlib.points) -> RawFaceData {{{
+def getRawFaceData(landmark: dlib.points) -> RawFaceData:
+    """ Return RawFaceData from dlib.points
+    """
+    eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x -
+                           landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
+    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]] +
+                landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
+    faceHeigh  = abs(_eyebrowY -
+                          landmark[LANDMARK_NUM["TIN_CENTER"]])
+    _faceCenterX = (max(map(lambda p: p.x, landmark)) +
+                    min(map(lambda p: p.x, landmark))) / 2
+    _faceCenterY = (max(map(lambda p: p.y, landmark)) +
+                    min(map(lambda p: p.y, landmark))) / 2
+    faceCenter = dlib.point(_faceCenterX, _faceCenterY)
+
+    return RawFaceData(eyeDistance, faceHeigh, faceCenter)
+# }}}
+
 
 # faceCalibration(cap: cv2.VideoCapture) -> RawFaceData {{{
 def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
