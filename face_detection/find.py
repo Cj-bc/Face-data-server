@@ -6,7 +6,7 @@ import dlib
 import math
 from math import sqrt
 from typing import List
-from faceDetection import facemark, faceCalibration,  LANDMARK_NUM
+from faceDetection.faceDetection import facemark, faceCalibration, LANDMARK_NUM
 from Types import FaceDetectionError, Cv2Image, CalibrationData
 import sys
 
