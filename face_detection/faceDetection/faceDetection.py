@@ -116,7 +116,7 @@ def getBiggestFace(faces: List[dlib.points]) -> dlib.points:
         return (p[40] - p[0]).x
 
     return reduce(lambda p, q: p if ln(p) > ln(q) else q,
-                  faces, dlib.point(0, 0))
+                  faces, dlib.points(41))
 # }}}
 
 
