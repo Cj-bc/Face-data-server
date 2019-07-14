@@ -86,11 +86,15 @@ def main():
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
         degreeY = math.acos(eyeDistance / calibrated.eyeDistance)
-        degreeX = faceHeigh
+        degreeX = math.acos(faceHeigh / calibrated.faceHeigh)
         degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
 
+        rotateX = degreeX if faceCenter.y > calibrated.faceCenter.y\
+                            else -1 * degreeX
         rotateY = degreeY if faceCenter.x < calibrated.faceCenter.x\
                             else -1 * degreeY
+        # v Is this correct code? v
+        rotateZ = degreeZ
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
