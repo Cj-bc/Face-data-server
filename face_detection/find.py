@@ -90,7 +90,7 @@ def main():
         degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
 
         rotateY = degreeY if faceCenter.x < calibrated.faceCenter.x\
-                            else math.pi - degreeY
+                            else -1 * degreeY
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
 
