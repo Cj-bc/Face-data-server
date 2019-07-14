@@ -86,9 +86,23 @@ def isFaceExist(gray_img: Cv2Image) -> bool:
 # }}}
 
 
-# facemark(gray_img: Cv2Image) -> List[Landmark] {{{
-def facemark(gray_img: Cv2Image) -> List[dlib.point]:
+# getBiggestFace(faces: List[dlib.points]) -> dlib.points: {{{
+def getBiggestFace(faces: List[dlib.points]) -> dlib.points:
+    """ Return biggest face in given list
+       'biggest face' is one that has biggest width
+    """
+    def ln(p: dlib.points) -> int:
+        return (p[40] - p[0]).x
+
+    return reduce(lambda p, q: p if ln(p) > ln(q) else q,
+                  faces, dlib.point(0, 0))
+# }}}
+
+
+# facemark(gray_img: Cv2Image) -> dlib.points {{{
+def facemark(gray_img: Cv2Image) -> dlib.points:
     """Recoginize face landmark position by i-bug 300-w dataset
+        This will return biggest face from recognized faces list
     Return:
         randmarks = [
         [x, y],
@@ -105,16 +119,16 @@ def facemark(gray_img: Cv2Image) -> List[dlib.point]:
         [174-193]: left eyebrows
     """
     rects: dlib.rectangles = detector(gray_img, 1)
-
+    wholeFace: List[dlib.points] = []
     for rect in rects:
         parts: dlib.points = predictor(gray_img, rect).parts()
-        wholeFace: List[dlib.point] = reduce(lambda l, n: l + [n], parts, [])
-    return _normalization(wholeFace)
+        wholeFace.append(parts)
+    return _normalization(getBiggestFace(wholeFace))
 # }}}
 
 
-# _normalization(face_landmarks: List[dlib.point]) -> List[dlib.point] {{{
-def _normalization(face_landmarks: List[dlib.point]) -> List[dlib.point]:
+# _normalization(face_landmarks: dlib.points) -> dlib.points {{{
+def _normalization(face: dlib.points) -> dlib.points:
     """Normalize facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
 
@@ -122,79 +136,76 @@ def _normalization(face_landmarks: List[dlib.point]) -> List[dlib.point]:
             https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 
     """
-    return_list = []
-    for facemark in face_landmarks:
-        # nose
-        nose = list(range(130, 147 + 1))
-        nose.remove(139)
+    # nose
+    nose = list(range(130, 147 + 1))
+    nose.remove(139)
 
-        # right eyebrows
-        right_eyebrow = list(range(62, 83 + 1))
-        right_eyebrow.remove(68)
-        right_eyebrow.remove(79)
+    # right eyebrows
+    right_eyebrow = list(range(62, 83 + 1))
+    right_eyebrow.remove(68)
+    right_eyebrow.remove(79)
 
-        # left eyebrows
-        left_eyebrow = list(range(84, 105 + 1))
-        left_eyebrow.remove(90)
-        left_eyebrow.remove(101)
+    # left eyebrows
+    left_eyebrow = list(range(84, 105 + 1))
+    left_eyebrow.remove(90)
+    left_eyebrow.remove(101)
 
-        # right eye
-        right_eye = list(range(18, 39 + 1))
-        right_eye.remove(24)
-        right_eye.remove(35)
+    # right eye
+    right_eye = list(range(18, 39 + 1))
+    right_eye.remove(24)
+    right_eye.remove(35)
 
-        # left_eye
-        left_eye = list(range(40, 61 + 1))
-        left_eye.remove(46)
-        left_eye.remove(57)
+    # left_eye
+    left_eye = list(range(40, 61 + 1))
+    left_eye.remove(46)
+    left_eye.remove(57)
 
-        # outside lips
-        outside_lips = list(range(148, 178 + 1))
-        outside_lips.remove(150)
-        outside_lips.remove(161)
-        outside_lips.remove(172)
+    # outside lips
+    outside_lips = list(range(148, 178 + 1))
+    outside_lips.remove(150)
+    outside_lips.remove(161)
+    outside_lips.remove(172)
 
-        # inside lips
-        inside_lips = list(range(3, 17 + 1))
-        inside_lips.remove(13)
-        add_list_lips = list(range(179, 193 + 1))
-        add_list_lips.remove(183)
-        inside_lips += add_list_lips
+    # inside lips
+    inside_lips = list(range(3, 17 + 1))
+    inside_lips.remove(13)
+    add_list_lips = list(range(179, 193 + 1))
+    add_list_lips.remove(183)
+    inside_lips += add_list_lips
 
-        # chin
-        chin = [0, 1, 106, 117, 128, 139, 150, 161, 172,
-                183, 2, 13, 24, 35, 46, 57, 68, 79, 90, 101]
-        add_list = list(range(107, 129 + 1))
-        add_list.remove(117)
-        add_list.remove(128)
-        chin += add_list
+    # chin
+    chin = [0, 1, 106, 117, 128, 139, 150, 161, 172,
+            183, 2, 13, 24, 35, 46, 57, 68, 79, 90, 101]
+    add_list = list(range(107, 129 + 1))
+    add_list.remove(117)
+    add_list.remove(128)
+    chin += add_list
 
-        for nose_i, fm_i in enumerate(nose):
-            nose[nose_i] = facemark[fm_i]
+    for nose_i, fm_i in enumerate(nose):
+        nose[nose_i] = face[fm_i]
 
-        for reb_i, fm_i in enumerate(right_eyebrow):
-            right_eyebrow[reb_i] = facemark[fm_i]
+    for reb_i, fm_i in enumerate(right_eyebrow):
+        right_eyebrow[reb_i] = face[fm_i]
 
-        for leb_i, fm_i in enumerate(left_eyebrow):
-            left_eyebrow[leb_i] = facemark[fm_i]
+    for leb_i, fm_i in enumerate(left_eyebrow):
+        left_eyebrow[leb_i] = face[fm_i]
 
-        for re_i, fm_i in enumerate(right_eye):
-            right_eye[re_i] = facemark[fm_i]
+    for re_i, fm_i in enumerate(right_eye):
+        right_eye[re_i] = face[fm_i]
 
-        for le_i, fm_i in enumerate(left_eye):
-            left_eye[le_i] = facemark[fm_i]
+    for le_i, fm_i in enumerate(left_eye):
+        left_eye[le_i] = face[fm_i]
 
-        for ol_i, fm_i in enumerate(outside_lips):
-            outside_lips[ol_i] = facemark[fm_i]
+    for ol_i, fm_i in enumerate(outside_lips):
+        outside_lips[ol_i] = face[fm_i]
 
-        for il_i, fm_i in enumerate(inside_lips):
-            inside_lips[il_i] = facemark[fm_i]
+    for il_i, fm_i in enumerate(inside_lips):
+        inside_lips[il_i] = face[fm_i]
 
-        for chin_i, fm_i in enumerate(chin):
-            chin[chin_i] = facemark[fm_i]
+    for chin_i, fm_i in enumerate(chin):
+        chin[chin_i] = face[fm_i]
 
-        return_list.append(chin + nose + outside_lips + inside_lips +
-                           right_eye + left_eye + right_eyebrow + left_eyebrow)
+    return (chin + nose + outside_lips + inside_lips +
+                       right_eye + left_eye + right_eyebrow + left_eyebrow)
 
-    return return_list
 # }}}
