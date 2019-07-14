@@ -27,9 +27,9 @@ LANDMARK_NUM = {"TIN_CENTER": 19
                , "RIGHT_EYE_L": 135
                , "RIGHT_EYE_TOP": 140
                , "RIGHT_EYE_BOTTOM": 149
-               , "LEFT_EYEBROW_R": 154
-               , "RIGHT_EYEBROW_L": 174
-               }
+               , "EYEBROW_LEFT_R": 154
+               , "EYEBROW_RIGHT_L": 174
+                }
 
 # Cascade files directory path
 _CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../haarcascades/"
