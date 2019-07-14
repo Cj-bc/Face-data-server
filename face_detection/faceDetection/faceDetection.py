@@ -74,9 +74,9 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     input("Please face front and press enter:")
     frame = waitUntilFaceDetect(cap)
     print("got your face... wait for a second...")
-    landmarks = facemark(frame)
-
-    return {}
+    face = facemark(frame)
+    print("done :)")
+    return getRawFaceData(face)
 # }}}
 
 
