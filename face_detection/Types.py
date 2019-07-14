@@ -1,15 +1,17 @@
 from typing import List, NewType, Union
 import numpy
 import dlib
+import dataclasses
 
 Error = NewType('Error', str)
 Cv2Image = numpy.ndarray
 
 
-class CalibrationData:
+@dataclasses.dataclass(frozen=True)
+class RawFaceData:
     eyeDistance: float
-    rightEyeSize: float
-    leftEyeSize: float
+#    rightEyeSize: float
+#    leftEyeSize: float
     faceHeigh: float
     faceCenter: dlib.point
 

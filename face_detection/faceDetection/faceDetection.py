@@ -4,7 +4,8 @@ import os
 import cv2
 import dlib
 from typing import List
-from Types import (CalibrationData, Cv2Image, CapHasClosedError)
+from Types import (Cv2Image, CapHasClosedError,
+                    RawFaceData)
 from functools import reduce
 
 
@@ -42,8 +43,9 @@ face_cascade = cv2.CascadeClassifier(
 detector = dlib.get_frontal_face_detector()
 
 
-# faceCalibration(cap: cv2.VideoCapture) -> CalibrationData {{{
-def faceCalibration(cap: cv2.VideoCapture) -> CalibrationData:
+
+# faceCalibration(cap: cv2.VideoCapture) -> RawFaceData {{{
+def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     """Calibrate individuals' differences.
 
     What this function does are:

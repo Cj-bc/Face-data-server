@@ -7,7 +7,7 @@ import math
 from math import sqrt
 from typing import List
 from faceDetection.faceDetection import facemark, faceCalibration, LANDMARK_NUM
-from Types import FaceDetectionError, Cv2Image, CalibrationData
+from Types import FaceDetectionError, Cv2Image, RawFaceData
 import sys
 
 # type definitions
@@ -41,7 +41,7 @@ def main():
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
 
     try:
-        calibrated: CalibrationData = faceCalibration(cap)
+        calibrated: RawFaceData = faceCalibration(cap)
     except FaceDetectionError as e:
         print(f"ERROR: Unexpected things are happened: {e}")
         print("Aborting")
