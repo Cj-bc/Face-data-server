@@ -54,9 +54,9 @@ def getRawFaceData(landmark: dlib.points) -> RawFaceData:
     faceHeigh  = abs(_eyebrowY -
                           landmark[LANDMARK_NUM["TIN_CENTER"]].y)
     _faceCenterX = (max(map(lambda p: p.x, landmark)) +
-                    min(map(lambda p: p.x, landmark))) / 2
+                    min(map(lambda p: p.x, landmark))) // 2
     _faceCenterY = (max(map(lambda p: p.y, landmark)) +
-                    min(map(lambda p: p.y, landmark))) / 2
+                    min(map(lambda p: p.y, landmark))) // 2
     faceCenter = dlib.point(_faceCenterX, _faceCenterY)
 
     return RawFaceData(eyeDistance, faceHeigh, faceCenter)
