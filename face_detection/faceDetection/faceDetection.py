@@ -102,7 +102,7 @@ def isFaceExist(gray_img: Cv2Image) -> bool:
     """True if faces are exist in image
     """
     faces = face_cascade.detectMultiScale(gray_img, minSize=(100, 100))
-    return faces == ()
+    return faces != ()
 
 # }}}
 
