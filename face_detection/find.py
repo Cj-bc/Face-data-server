@@ -20,11 +20,14 @@ green = (0, 255, 0)
 blue = (255, 0, 0)
 
 
+# point_abs(a: dlib.point) -> dlib.point {{{
 def point_abs(a: dlib.point) -> dlib.point:
     """return 'dlib.point' which x,y are both absolute value """
     return dlib.point(abs(a.x), abs(a.y))
+# }}}
 
 
+#area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
 def area_rect(a: dlib.point, b: dlib.point,
               c: dlib.point, d: dlib.point) -> int:
     """Calculate region of given points """
@@ -33,11 +36,8 @@ def area_rect(a: dlib.point, b: dlib.point,
     right  = max(map(lambda n: n.x, [a, b, c, d]))
     left   = min(map(lambda n: n.x, [a, b, c, d]))
     return (upper - bottom) * (right - left)
+# }}}
 
-
-def getMagnitude(p: dlib.point):
-    """Get magnitude of given point vector"""
-    return sqrt((p.x ^ 2) + (p.y ^ 2))
 
 def main():
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
