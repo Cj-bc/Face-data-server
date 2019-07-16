@@ -54,8 +54,8 @@ def main():
 
         landmark: dlib.points = facemark(gray)
 
-        eyeLineVector = abs((landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] -
-                              landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]).y)
+        eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \
+                              landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
         raw = getRawFaceData(landmark).thresholded(calibrated)
 
         # TODO: how can I notice which side does face face to?
@@ -63,7 +63,8 @@ def main():
         #       user might wink. In that case, I can't recognize properly.
         degreeY = math.acos(raw.eyeDistance / calibrated.eyeDistance)
         degreeX = math.acos(raw.faceHeigh / calibrated.faceHeigh)
-        degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
+        degreeZ = math.atan(abs(eyeLineVector.y / eyeLineVector.x))
+        # TODO: ^ This some times got error 'Division by 0'
 
         rotateX = degreeX if raw.faceCenter.y > calibrated.faceCenter.y\
                             else -1 * degreeX
