@@ -6,8 +6,9 @@ import dlib
 import math
 from math import sqrt
 from typing import List
-from faceDetection.faceDetection import (facemark, faceCalibration, LANDMARK_NUM,
-                                         getRawFaceData)
+from faceDetection.faceDetection import (facemark, faceCalibration,
+                                         LANDMARK_NUM, getRawFaceData,
+                                         waitUntilFaceDetect)
 from Types import FaceDetectionError, Cv2Image, RawFaceData
 import sys
 
@@ -49,10 +50,8 @@ def main():
         sys.exit(1)
 
     while cap.isOpened():
-        _, frame = cap.read()
-        gray: Cv2Image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        landmark: dlib.points = facemark(gray)
+        landmark: dlib.points = facemark(waitUntilFaceDetect(cap))
 
         eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \
                               landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
