@@ -3,7 +3,7 @@
 import os
 import cv2
 import dlib
-from typing import List
+from typing import List, Optional
 from Types import (Cv2Image, CapHasClosedError,
                     RawFaceData)
 from functools import reduce
@@ -120,9 +120,12 @@ def getBiggestFace(faces: List[dlib.points]) -> dlib.points:
 
 
 # facemark(gray_img: Cv2Image) -> dlib.points {{{
-def facemark(gray_img: Cv2Image) -> dlib.points:
+def facemark(gray_img: Cv2Image) -> Optional[dlib.points]:
     """Recoginize face landmark position by i-bug 300-w dataset
         This will return biggest face from recognized faces list
+
+        If no faces are found, it'll return None
+
     Return:
         randmarks = [
         [x, y],
@@ -143,6 +146,10 @@ def facemark(gray_img: Cv2Image) -> dlib.points:
     for rect in rects:
         parts: dlib.points = predictor(gray_img, rect).parts()
         wholeFace.append(parts)
+
+    if len(wholeFace) == 0:
+        return None
+
     return _normalization(getBiggestFace(wholeFace))
 # }}}
 
