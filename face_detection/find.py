@@ -11,6 +11,7 @@ from faceDetection.faceDetection import (facemark, faceCalibration,
                                          waitUntilFaceDetect)
 from Types import FaceDetectionError, Cv2Image, RawFaceData, FaceRotations
 import sys
+import datetime
 
 # type definitions
 Coord = (int, int)
@@ -77,6 +78,17 @@ def main():
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
+
+        rots: FaceRotations = FaceRotations(0, 0, 0)
+        _, frame = cap.read()
+        landmark: Optional[dlib.points] = facemark(frame)
+        # TODO: ^ landmark should never be dlip.points(0) but it does
+        print(f"landmark: {landmark}")
+
+        if landmark is not None:
+            rots: FaceRotations = rotates(landmark, calibrated)
+
+        print(f"{datetime.datetime.today()}: {rots.x}, {rots.y}, {rots.z}")
 
     cap.release()
     cv2.destroyAllWindows()
