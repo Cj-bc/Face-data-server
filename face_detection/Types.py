@@ -22,6 +22,14 @@ class RawFaceData:
         return RawFaceData(eD, fH, self.faceCenter)
 
 
+@dataclasses.dataclass(frozen=True)
+class FaceRotations:
+    x: float
+    y: float
+    z: float
+
+
+
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
     pass
