@@ -112,7 +112,7 @@ def getBiggestFace(faces: List[dlib.points]) -> dlib.points:
        'biggest face' is one that has biggest width
     """
     def ln(p: dlib.points) -> int:
-        return (p[40] - p[0]).x
+        return abs((p[40] - p[0]).x)
 
     return reduce(lambda p, q: p if ln(p) > ln(q) else q,
                   faces, dlib.points(41))
