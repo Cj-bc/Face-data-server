@@ -6,7 +6,7 @@ import numpy
 
 
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
-def test_isFaceExist(faceNum: int, expected: bool):
+def check_isFaceExist(faceNum: int, expected: bool):
     with mock.patch('faceDetection.detector',
                     return_value=dlib.rectangles(faceNum)):
         assert isFaceExist(numpy.ndarray(0)) == expected
