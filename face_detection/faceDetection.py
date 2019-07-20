@@ -49,8 +49,8 @@ def getRawFaceData(landmark: dlib.points) -> RawFaceData:
     """
     eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x -
                            landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
-    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].x +
-                landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].x) // 2
+    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].y +
+                landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].y) // 2
     faceHeigh  = abs(_eyebrowY -
                           landmark[LANDMARK_NUM["TIN_CENTER"]].y)
     _faceCenterX = (max(map(lambda p: p.x, landmark)) +
