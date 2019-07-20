@@ -8,7 +8,11 @@ import numpy
 from functools import reduce
 
 
+# --- getRawFaceData
+
+
 def test_getRawFaceData():
+    # definition of faceRawPoints: List[Tuple[int, int]] {{{
     faceRawPoints: List[Tuple[int, int]] = [
                      (-50, 25), (0, 0), (0, 0), (0, 0), (0, 0),
                      (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
@@ -49,9 +53,11 @@ def test_getRawFaceData():
                      (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
                      (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
                      (0, 0), (0, 0), (0, 0)]
+
     # # for DEUBG. Use this to check faceRawPoints are correctly set.
     # for v in list(LANDMARK_NUM.items()):
     #     print(f"{v[0]}: {faceRawPoints[v[1]]}")
+    # }}}
 
     face = dlib.points(0)
     facePoints: List[dlib.point] = map(lambda t: dlib.point(t[0], t[1]),
@@ -71,11 +77,17 @@ def test_getRawFaceData():
     assert result.faceCenter.y == correctRawFaceData.faceCenter.y
 
 
+# --- isFaceExist
+
+
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
 def check_isFaceExist(faceNum: int, expected: bool):
     with mock.patch('faceDetection.detector',
                     return_value=dlib.rectangles(faceNum)):
         assert isFaceExist(numpy.ndarray(0)) == expected
+
+
+# --- getBiggestFace
 
 
 def test_getBiggestFace():
@@ -93,6 +105,7 @@ def test_getBiggestFace_noface():
 
 
 def test_normalization():
+    # inList {{{
     inList = [0, 1, 10, 86, 87, 88, 89, 90, 91, 92,
               93, 94, 95, 11, 96, 97, 98, 99, 114, 115,
               116, 117, 118, 119, 12, 120, 121, 122, 123, 124,
@@ -113,5 +126,6 @@ def test_normalization():
               78, 79, 8, 80, 81, 82, 83, 84, 85, 100,
               101, 102, 103, 9, 104, 105, 106, 107, 108, 109,
               110 , 111 , 112 , 113]
+    # }}}
 
     assert _normalization(inList) == list(range(0, 194))
