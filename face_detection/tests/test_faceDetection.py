@@ -1,6 +1,7 @@
 import pytest
 from unittest import mock
-from faceDetection import isFaceExist, getBiggestFace, getRawFaceData, _normalization
+from faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
+                                       _normalization, constructDlibPoints)
 from Types import RawFaceData
 from typing import List, Tuple
 import dlib
@@ -102,6 +103,16 @@ def test_getBiggestFace():
 
 def test_getBiggestFace_noface():
     assert getBiggestFace([]) == dlib.points(41)
+
+
+def test_constructDlibPoints():
+    ps = map(lambda x: dlib.point(x, x), list(range(100)))
+
+    correct = dlib.points()
+    for i in range(100):
+        correct.append(dlib.point(i, i))
+
+    assert constructDlibPoints(ps) == correct
 
 
 def test_normalization():
