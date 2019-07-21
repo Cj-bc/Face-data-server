@@ -139,4 +139,5 @@ def test_normalization():
               110 , 111 , 112 , 113]
     # }}}
 
-    assert _normalization(inList) == list(range(0, 194))
+    assert _normalization(list(map(lambda n: dlib.point(n, n), inList))) ==\
+                    constructDlibPoints(map(lambda n: dlib.point(n, n), list(range(0, 194))))
