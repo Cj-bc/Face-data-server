@@ -1,5 +1,6 @@
 import pytest
 from unittest import mock
+from timeout_decorator import timeout, TimeoutError
 from faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
                                        _normalization, constructDlibPoints
                                        , facemark, waitUntilFaceDetect)
@@ -98,6 +99,23 @@ def test_waitUntilFaceDetect_CapHasClosedError(frame):
 
     with pytest.raises(CapHasClosedError):
         waitUntilFaceDetect(cap)
+
+
+def test_waitUntilFaceDetect_faceFound():
+    cap = mockedCap(True, faceFrame)
+
+    assert waitUntilFaceDetect(cap).all() == faceFrame.all()
+
+
+def test_waitUntilFaceDetect_faceNotFound():
+    cap = mockedCap(True, noFaceFrame)
+
+    @timeout(10)
+    def _run():
+        waitUntilFaceDetect(cap)
+
+    with pytest.raises(TimeoutError):
+        _run()
 
 
 # --- getBiggestFace
