@@ -3,7 +3,8 @@ from unittest import mock
 from timeout_decorator import timeout, TimeoutError
 from faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
                                        _normalization, constructDlibPoints
-                                       , facemark, waitUntilFaceDetect)
+                                       , facemark, waitUntilFaceDetect
+                                       , faceCalibration)
 from conftest import (faceFrame, noFaceFrame, MockedCap)
 from Types import RawFaceData, CapHasClosedError, Cv2Image
 from typing import List, Tuple
@@ -175,6 +176,22 @@ def test_normalization():
                                       list(range(0, 194))))
     assert _normalization(testPoints) == correct
 
+
+# faceCalibration
+
+
+def test_faceCalibration():
+    correct: RawFaceData = RawFaceData(113, 358, dlib.point(479, 338))
+    cap = MockedCap(True, faceFrame)
+    with mock.patch('faceDetection.input', return_value=None):
+        result: RawFaceData = faceCalibration(cap)
+
+    assert result.eyeDistance == correct.eyeDistance
+    assert result.faceHeigh == correct.faceHeigh
+    assert result.faceCenter.x == correct.faceCenter.x
+    assert result.faceCenter.y == correct.faceCenter.y
+
+# -- facemark
 
 
 def test_facemark():
