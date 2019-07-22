@@ -243,3 +243,7 @@ def test_facemark():
         correct.append(dlib.point(p[0], p[1]))
 
     assert facemark(faceFrame) == correct
+
+
+def test_facemark_noface():
+    assert facemark(noFaceFrame) is None
