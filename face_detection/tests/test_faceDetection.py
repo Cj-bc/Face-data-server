@@ -2,8 +2,9 @@ import pytest
 from unittest import mock
 from faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
                                        _normalization, constructDlibPoints
-                                       , facemark)
-from Types import RawFaceData
+                                       , facemark, waitUntilFaceDetect)
+from conftest import (faceFrame, noFaceFrame, mockedCap)
+from Types import RawFaceData, CapHasClosedError, Cv2Image
 from typing import List, Tuple
 import dlib
 import numpy
@@ -88,6 +89,15 @@ def check_isFaceExist(faceNum: int, expected: bool):
     with mock.patch('faceDetection.detector',
                     return_value=dlib.rectangles(faceNum)):
         assert isFaceExist(numpy.ndarray(0)) == expected
+
+
+# --- waitUntilFaceDetect
+@pytest.mark.parametrize("frame", [faceFrame, noFaceFrame])
+def test_waitUntilFaceDetect_CapHasClosedError(frame):
+    cap = mockedCap(False, frame)
+
+    with pytest.raises(CapHasClosedError):
+        waitUntilFaceDetect(cap)
 
 
 # --- getBiggestFace
