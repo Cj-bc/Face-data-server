@@ -5,8 +5,8 @@ import cv2
 import dlib
 import math
 from math import sqrt
-from typing import List
-from faceDetection.faceDetection import (facemark, faceCalibration,
+from typing import List, Optional
+from faceDetection import (facemark, faceCalibration,
                                          LANDMARK_NUM, getRawFaceData,
                                          waitUntilFaceDetect)
 from Types import FaceDetectionError, Cv2Image, RawFaceData, FaceRotations
@@ -28,7 +28,7 @@ def point_abs(a: dlib.point) -> dlib.point:
 # }}}
 
 
-#area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
+# area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
 def area_rect(a: dlib.point, b: dlib.point,
               c: dlib.point, d: dlib.point) -> int:
     """Calculate region of given points """

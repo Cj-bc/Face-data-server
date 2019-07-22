@@ -8,6 +8,9 @@ verify_ssl = true
 [packages]
 dlib = "*"
 opencv-python = "*"
+pytest = "*"
+pytest-cov = "*"
+timeout-decorator = "*"
 
 [requires]
 python_version = "3.7"

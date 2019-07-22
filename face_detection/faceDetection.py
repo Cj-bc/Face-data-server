@@ -32,9 +32,9 @@ LANDMARK_NUM = {"TIN_CENTER": 19
                 }
 
 # Cascade files directory path
-_CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../haarcascades/"
+_CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"
 _LEARNED_MODEL_PATH = os.path.dirname(
-    os.path.abspath(__file__)) + "/../learned-models/"
+    os.path.abspath(__file__)) + "/learned-models/"
 
 predictor = dlib.shape_predictor(
     _LEARNED_MODEL_PATH + 'helen-dataset.dat')
@@ -49,8 +49,8 @@ def getRawFaceData(landmark: dlib.points) -> RawFaceData:
     """
     eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x -
                            landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
-    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].x +
-                landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].x) // 2
+    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].y +
+                landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].y) // 2
     faceHeigh  = abs(_eyebrowY -
                           landmark[LANDMARK_NUM["TIN_CENTER"]].y)
     _faceCenterX = (max(map(lambda p: p.x, landmark)) +
@@ -154,7 +154,16 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.points]:
 # }}}
 
 
-# _normalization(face_landmarks: dlib.points) -> dlib.points {{{
+# constructDlibPoints(ps: List[dlib.point]) -> dlib.points {{{
+def constructDlibPoints(ps: List[dlib.point]) -> dlib.points:
+    ret = dlib.points()
+    for p in ps:
+        ret.append(p)
+    return ret
+# }}}
+
+
+# _normalization(face: dlib.points) -> dlib.points {{{
 def _normalization(face: dlib.points) -> dlib.points:
     """Normalize facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
@@ -232,7 +241,7 @@ def _normalization(face: dlib.points) -> dlib.points:
     for chin_i, fm_i in enumerate(chin):
         chin[chin_i] = face[fm_i]
 
-    return (chin + nose + outside_lips + inside_lips +
+    return constructDlibPoints(chin + nose + outside_lips + inside_lips +
                        right_eye + left_eye + right_eyebrow + left_eyebrow)
 
 # }}}
