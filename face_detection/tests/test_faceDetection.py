@@ -176,9 +176,9 @@ def test_normalization():
     assert _normalization(testPoints) == correct
 
 
-def test_facemark():
-    img = cv2.imread('tests/src/face.jpg')
 
+def test_facemark():
+    # definition of correct_points {{{
     correct_points = [
         (280, 295), (282, 312), (286, 329), (290, 347), (295, 364), (301, 380),
         (307, 397), (314, 413), (323, 428), (332, 442), (344, 456), (357, 468),
@@ -213,9 +213,10 @@ def test_facemark():
         (430, 148), (414, 154), (398, 162), (384, 172), (372, 184), (384, 187),
         (401, 182), (418, 177), (435, 174), (454, 172), (472, 172), (490, 173),
         (507, 176), (526, 177)]
+    # }}}
 
     correct = dlib.points()
     for p in correct_points:
         correct.append(dlib.point(p[0], p[1]))
 
-    assert facemark(img) == correct
+    assert facemark(faceFrame) == correct
