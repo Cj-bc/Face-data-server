@@ -4,7 +4,7 @@ from timeout_decorator import timeout, TimeoutError
 from faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
                                        _normalization, constructDlibPoints
                                        , facemark, waitUntilFaceDetect)
-from conftest import (faceFrame, noFaceFrame, mockedCap)
+from conftest import (faceFrame, noFaceFrame, MockedCap)
 from Types import RawFaceData, CapHasClosedError, Cv2Image
 from typing import List, Tuple
 import dlib
@@ -95,20 +95,20 @@ def check_isFaceExist(faceNum: int, expected: bool):
 # --- waitUntilFaceDetect
 @pytest.mark.parametrize("frame", [faceFrame, noFaceFrame])
 def test_waitUntilFaceDetect_CapHasClosedError(frame):
-    cap = mockedCap(False, frame)
+    cap = MockedCap(False, frame)
 
     with pytest.raises(CapHasClosedError):
         waitUntilFaceDetect(cap)
 
 
 def test_waitUntilFaceDetect_faceFound():
-    cap = mockedCap(True, faceFrame)
+    cap = MockedCap(True, faceFrame)
 
     assert waitUntilFaceDetect(cap).all() == faceFrame.all()
 
 
 def test_waitUntilFaceDetect_faceNotFound():
-    cap = mockedCap(True, noFaceFrame)
+    cap = MockedCap(True, noFaceFrame)
 
     @timeout(10)
     def _run():

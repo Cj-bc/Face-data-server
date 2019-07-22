@@ -11,7 +11,7 @@ faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
 
 
-class mockedCap():
+class MockedCap():
     opened: bool = True
     frame: Cv2Image = noFaceFrame
 
