@@ -28,7 +28,7 @@ def point_abs(a: dlib.point) -> dlib.point:
 # }}}
 
 
-#area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
+# area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
 def area_rect(a: dlib.point, b: dlib.point,
               c: dlib.point, d: dlib.point) -> int:
     """Calculate region of given points """
