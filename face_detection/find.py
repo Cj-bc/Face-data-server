@@ -31,7 +31,29 @@ def point_abs(a: dlib.point) -> dlib.point:
 # area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
 def area_rect(a: dlib.point, b: dlib.point,
               c: dlib.point, d: dlib.point) -> int:
-    """Calculate region of given points """
+    """Calculate region of given points
+
+        If we have that points(.) below,
+
+        -----.-------
+        .------------
+        ------------.
+        --------.----
+
+        'area_rect' will returns area of:
+
+        #############
+        #############
+        #############
+        #############
+
+        Not something like:
+
+        -----#-------
+        ##########---
+        --###########
+        ------###----
+    """
     upper  = max(map(lambda n: n.y, [a, b, c, d]))
     bottom = min(map(lambda n: n.y, [a, b, c, d]))
     right  = max(map(lambda n: n.x, [a, b, c, d]))
