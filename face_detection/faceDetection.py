@@ -110,12 +110,13 @@ def isFaceExist(gray_img: Cv2Image) -> bool:
 def getBiggestFace(faces: List[dlib.points]) -> dlib.points:
     """ Return biggest face in given list
        'biggest face' is one that has biggest width
+
     """
     def ln(p: dlib.points) -> int:
         return abs((p[40] - p[0]).x)
 
     return reduce(lambda p, q: p if ln(p) > ln(q) else q,
-                  faces, dlib.points(41))
+                  faces, dlib.points(194))
 # }}}
 
 
