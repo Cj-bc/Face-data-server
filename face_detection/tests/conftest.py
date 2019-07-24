@@ -40,10 +40,10 @@ def _constructLandmark(side_right, tin_center, side_left, left_eye_r,
 points_front = _constructLandmark((-25, 30), (0, -50), (25, 30), (3, 25),
                                   (10, 20), (-3, 25), (-10, 20),
                                   (5, 50), (-5, 50))
-points_right = _constructLandmark((-25, 30), (0, -50), (25, 30), (-2, 25),
+points_right = _constructLandmark((-25, 30), (0, -50), (20, 30), (-2, 25),
                                   (5, 20), (-3, 25), (-10, 20),
                                   (0, 50), (-5, 50))
-points_left = _constructLandmark((-25, 30), (0, -50), (25, 30), (3, 25),
+points_left = _constructLandmark((-20, 30), (0, -50), (25, 30), (3, 25),
                                  (10, 20), (2, 25), (-5, 20),
                                  (5, 50), (0, 50))
 points_upside = _constructLandmark((-25, 20), (0, -40), (25, 20), (3, 20),
