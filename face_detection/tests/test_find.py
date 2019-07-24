@@ -49,7 +49,7 @@ def test_area_rect(a, b, c, d, correct):
 #                                      (points_lean_leftUp, ()),
 #                                      (points_lean_rightUp, ())])
 def test_rotates(points, th):
-    calib = RawFaceData(10.0, 100.0, dlib.point(0, 0))
+    calib = RawFaceData(6.0, 100.0, dlib.point(0, 0))
 
     result = rotates(points, calib)
 
