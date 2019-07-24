@@ -1,4 +1,4 @@
-English: README.md
+English: [README.md](README.md)
 
 ---
 
@@ -17,7 +17,19 @@ English: README.md
 
 # Installation
 
+
+```bash
+$ git clone https://github.com/Cj-bc/Face-data-server
+$ cd Face-dataserver
+$ pipenv install
+```
+
 # 使い方
+
+
+```bash
+$ pipenv run python find.py
+```
 
 # フロントエンド
 

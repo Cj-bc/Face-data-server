@@ -1,4 +1,4 @@
-日本語: JA_README.md
+README.md日本語: [JA_README.md](JA_README.md)
 
 ---
 
@@ -17,7 +17,19 @@ This project aims to make a server that streams face data.
 
 # Installation
 
-# Usage
+
+```bash
+$ git clone https://github.com/Cj-bc/Face-data-server
+$ cd Face-dataserver
+$ pipenv install
+```
+
+# usage
+
+
+```bash
+$ pipenv run python find.py
+```
 
 # Front end for this server
 
