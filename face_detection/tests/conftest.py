@@ -13,6 +13,17 @@ faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
 
 
+def constructPoints(ps: List[dlib.point]) -> dlib.points:
+    """ helper function.
+        Construct dlib.points from list of dlib.point
+    """
+    ret = dlib.points()
+    for p in ps:
+        ret.append(p)
+
+    return ret
+
+
 def _constructLandmark(tin_center, left_eye_r, left_eye_bottom,
                        right_eye_l, right_eye_bottom):
     ls = [(0, 0)] * 19 + [tin_center] + [(0, 0)] * 94 + [left_eye_r] +\
@@ -53,12 +64,3 @@ class MockedCap():
         return (ret, self.frame)
 
 
-def constructPoints(ps: List[dlib.point]) -> dlib.points:
-    """ helper function.
-        Construct dlib.points from list of dlib.point
-    """
-    ret = dlib.points()
-    for p in ps:
-        ret.append(p)
-
-    return ret
