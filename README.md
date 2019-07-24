@@ -1,5 +1,7 @@
 README.md日本語: [JA_README.md](JA_README.md)
 
+Japanese document is more accurate(as I'm Japanese) so I recommend you to read them first if you can.
+
 ---
 
 # A face data server (temp name)
@@ -34,4 +36,3 @@ $ pipenv run python find.py
 # Front end for this server
 
 Currently, I want to make 3 official front end for different UI
-
