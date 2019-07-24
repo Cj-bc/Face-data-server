@@ -100,7 +100,7 @@ def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
 # isFaceExist(gray_img: Cv2Image) -> bool {{{
 def isFaceExist(gray_img: Cv2Image) -> bool:
     """True if faces are exist in image """
-    faces: dlib.rectangles = detector(gray_img)
+    faces: dlib.rectangles = detector(gray_img, 1)
     return len(faces) != 0
 
 # }}}
