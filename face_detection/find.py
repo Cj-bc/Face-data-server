@@ -62,8 +62,10 @@ def area_rect(a: dlib.point, b: dlib.point,
 # }}}
 
 
-# rotates(landmark: dlib.points) -> (Int, Int, Int)
+# rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations
 def rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations:
+    """ calculate face rotations from calibration data and landmark
+    """
     eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \
                             landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
     print(f"r_e_b: {landmark[LANDMARK_NUM['RIGHT_EYE_BOTTOM']]}, l_e_b: {landmark[LANDMARK_NUM['LEFT_EYE_BOTTOM']]}, Vec: {eyeLineVector}")  # DEBUG
