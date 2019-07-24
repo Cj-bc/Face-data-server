@@ -1,12 +1,13 @@
+from unittest import mock
 import pytest
 import dlib
 from conftest import (constructPoints,
                       points_front, points_right, points_left, points_upside,
                       points_bottom
                       )
-from Types import (FaceRotations, RawFaceData
+from Types import (FaceRotations, RawFaceData, FaceDetectionError
                    )
-from find import (point_abs, area_rect, rotates
+from find import (point_abs, area_rect, rotates, main
                   )
 from faceDetection import (facemark)
 
@@ -64,3 +65,12 @@ def test_rotates(points, th):
     _assert(result.x, th[0])
     _assert(result.y, th[1])
     _assert(result.z, th[2])
+
+
+def test_main_FaceDetectionError():
+    with mock.patch('find.faceCalibration', side_effect=FaceDetectionError):
+        with mock.patch('find.cv2.VideoCapture', return_value=None):
+            with pytest.raises(SystemExit) as e:
+                main()
+
+            assert e.value.code == 1
