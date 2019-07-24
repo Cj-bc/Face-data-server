@@ -42,12 +42,12 @@ def test_area_rect(a, b, c, d, correct):
 
 
 @pytest.mark.parametrize("points,th", [(points_front, (0, 0, 0)),
-                                    (points_right, (0, -1, 0)),
-                                    (points_left, (0, 1, 0)),
-                                    (points_upside, (1, 0, 0)),
-                                    (points_bottom, (-1, 0, 0))])
-#                                   (points_lean_leftUp, ()),
-#                                   (points_lean_rightUp, ())])
+                                       (points_right, (0, -1, 0)),
+                                       (points_left, (0, 1, 0)),
+                                       (points_upside, (1, 0, 0)),
+                                       (points_bottom, (-1, 0, 0))])
+#                                      (points_lean_leftUp, ()),
+#                                      (points_lean_rightUp, ())])
 def test_rotates(points, th):
     calib = RawFaceData(10.0, 100.0, dlib.point(0, 0))
 
