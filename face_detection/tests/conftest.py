@@ -24,26 +24,34 @@ def constructPoints(ps: List[dlib.point]) -> dlib.points:
     return ret
 
 
-def _constructLandmark(tin_center, left_eye_r, left_eye_bottom,
-                       right_eye_l, right_eye_bottom):
-    ls = [(0, 0)] * 19 + [tin_center] + [(0, 0)] * 94 + [left_eye_r] +\
-         [(0, 0)] * 14 + [left_eye_bottom] + [(0, 0)] * 15 +\
+def _constructLandmark(side_right, tin_center, side_left, left_eye_r,
+                       left_eye_bottom, right_eye_l, right_eye_bottom,
+                       eyebrow_left_r, eyebrow_right_l):
+    ls = [side_right] + [(0, 0)] * 18 + [tin_center] + [(0, 0)] * 20 +\
+         [side_left] + [(0, 0)] * 73 + [left_eye_r] +\
+         [(0, 0)] * 14 + [left_eye_bottom] + [(0, 0)] * 5 +\
          [right_eye_l] + [(0, 0)] * 13 + [right_eye_bottom] +\
-         [(0, 0)] * 44
+         [(0, 0)] * 4 + [eyebrow_left_r] + [(0, 0)] * 19 +\
+         [eyebrow_right_l] + [(0, 0)] * 21
     l_points = list(map(lambda n: dlib.point(n[0], n[1]), ls))
     return constructPoints(l_points)
 
 
-points_front = _constructLandmark((0, -50), (5, 50), (10, 20), (-5, 50),
-                                  (-10, 20))
-points_right = _constructLandmark((0, -50), (0, 50), (5, 20), (-5, 50),
-                                  (-10, 20))
-points_left = _constructLandmark((0, -50), (5, 50), (10, 20), (0, 50),
-                                 (-5, 20))
-points_upside = _constructLandmark((0, -40), (5, 30), (10, 10), (-5, 30),
-                                   (-10, 10))
-points_bottom = _constructLandmark((0, -60), (5, 30), (10, 0), (-5, 30),
-                                   (-10, 0))
+points_front = _constructLandmark((-25, 30), (0, -50), (25, 30), (3, 25),
+                                  (10, 20), (-3, 25), (-10, 20),
+                                  (5, 50), (-5, 50))
+points_right = _constructLandmark((-25, 30), (0, -50), (25, 30), (-2, 25),
+                                  (5, 20), (-3, 25), (-10, 20),
+                                  (0, 50), (-5, 50))
+points_left = _constructLandmark((-25, 30), (0, -50), (25, 30), (3, 25),
+                                 (10, 20), (2, 25), (-5, 20),
+                                 (5, 50), (0, 50))
+points_upside = _constructLandmark((-25, 20), (0, -40), (25, 20), (3, 20),
+                                   (10, 10), (-3, 20), (-10, 10),
+                                   (5, 30), (-5, 30))
+points_bottom = _constructLandmark((-25, 30), (0, -60), (25, 30), (3, 10),
+                                   (10, 0), (-3, 10), (-10, 0),
+                                   (5, 30), (-5, 30))
 # points_lean_leftUp
 # points_lean_rightUp
 
