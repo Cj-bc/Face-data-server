@@ -89,7 +89,9 @@ def rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations:
 
 
 def main():
+    print("connecting to camera...")
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
+    print("camera connected.")
 
     try:
         calibrated: RawFaceData = faceCalibration(cap)
