@@ -97,15 +97,10 @@ def main():
         sys.exit(1)
 
     while cap.isOpened():
-
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            break
-
         rots: FaceRotations = FaceRotations(0, 0, 0)
         _, frame = cap.read()
         landmark: Optional[dlib.points] = facemark(frame)
-        # TODO: ^ landmark should never be dlip.points(0) but it does
-        print(f"landmark: {landmark}")
+        print(f"landmark: {landmark}")  # DEBUG
 
         if landmark is not None:
             rots: FaceRotations = rotates(landmark, calibrated)
@@ -113,7 +108,6 @@ def main():
         print(f"{datetime.datetime.today()}: {rots.x}, {rots.y}, {rots.z}")
 
     cap.release()
-    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
