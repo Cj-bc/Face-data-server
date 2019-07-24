@@ -79,7 +79,7 @@ def rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations:
 
     rotateX = degreeX if raw.faceCenter.y > calib.faceCenter.y\
                         else -1 * degreeX
-    rotateY = degreeY if raw.faceCenter.x < calib.faceCenter.x\
+    rotateY = degreeY if raw.faceCenter.x > calib.faceCenter.x\
                         else -1 * degreeY
     # v Is this correct code? v
     rotateZ = degreeZ
