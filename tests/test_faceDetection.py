@@ -123,17 +123,18 @@ def test_waitUntilFaceDetect_faceNotFound():
 
 
 def test_getBiggestFace():
-    emptyPoints = dlib.points(41)
+    emptyPoints = dlib.points(194)
 
     biggest = dlib.points(40)
     biggest.append(dlib.point(100, 100))
+    biggest.resize(194 + 1)
     faces = ([emptyPoints] * 5) + [biggest]
 
     assert getBiggestFace(faces) == biggest
 
 
 def test_getBiggestFace_noface():
-    assert getBiggestFace([]) == dlib.points(41)
+    assert getBiggestFace([]) == dlib.points(194)
 
 
 # --- constructDlibPoints
