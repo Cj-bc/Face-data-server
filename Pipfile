@@ -4,13 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
+timeout-decorator = "*"
 
 [packages]
 dlib = "*"
 opencv-python = "*"
-pytest = "*"
-pytest-cov = "*"
-timeout-decorator = "*"
 
 [requires]
 python_version = "3.7"
