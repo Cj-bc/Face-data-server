@@ -4,7 +4,7 @@ import os
 import cv2
 import dlib
 from typing import List, Optional
-from Types import (Cv2Image, CapHasClosedError,
+from .Types import (Cv2Image, CapHasClosedError,
                     RawFaceData)
 from functools import reduce
 

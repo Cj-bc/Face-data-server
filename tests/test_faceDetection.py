@@ -1,12 +1,12 @@
 import pytest
 from unittest import mock
 from timeout_decorator import timeout, TimeoutError
-from faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
-                                       _normalization, constructDlibPoints
-                                       , facemark, waitUntilFaceDetect
-                                       , faceCalibration)
+from faceDetection.faceDetection import (isFaceExist, getBiggestFace, getRawFaceData,
+                                         _normalization, constructDlibPoints
+                                         , facemark, waitUntilFaceDetect
+                                         , faceCalibration)
 from conftest import (faceFrame, noFaceFrame, MockedCap)
-from Types import RawFaceData, CapHasClosedError, Cv2Image
+from faceDetection.Types import RawFaceData, CapHasClosedError, Cv2Image
 from typing import List, Tuple
 import dlib
 import numpy
@@ -88,7 +88,7 @@ def test_getRawFaceData():
 
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
 def check_isFaceExist(faceNum: int, expected: bool):
-    with mock.patch('faceDetection.detector',
+    with mock.patch('faceDetection.faceDetection.detector',
                     return_value=dlib.rectangles(faceNum)):
         assert isFaceExist(numpy.ndarray(0)) == expected
 
@@ -123,17 +123,18 @@ def test_waitUntilFaceDetect_faceNotFound():
 
 
 def test_getBiggestFace():
-    emptyPoints = dlib.points(41)
+    emptyPoints = dlib.points(194)
 
     biggest = dlib.points(40)
     biggest.append(dlib.point(100, 100))
+    biggest.resize(194 + 1)
     faces = ([emptyPoints] * 5) + [biggest]
 
     assert getBiggestFace(faces) == biggest
 
 
 def test_getBiggestFace_noface():
-    assert getBiggestFace([]) == dlib.points(41)
+    assert getBiggestFace([]) == dlib.points(194)
 
 
 # --- constructDlibPoints
@@ -189,7 +190,7 @@ def test_normalization():
 def test_faceCalibration():
     correct: RawFaceData = RawFaceData(113, 358, dlib.point(479, 338))
     cap = MockedCap(True, faceFrame)
-    with mock.patch('faceDetection.input', return_value=None):
+    with mock.patch('faceDetection.faceDetection.input', return_value=None):
         result: RawFaceData = faceCalibration(cap)
 
     assert result.eyeDistance == correct.eyeDistance

@@ -5,12 +5,13 @@ from conftest import (constructPoints,
                       points_front, points_right, points_left, points_upside,
                       points_bottom
                       )
-from Types import (FaceRotations, RawFaceData, FaceDetectionError,
-                   CapHasClosedError
-                   )
-from find import (point_abs, area_rect, rotates, main
-                  )
-from faceDetection import (facemark)
+from main import main
+from faceDetection.Types import (FaceRotations, RawFaceData,
+                      FaceDetectionError, CapHasClosedError
+                      )
+from faceDetection.find import (point_abs, area_rect, rotates
+                     )
+from faceDetection.faceDetection import (facemark)
 
 
 @pytest.mark.parametrize("x,y", [(-1, -1), (-1, 1), (1, -1),
@@ -70,8 +71,8 @@ def test_rotates(points, th):
 
 @pytest.mark.parametrize("error", [FaceDetectionError, CapHasClosedError])
 def test_main_FaceDetectionError(error):
-    with mock.patch('find.faceCalibration', side_effect=error):
-        with mock.patch('find.cv2.VideoCapture', return_value=None):
+    with mock.patch('main.faceCalibration', side_effect=error):
+        with mock.patch('main.cv2.VideoCapture', return_value=None):
             with pytest.raises(SystemExit) as e:
                 main()
 
