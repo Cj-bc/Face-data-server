@@ -29,7 +29,6 @@ class FaceRotations:
     z: float
 
 
-
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
     pass

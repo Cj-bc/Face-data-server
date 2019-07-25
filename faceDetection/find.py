@@ -62,7 +62,6 @@ def rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations:
     """
     eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \
                             landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
-    print(f"r_e_b: {landmark[LANDMARK_NUM['RIGHT_EYE_BOTTOM']]}, l_e_b: {landmark[LANDMARK_NUM['LEFT_EYE_BOTTOM']]}, Vec: {eyeLineVector}")  # DEBUG
     raw = getRawFaceData(landmark).thresholded(calib)
 
     # TODO: how can I notice which side does face face to?

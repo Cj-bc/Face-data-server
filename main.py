@@ -26,7 +26,6 @@ def main():
         rots: FaceRotations = FaceRotations(0, 0, 0)
         _, frame = cap.read()
         landmark: Optional[dlib.points] = facemark(frame)
-        print(f"landmark: {landmark}")  # DEBUG
 
         if landmark is not None:
             rots: FaceRotations = rotates(landmark, calibrated)
