@@ -6,10 +6,10 @@ import dlib
 import math
 from math import sqrt
 from typing import List, Optional
-from faceDetection import (facemark, faceCalibration,
+from .faceDetection import (facemark, faceCalibration,
                                          LANDMARK_NUM, getRawFaceData,
                                          waitUntilFaceDetect)
-from Types import FaceDetectionError, Cv2Image, RawFaceData, FaceRotations
+from .Types import FaceDetectionError, Cv2Image, RawFaceData, FaceRotations
 import sys
 import datetime
 
