@@ -4,14 +4,8 @@
 import cv2
 import dlib
 import math
-from math import sqrt
-from typing import List, Optional
-from .faceDetection import (facemark, faceCalibration,
-                                         LANDMARK_NUM, getRawFaceData,
-                                         waitUntilFaceDetect)
-from .Types import FaceDetectionError, Cv2Image, RawFaceData, FaceRotations
-import sys
-import datetime
+from .faceDetection import (LANDMARK_NUM, getRawFaceData)
+from .Types import RawFaceData, FaceRotations
 
 # type definitions
 Coord = (int, int)
