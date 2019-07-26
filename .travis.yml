@@ -1,0 +1,23 @@
+language: python
+python:
+  - "3.7"
+
+matrix:
+  include:
+    - os: osx
+      before_install: pip install pipenv
+
+    - os: linux
+      dst: xenial
+      before_install:
+        - pip install pipenv
+
+    - os: linux
+      dst: bionic
+      before_install:
+        - pip install pipenv
+
+install: pipenv install --dev
+
+script:
+  - make test
