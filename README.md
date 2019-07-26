@@ -30,7 +30,9 @@ $ pipenv install
 
 
 ```bash
-$ pipenv run python find.py
+$ ./face-data-server
+# or
+$ pipenv run python main.py
 ```
 
 # Front end for this server
