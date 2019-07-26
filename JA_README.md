@@ -17,6 +17,18 @@ English: [README.md](README.md)
 
 # Installation
 
+## Make
+
+デフォルトで`/usr/local/bin`以下にインストールします。
+`PREFIX`変数を与えることで`/usr/local`部を変更できます。
+
+```bash
+$ make install
+```
+
+## 手動
+
+具体的に行わなければいけない工程は以下の通りです。
 
 ```bash
 $ git clone https://github.com/Cj-bc/Face-data-server
@@ -26,9 +38,12 @@ $ pipenv install
 
 # 使い方
 
+最初の方法をお勧めします。
 
 ```bash
 $ ./face-data-server
+# もしくは
+$ make run
 # もしくは
 $ pipenv run python main.py
 ```

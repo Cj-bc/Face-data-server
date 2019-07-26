@@ -19,6 +19,18 @@ This project aims to make a server that streams face data.
 
 # Installation
 
+## Make
+
+This will install `face-data-server` to `/usr/local/bin` by default.
+You can change `/usr/local` by providing `PREFIX` argument.
+
+```bash
+$ make install
+```
+
+## Manually
+
+All what to do are:
 
 ```bash
 $ git clone https://github.com/Cj-bc/Face-data-server
@@ -28,9 +40,12 @@ $ pipenv install
 
 # usage
 
+1st one is preferred.
 
 ```bash
 $ ./face-data-server
+# or
+$ make run
 # or
 $ pipenv run python main.py
 ```
