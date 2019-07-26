@@ -8,6 +8,13 @@
 #
 # @(#) version -
 
-cd ${BASH_SOURCE[0]%/*}
+if $(which readlink >/dev/null 2>&1); then
+  cd $(dirname $(readlink ${BASH_SOURCE[0]}))
+elif $(which greadlink >/dev/null 2>&1); then
+  cd $(dirname $(greadlink ${BASH_SOURCE[0]}))
+else
+  cd $(ls -l ${BASH_SOURCE[0]} | awk '{print $11}')
+fi
+
 which pipenv >/dev/null 2>&1 || return 1
 pipenv run python main.py "$@"
