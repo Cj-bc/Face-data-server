@@ -28,7 +28,9 @@ $ pipenv install
 
 
 ```bash
-$ pipenv run python find.py
+$ ./face-data-server
+# もしくは
+$ pipenv run python main.py
 ```
 
 # フロントエンド
