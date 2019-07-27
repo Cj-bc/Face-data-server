@@ -7,7 +7,7 @@ dst:
 
 before_install: pip install pipenv
 
-install: pipenv install --dev
+install: travis_wait 25 pipenv install --dev
 
 before_script:
   - echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
