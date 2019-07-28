@@ -1,0 +1,18 @@
+language: python
+python: "3.7"
+cache: pip
+
+dst:
+  - xenial
+  - bionic
+
+before_install: pip install pipenv
+
+install: travis_wait 25 pipenv install --dev
+
+before_script:
+  - echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
+  - git lfs pull
+
+script:
+  - make test
