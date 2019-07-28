@@ -16,3 +16,7 @@ opencv-python = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+lint = "pipenv run flake8; pipenv run mypy faceDetection/*.py tests/*.py main.py"
+test = "pipenv run pytest"
