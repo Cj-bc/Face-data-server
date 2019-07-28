@@ -15,4 +15,5 @@ before_script:
   - git lfs pull
 
 script:
-  - make test
+  - pipenv run test
+  - pipenv run lint
