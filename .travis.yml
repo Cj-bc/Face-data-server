@@ -11,12 +11,12 @@ dst:
 
 before_install: pip install pipenv
 
-install: travis_wait 25 pipenv install --dev
+install: travis_wait 25 DEV=true make init
 
 before_script:
   - echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
   - git lfs pull
 
 script:
-  - pipenv run test
-  - pipenv run lint
+  - make test
+  - make lint
