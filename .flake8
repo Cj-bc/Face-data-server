@@ -11,4 +11,7 @@ ignore =  # E127: continuation line over-indented for visual indent
           # E221: multiple spaces before operator
           #       disabled reason: it prevents me make visual indent be vertical
           E221
+          # W503: Line break occurred before a binary operator
+          #       disabled reason: it is old rule and conflict with W504, which is recommended
+          W503
 # vim: ft=toml
