@@ -17,7 +17,7 @@ install: travis_wait 25 make init
 
 before_script:
   - echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
-  - git lfs pull
+  - test -f faceDetection/learned-models/helen-dataset.dat || git lfs pull
 
 script:
   - make test
