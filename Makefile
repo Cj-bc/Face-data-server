@@ -1,6 +1,11 @@
 PREFIX := /usr/local
 DST_FILES := $(PREFIX)/share
 DST_BIN := $(PREFIX)/bin
+DEV := false
+
+init:
+	which pipenv >/dev/null 2>&1 || pip install pipenv
+	test $(DEV) == "true" && pipenv install --dev || pipenv install
 
 run:
 	./face-data-server
@@ -8,7 +13,7 @@ run:
 test:
 	pipenv run pytest
 
-install:
+install: init
 	test -d $(DST_FILES)/face-data-server || mkdir $(DST_FILES)/face-data-server
 	cp -r face-data-server main.py Pipfile Pipfile.lock pytest.ini tests Makefile $(DST_FILES)/face-data-server
 	test -d $(DST_FILES)/face-data-server/faceDetection || mkdir $(DST_FILES)/face-data-server/faceDetection
