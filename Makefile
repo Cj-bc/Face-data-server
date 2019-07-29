@@ -1,11 +1,10 @@
 PREFIX := /usr/local
 DST_FILES := $(PREFIX)/share
 DST_BIN := $(PREFIX)/bin
-DEV := false
 
 init:
 	which pipenv >/dev/null 2>&1 || pip install pipenv
-	test $(DEV) == "true" && pipenv install --dev || pipenv install
+	test "$(DEV)" == "true" && pipenv install --dev || pipenv install
 
 run:
 	./face-data-server
