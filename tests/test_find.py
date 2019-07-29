@@ -1,17 +1,12 @@
 from unittest import mock
 import pytest
 import dlib
-from conftest import (constructPoints,
-                      points_front, points_right, points_left, points_upside,
-                      points_bottom
-                      )
+from conftest import (points_front, points_right, points_left, points_upside,
+                      points_bottom)
 from main import main
-from faceDetection.Types import (FaceRotations, RawFaceData,
-                      FaceDetectionError, CapHasClosedError
-                      )
-from faceDetection.find import (point_abs, area_rect, rotates
-                     )
-from faceDetection.faceDetection import (facemark)
+from faceDetection.Types import (RawFaceData,
+                      FaceDetectionError, CapHasClosedError)
+from faceDetection.find import (point_abs, area_rect, rotates)
 
 
 @pytest.mark.parametrize("x,y", [(-1, -1), (-1, 1), (1, -1),

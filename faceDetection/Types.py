@@ -1,4 +1,4 @@
-from typing import List, NewType, Union, TypeVar
+from typing import NewType, TypeVar
 import numpy
 import dlib
 import dataclasses
@@ -16,7 +16,9 @@ class RawFaceData:
     faceHeigh: float
     faceCenter: dlib.point
 
-    def thresholded(self: S, t: S) -> S:
+    def thresholded(self, t):
+        """Force eyeDistance / faceHeigh to be smaller than threshold
+        """
         eD = min(self.eyeDistance, t.eyeDistance)
         fH = min(self.faceHeigh, t.faceHeigh)
         return RawFaceData(eD, fH, self.faceCenter)

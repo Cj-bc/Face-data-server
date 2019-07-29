@@ -47,16 +47,16 @@ detector = dlib.get_frontal_face_detector()
 def getRawFaceData(landmark: dlib.points) -> RawFaceData:
     """ Return RawFaceData from dlib.points
     """
-    eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x -
-                           landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
-    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].y +
-                landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].y) // 2
-    faceHeigh  = abs(_eyebrowY -
-                          landmark[LANDMARK_NUM["TIN_CENTER"]].y)
-    _faceCenterX = (max(map(lambda p: p.x, landmark)) +
-                    min(map(lambda p: p.x, landmark))) // 2
-    _faceCenterY = (max(map(lambda p: p.y, landmark)) +
-                    min(map(lambda p: p.y, landmark))) // 2
+    eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x
+                       - landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
+    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].y
+                + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].y) // 2
+    faceHeigh  = abs(_eyebrowY
+                     - landmark[LANDMARK_NUM["TIN_CENTER"]].y)
+    _faceCenterX = (max(map(lambda p: p.x, landmark))
+                    + min(map(lambda p: p.x, landmark))) // 2
+    _faceCenterY = (max(map(lambda p: p.y, landmark))
+                    + min(map(lambda p: p.y, landmark))) // 2
     faceCenter = dlib.point(_faceCenterX, _faceCenterY)
 
     return RawFaceData(eyeDistance, faceHeigh, faceCenter)
@@ -242,7 +242,7 @@ def _normalization(face: dlib.points) -> dlib.points:
     for chin_i, fm_i in enumerate(chin):
         chin[chin_i] = face[fm_i]
 
-    return constructDlibPoints(chin + nose + outside_lips + inside_lips +
-                       right_eye + left_eye + right_eyebrow + left_eyebrow)
-
+    return constructDlibPoints(chin + nose + outside_lips + inside_lips
+                               + right_eye + left_eye
+                               + right_eyebrow + left_eyebrow)
 # }}}

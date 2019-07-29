@@ -1,7 +1,6 @@
 # THIS CODE IS NOT WRITTEN BY ME, BUT BY @kekeho
 # Refer to: https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 #
-import cv2
 import dlib
 import math
 from .faceDetection import (LANDMARK_NUM, getRawFaceData)
@@ -22,7 +21,7 @@ def point_abs(a: dlib.point) -> dlib.point:
 # }}}
 
 
-# area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point) -> int{{{
+# area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point)-> int{{{
 def area_rect(a: dlib.point, b: dlib.point,
               c: dlib.point, d: dlib.point) -> int:
     """Calculate region of given points

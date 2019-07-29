@@ -1,15 +1,10 @@
 import sys
-import os
 from pathlib import Path
-import numpy
 import cv2
 import dlib
 from typing import List
-
 sys.path.insert(0, str(Path(__file__).parent.parent))
-
-import main
-from faceDetection.Types import Cv2Image
+from faceDetection.Types import Cv2Image  # noqa: E402
 
 faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
@@ -72,5 +67,3 @@ class MockedCap():
     def read(self) -> Cv2Image:
         ret = True if self.frame.all() == faceFrame.all() else False
         return (ret, self.frame)
-
-

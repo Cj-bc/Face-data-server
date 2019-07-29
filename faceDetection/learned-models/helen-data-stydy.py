@@ -3,7 +3,6 @@
 #
 import dlib
 import os
-import sys
 import multiprocessing
 import cv2
 import glob
@@ -29,18 +28,15 @@ xml_template_footer = """</images>
 </dataset>
 """
 
+
 def generate_xml():
     xml = xml_template_header
 
-    count = 0
     for file_name in helen_annotations_filelist:
         with open(file_name, 'r') as file:
-            # count += 1
-            # if count == 10:
-            #     break
-
-            img_filename = HELEN_IMGS_ABS_FILEPATH + file.readline().replace('\n', '') + \
-                '.jpg'  # header is imgfile name
+            img_filename = HELEN_IMGS_ABS_FILEPATH\
+                + file.readline().replace('\n', '')\
+                + '.jpg'  # header is imgfile name
 
             image_xml = f"""
             <image file='{img_filename}'>
@@ -52,17 +48,20 @@ def generate_xml():
 
             if len(face_position(gray_image)) != 1:
                 print(
-                    f"Image includes more than one face: ignore {img_filename}")
+                    f"Image includes more than one face: \
+                            ignore {img_filename}")
             else:
                 x, y, w, h = face_position(gray_image)[0]
 
-                image_xml += f"<box top='{y-50}' left='{x-50}' width='{w+100}' height='{h+100}'>\n"
+                image_xml += f"<box top='{y-50}' left='{x-50}' \
+                               width='{w+100}' height='{h+100}'>\n"
 
                 i = 0
                 for line in file:
                     x, y = line.replace('\n', '').replace(
                         '\r', '').replace(' ', '').split(',')
-                    image_xml += f"<part name='{i}' y='{y.split('.')[0]}' x='{x.split('.')[0]}' />\n"
+                    image_xml += f"<part name='{i}' y='{y.split('.')[0]}' \
+                                    x='{x.split('.')[0]}' />\n"
                     i += 1
                 image_xml += '</box>\n'
                 image_xml += '</image>\n'
