@@ -49,8 +49,12 @@ points_upside = _constructLandmark((-25, 30), (0, -40), (25, 30), (3, 30),
 points_bottom = _constructLandmark((-25, 30), (0, -60), (25, 30), (3, 10),
                                    (10, 0), (-3, 10), (-10, 0),
                                    (5, 30), (-5, 30))
-# points_lean_leftUp
-# points_lean_rightUp
+points_lean_left = _constructLandmark((-30, 40), (-15, -40), (30, 10), (5, 20),
+                                      (15, 10), (-1, 25), (-15, 30),
+                                      (10, 30), (0, 35))
+points_lean_right = _constructLandmark((-30, 10), (15, -40), (30, 40), (5, 25),
+                                       (15, 30), (-5, 20), (-15, 10),
+                                       (0, 35), (-10, 30))
 
 
 class MockedCap():

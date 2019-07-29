@@ -2,7 +2,7 @@ from unittest import mock
 import pytest
 import dlib
 from conftest import (points_front, points_right, points_left, points_upside,
-                      points_bottom)
+                      points_bottom, points_lean_left, points_lean_right)
 from main import main
 from faceDetection.Types import (RawFaceData,
                       FaceDetectionError, CapHasClosedError)
@@ -43,9 +43,9 @@ def test_area_rect(a, b, c, d, correct):
                                        (points_right, (0, -1, 0)),
                                        (points_left, (0, 1, 0)),
                                        (points_upside, (1, 0, 0)),
-                                       (points_bottom, (-1, 0, 0))])
-#                                      (points_lean_leftUp, ()),
-#                                      (points_lean_rightUp, ())])
+                                       (points_bottom, (-1, 0, 0)),
+                                       (points_lean_left, (0, 0, 1)),
+                                       (points_lean_right, (0, 0, -1))])
 def test_rotates(points, th):
     calib = RawFaceData(6.0, 100.0, dlib.point(0, 0))
 
