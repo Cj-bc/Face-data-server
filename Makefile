@@ -13,6 +13,10 @@ run:
 test:
 	pipenv run pytest
 
+lint:
+	pipenv run flake8 .
+	pipenv run mypy tests faceDetection main.py
+
 install: init
 	test -d $(DST_FILES)/face-data-server || mkdir $(DST_FILES)/face-data-server
 	cp -r face-data-server main.py Pipfile Pipfile.lock pytest.ini tests Makefile $(DST_FILES)/face-data-server
