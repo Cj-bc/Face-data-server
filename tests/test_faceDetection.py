@@ -133,7 +133,8 @@ def test_normalization():
 
 
 def test_faceCalibration():
-    correct: RawFaceData = RawFaceData(113, 358, dlib.point(479, 338))
+    correct: RawFaceData = RawFaceData(113, 366.82966074187624
+                                      , dlib.point(479, 338))
     cap = MockedCap(True, faceFrame)
     with mock.patch('faceDetection.faceDetection.input', return_value=None):
         result: RawFaceData = faceCalibration(cap)
