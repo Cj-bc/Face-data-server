@@ -6,7 +6,7 @@ from faceDetection.faceDetection import (isFaceExist, getBiggestFace
                                          , _normalization, constructDlibPoints
                                          , facemark, waitUntilFaceDetect
                                          , faceCalibration)
-from conftest import (faceFrame, noFaceFrame, MockedCap)
+from conftest import (faceFrame, noFaceFrame, MockedCap, points_front)
 from faceDetection.Types import RawFaceData, CapHasClosedError
 from typing import List, Tuple
 import dlib
@@ -17,65 +17,11 @@ import numpy
 
 
 def test_getRawFaceData():
-    # definition of faceRawPoints: List[Tuple[int, int]] {{{
-    faceRawPoints: List[Tuple[int, int]] = [
-        (-50, 25), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, -50),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (50, 25), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (15, 40),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (-5, 40), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 50),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (25, 50),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 50),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),
-        (0, 0), (0, 0), (0, 0)]
-
-    # # for DEUBG. Use this to check faceRawPoints are correctly set.
-    # for v in list(LANDMARK_NUM.items()):
-    #     print(f"{v[0]}: {faceRawPoints[v[1]]}")
-    # }}}
-
-    face = dlib.points(0)
-    facePoints: List[dlib.point] = map(lambda t: dlib.point(t[0], t[1]),
-                                       faceRawPoints)
-    face: dlib.points = dlib.points()
-    for p in facePoints:
-        face.append(p)
-
     correctRawFaceData = RawFaceData(6, 100, dlib.point(0, 0))
 
     # faceCenter can't be compared(it compares instance, which always fail).
     # So I take this way
-    result = getRawFaceData(face)
+    result = getRawFaceData(points_front)
     assert result.faceHeigh == correctRawFaceData.faceHeigh
     assert result.eyeDistance == correctRawFaceData.eyeDistance
     assert result.faceCenter.x == correctRawFaceData.faceCenter.x
