@@ -53,7 +53,8 @@ def getRawFaceData(landmark: dlib.points) -> RawFaceData:
 
     _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
                       + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
-    _faceHeighVector  = _middleForehead - landmark[LANDMARK_NUM["TIN_CENTER"]]
+    _faceHeighVector  = _middleForehead\
+                        - dlib.dpoint(landmark[LANDMARK_NUM["TIN_CENTER"]])
     faceHeigh = math.sqrt(_faceHeighVector.x ** 2 + _faceHeighVector.y ** 2)
 
     _faceCenterX = (max(map(lambda p: p.x, landmark))
