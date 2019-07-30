@@ -47,7 +47,9 @@ def test_area_rect(a, b, c, d, correct):
                                        (points_lean_left, (0, 0, 1)),
                                        (points_lean_right, (0, 0, -1))])
 def test_rotates(points, th):
-    result = rotates(points, points_front)
+    calib = RawFaceData(6.0, 100.0, dlib.point(0, 0))
+
+    result = rotates(points, calib)
 
     def _assert(n, threshold):
         if threshold == -1:
