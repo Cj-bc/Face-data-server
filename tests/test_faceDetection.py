@@ -71,7 +71,7 @@ def test_getRawFaceData():
     for p in facePoints:
         face.append(p)
 
-    correctRawFaceData = RawFaceData(20, 100, dlib.point(0, 0))
+    correctRawFaceData = RawFaceData(6, 100, dlib.point(0, 0))
 
     # faceCenter can't be compared(it compares instance, which always fail).
     # So I take this way
