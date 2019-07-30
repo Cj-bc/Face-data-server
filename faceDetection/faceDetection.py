@@ -7,6 +7,7 @@ from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
                     RawFaceData)
 from functools import reduce
+import math
 
 
 # -- Variables
@@ -49,10 +50,12 @@ def getRawFaceData(landmark: dlib.points) -> RawFaceData:
     """
     eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x
                        - landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
-    _eyebrowY = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]].y
-                + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]].y) // 2
-    faceHeigh  = abs(_eyebrowY
-                     - landmark[LANDMARK_NUM["TIN_CENTER"]].y)
+
+    _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
+                      + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
+    _faceHeighVector  = _middleForehead - landmark[LANDMARK_NUM["TIN_CENTER"]]
+    faceHeigh = math.sqrt(_faceHeighVector.x ** 2 + _faceHeighVector.y ** 2)
+
     _faceCenterX = (max(map(lambda p: p.x, landmark))
                     + min(map(lambda p: p.x, landmark))) // 2
     _faceCenterY = (max(map(lambda p: p.y, landmark))
