@@ -6,6 +6,7 @@ import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
                     RawFaceData)
+from .Utils import points2dpoints
 from functools import reduce
 import math
 
@@ -44,8 +45,8 @@ face_cascade = cv2.CascadeClassifier(
 detector = dlib.get_frontal_face_detector()
 
 
-# getRawFaceData(landmark: dlib.points) -> RawFaceData {{{
-def getRawFaceData(landmark: dlib.points) -> RawFaceData:
+# getRawFaceData(landmark: dlib.dpoints) -> RawFaceData {{{
+def getRawFaceData(landmark: dlib.dpoints) -> RawFaceData:
     """ Return RawFaceData from dlib.points
     """
     eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x
@@ -53,15 +54,14 @@ def getRawFaceData(landmark: dlib.points) -> RawFaceData:
 
     _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
                       + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
-    _faceHeighVector  = _middleForehead\
-                        - dlib.dpoint(landmark[LANDMARK_NUM["TIN_CENTER"]])
+    _faceHeighVector  = _middleForehead - landmark[LANDMARK_NUM["TIN_CENTER"]]
     faceHeigh = math.sqrt(_faceHeighVector.x ** 2 + _faceHeighVector.y ** 2)
 
     _faceCenterX = (max(map(lambda p: p.x, landmark))
                     + min(map(lambda p: p.x, landmark))) // 2
     _faceCenterY = (max(map(lambda p: p.y, landmark))
                     + min(map(lambda p: p.y, landmark))) // 2
-    faceCenter = dlib.point(_faceCenterX, _faceCenterY)
+    faceCenter = dlib.dpoint(_faceCenterX, _faceCenterY)
 
     return RawFaceData(eyeDistance, faceHeigh, faceCenter)
 # }}}
@@ -78,7 +78,7 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     input("Please face front and press enter:")
     frame = waitUntilFaceDetect(cap)
     print("got your face... wait for a second...")
-    face = facemark(frame)
+    face: dlib.dpoints = facemark(frame)
     print("done :)")
     return getRawFaceData(face)
 # }}}
@@ -110,22 +110,22 @@ def isFaceExist(gray_img: Cv2Image) -> bool:
 # }}}
 
 
-# getBiggestFace(faces: List[dlib.points]) -> dlib.points: {{{
-def getBiggestFace(faces: List[dlib.points]) -> dlib.points:
+# getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints: {{{
+def getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints:
     """ Return biggest face in given list
        'biggest face' is one that has biggest width
 
     """
-    def ln(p: dlib.points) -> int:
+    def ln(p: dlib.dpoints) -> float:
         return abs((p[40] - p[0]).x)
 
     return reduce(lambda p, q: p if ln(p) > ln(q) else q,
-                  faces, dlib.points(194))
+                  faces, dlib.dpoints(194))
 # }}}
 
 
-# facemark(gray_img: Cv2Image) -> dlib.points {{{
-def facemark(gray_img: Cv2Image) -> Optional[dlib.points]:
+# facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints] {{{
+def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
     """Recoginize face landmark position by i-bug 300-w dataset
         This will return biggest face from recognized faces list
 
@@ -147,9 +147,9 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.points]:
         [174-193]: left eyebrows
     """
     rects: dlib.rectangles = detector(gray_img, 1)
-    wholeFace: List[dlib.points] = []
+    wholeFace: List[dlib.dpoints] = []
     for rect in rects:
-        parts: dlib.points = predictor(gray_img, rect).parts()
+        parts: dlib.dpoints = points2dpoints(predictor(gray_img, rect).parts())
         wholeFace.append(parts)
 
     if len(wholeFace) == 0:
@@ -159,17 +159,17 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.points]:
 # }}}
 
 
-# constructDlibPoints(ps: List[dlib.point]) -> dlib.points {{{
-def constructDlibPoints(ps: List[dlib.point]) -> dlib.points:
-    ret = dlib.points()
+# constructDlibDPoints(ps: List[dlib.dpoint]) -> dlib.dpoints {{{
+def constructDlibDPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
+    ret = dlib.dpoints()
     for p in ps:
         ret.append(p)
     return ret
 # }}}
 
 
-# _normalization(face: dlib.points) -> dlib.points {{{
-def _normalization(face: dlib.points) -> dlib.points:
+# _normalization(face: dlib.dpoints) -> dlib.dpoints {{{
+def _normalization(face: dlib.dpoints) -> dlib.dpoints:
     """Normalize facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
 
@@ -246,7 +246,7 @@ def _normalization(face: dlib.points) -> dlib.points:
     for chin_i, fm_i in enumerate(chin):
         chin[chin_i] = face[fm_i]
 
-    return constructDlibPoints(chin + nose + outside_lips + inside_lips
+    return constructDlibDPoints(chin + nose + outside_lips + inside_lips
                                + right_eye + left_eye
                                + right_eyebrow + left_eyebrow)
 # }}}

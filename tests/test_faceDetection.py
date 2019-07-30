@@ -3,7 +3,7 @@ from unittest import mock
 from timeout_decorator import timeout, TimeoutError
 from faceDetection.faceDetection import (isFaceExist, getBiggestFace
                                          , getRawFaceData
-                                         , _normalization, constructDlibPoints
+                                         , _normalization, constructDlibDPoints
                                          , facemark, waitUntilFaceDetect
                                          , faceCalibration)
 from conftest import (faceFrame, noFaceFrame, MockedCap, points_front)
@@ -17,7 +17,7 @@ import numpy
 
 
 def test_getRawFaceData():
-    correctRawFaceData = RawFaceData(6, 100, dlib.point(0, 0))
+    correctRawFaceData = RawFaceData(6, 100, dlib.dpoint(0, 0))
 
     # faceCenter can't be compared(it compares instance, which always fail).
     # So I take this way
@@ -68,10 +68,10 @@ def test_waitUntilFaceDetect_faceNotFound():
 
 
 def test_getBiggestFace():
-    emptyPoints = dlib.points(194)
+    emptyPoints = dlib.dpoints(194)
 
-    biggest = dlib.points(40)
-    biggest.append(dlib.point(100, 100))
+    biggest = dlib.dpoints(40)
+    biggest.append(dlib.dpoint(100, 100))
     biggest.resize(194 + 1)
     faces = ([emptyPoints] * 5) + [biggest]
 
@@ -79,20 +79,20 @@ def test_getBiggestFace():
 
 
 def test_getBiggestFace_noface():
-    assert getBiggestFace([]) == dlib.points(194)
+    assert getBiggestFace([]) == dlib.dpoints(194)
 
 
-# --- constructDlibPoints
+# --- constructDlibDPoints
 
 
-def test_constructDlibPoints():
-    ps = map(lambda x: dlib.point(x, x), list(range(100)))
+def test_constructDlibDPoints():
+    ps = map(lambda x: dlib.dpoint(x, x), list(range(100)))
 
-    correct = dlib.points()
+    correct = dlib.dpoints()
     for i in range(100):
-        correct.append(dlib.point(i, i))
+        correct.append(dlib.dpoint(i, i))
 
-    assert constructDlibPoints(ps) == correct
+    assert constructDlibDPoints(ps) == correct
 
 
 # --- _normalization
@@ -122,9 +122,9 @@ def test_normalization():
               110 , 111 , 112 , 113]
     # }}}
 
-    testPoints = constructDlibPoints(list(map(lambda n: dlib.point(n, n),
+    testPoints = constructDlibDPoints(list(map(lambda n: dlib.dpoint(n, n),
                                               inList)))
-    correct = constructDlibPoints(map(lambda n: dlib.point(n, n),
+    correct = constructDlibDPoints(map(lambda n: dlib.dpoint(n, n),
                                       list(range(0, 194))))
     assert _normalization(testPoints) == correct
 
@@ -134,7 +134,7 @@ def test_normalization():
 
 def test_faceCalibration():
     correct: RawFaceData = RawFaceData(113, 366.82966074187624
-                                      , dlib.point(479, 338))
+                                      , dlib.dpoint(479, 338))
     cap = MockedCap(True, faceFrame)
     with mock.patch('faceDetection.faceDetection.input', return_value=None):
         result: RawFaceData = faceCalibration(cap)
@@ -185,9 +185,9 @@ def test_facemark():
         (507, 176), (526, 177)]
     # }}}
 
-    correct = dlib.points()
+    correct = dlib.dpoints()
     for p in correct_points:
-        correct.append(dlib.point(p[0], p[1]))
+        correct.append(dlib.dpoint(p[0], p[1]))
 
     assert facemark(faceFrame) == correct
 

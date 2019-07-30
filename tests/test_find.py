@@ -13,7 +13,7 @@ from faceDetection.find import (point_abs, area_rect, rotates)
                                  (0, 0), (1, 0), (0, 1), (1, 1),
                                  (-1, 0), (0, -1)])
 def test_point_abs(x: int, y: int):
-    result = point_abs(dlib.point(x, y))
+    result = point_abs(dlib.dpoint(x, y))
     assert result.x == abs(x)
     assert result.y == abs(y)
 
@@ -32,10 +32,10 @@ def test_area_rect(a, b, c, d, correct):
         4. One point is inside of area
         5. Two point is inside of area
     """
-    aP = dlib.point(a[0], a[1])
-    bP = dlib.point(b[0], b[1])
-    cP = dlib.point(c[0], c[1])
-    dP = dlib.point(d[0], d[1])
+    aP = dlib.dpoint(a[0], a[1])
+    bP = dlib.dpoint(b[0], b[1])
+    cP = dlib.dpoint(c[0], c[1])
+    dP = dlib.dpoint(d[0], d[1])
     assert area_rect(aP, bP, cP, dP) == correct
 
 
@@ -47,7 +47,7 @@ def test_area_rect(a, b, c, d, correct):
                                        (points_lean_left, (0, 0, 1)),
                                        (points_lean_right, (0, 0, -1))])
 def test_rotates(points, th):
-    calib = RawFaceData(6.0, 100.0, dlib.point(0, 0))
+    calib = RawFaceData(6.0, 100.0, dlib.dpoint(0, 0))
 
     result = rotates(points, calib)
 

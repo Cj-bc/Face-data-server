@@ -14,7 +14,7 @@ class RawFaceData:
 #    rightEyeSize: float
 #    leftEyeSize: float
     faceHeigh: float
-    faceCenter: dlib.point
+    faceCenter: dlib.dpoint
 
     def thresholded(self, t):
         """Force eyeDistance / faceHeigh to be smaller than threshold

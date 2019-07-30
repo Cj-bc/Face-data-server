@@ -14,16 +14,16 @@ green = (0, 255, 0)
 blue = (255, 0, 0)
 
 
-# point_abs(a: dlib.point) -> dlib.point {{{
-def point_abs(a: dlib.point) -> dlib.point:
-    """return 'dlib.point' which x,y are both absolute value """
-    return dlib.point(abs(a.x), abs(a.y))
+# point_abs(a: dlib.dpoint) -> dlib.dpoint {{{
+def point_abs(a: dlib.dpoint) -> dlib.dpoint:
+    """return 'dlib.dpoint' which x,y are both absolute value """
+    return dlib.dpoint(abs(a.x), abs(a.y))
 # }}}
 
 
-# area_rect(a: dlib.point, b: dlib.point c: dlib.point, d: dlib.point)-> int{{{
-def area_rect(a: dlib.point, b: dlib.point,
-              c: dlib.point, d: dlib.point) -> int:
+# area_rect(a: dlib.dpoint, b: dlib.dpoint c: dlib.dpoint, d:...{{{
+def area_rect(a: dlib.dpoint, b: dlib.dpoint,
+              c: dlib.dpoint, d: dlib.dpoint) -> int:
     """Calculate region of given points
 
         If we have that points(.) below,
@@ -55,8 +55,8 @@ def area_rect(a: dlib.point, b: dlib.point,
 # }}}
 
 
-# rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations
-def rotates(landmark: dlib.points, calib: RawFaceData) -> FaceRotations:
+# rotates(landmark: dlib.dpoints, calib: RawFaceData) -> FaceRotations
+def rotates(landmark: dlib.dpoints, calib: RawFaceData) -> FaceRotations:
     """ calculate face rotations from calibration data and landmark
     """
     eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \

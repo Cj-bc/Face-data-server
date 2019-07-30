@@ -10,11 +10,11 @@ faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
 
 
-def constructPoints(ps: List[dlib.point]) -> dlib.points:
+def constructPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
     """ helper function.
         Construct dlib.points from list of dlib.point
     """
-    ret = dlib.points()
+    ret = dlib.dpoints()
     for p in ps:
         ret.append(p)
 
@@ -30,7 +30,7 @@ def _constructLandmark(side_right, tin_center, side_left, left_eye_r,
          [right_eye_l] + [(0, 0)] * 13 + [right_eye_bottom] +\
          [(0, 0)] * 4 + [eyebrow_left_r] + [(0, 0)] * 19 +\
          [eyebrow_right_l] + [(0, 0)] * 21
-    l_points = list(map(lambda n: dlib.point(n[0], n[1]), ls))
+    l_points = list(map(lambda n: dlib.dpoint(n[0], n[1]), ls))
     return constructPoints(l_points)
 
 
