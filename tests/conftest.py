@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 import cv2
 import dlib
+import math
 from typing import List
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from faceDetection.Types import Cv2Image  # noqa: E402
@@ -34,6 +35,18 @@ def _constructLandmark(side_right, tin_center, side_left, left_eye_r,
     return constructPoints(l_points)
 
 
+def _leanFace(dpoints: dlib.dpoints, angle: float) -> dlib.dpoints:
+    """rotate given 'dpoints' for 'angle' degree.
+    """
+    def _leanOnePoint(p: dlib.dpoint) -> dlib.dpoint:
+        # As X/Y axis are swapped, sin/cos are also swapped
+        return dlib.dpoint(p.x * math.cos(angle),
+                           p.y * math.sin(angle))
+
+    _leanedDPointsL = list(map(_leanOnePoint, dpoints))
+    return dlib.dpoints(_leanedDPointsL)
+
+
 points_front = _constructLandmark((-25, 30), (0, -50), (25, 30), (3, 25),
                                   (10, 20), (-3, 25), (-10, 20),
                                   (5, 50), (-5, 50))
@@ -46,15 +59,11 @@ points_left = _constructLandmark((-20, 30), (0, -50), (25, 30), (3, 25),
 points_upside = _constructLandmark((-25, 30), (0, -40), (25, 30), (3, 30),
                                    (10, 10), (-3, 30), (-10, 10),
                                    (5, 50), (-5, 50))
-points_bottom = _constructLandmark((-25, 30), (0, -60), (25, 30), (3, 10),
+points_bottom = _constructLandmark((-24, 30), (0, -60), (25, 30), (3, 10),
                                    (10, 0), (-3, 10), (-10, 0),
                                    (5, 30), (-5, 30))
-points_lean_left = _constructLandmark((-30, 40), (-15, -40), (30, 10), (5, 20),
-                                      (15, 10), (-1, 25), (-15, 30),
-                                      (10, 30), (0, 35))
-points_lean_right = _constructLandmark((-30, 10), (15, -40), (30, 40), (5, 25),
-                                       (15, 30), (-5, 20), (-15, 10),
-                                       (0, 35), (-10, 30))
+points_lean_left = _leanFace(points_front, math.pi / 4)
+points_lean_right = _leanFace(points_front, -(math.pi / 4))
 
 
 class MockedCap():
