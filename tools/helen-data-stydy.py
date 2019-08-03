@@ -10,7 +10,7 @@ import glob
 NOW_ABS_FILEPATH = os.path.dirname(os.path.abspath(__file__))
 HELEN_IMGS_ABS_FILEPATH = NOW_ABS_FILEPATH + '/helen-dataset/'
 HELEN_ANNOTATIONS_ABS_FILEPATH = HELEN_IMGS_ABS_FILEPATH + 'annotations/'
-CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../haarcascades/"
+CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../src/"
 
 face_cascade = cv2.CascadeClassifier(
     CASCADE_PATH + 'haarcascade_frontalface_default.xml')
@@ -20,7 +20,7 @@ xml_template_header = """<?xml version='1.0' encoding='ISO-8859-1'?>
 <?xml-stylesheet type='text/xsl' href='image_metadata_stylesheet.xsl'?>
 <dataset>
 <name>helen dataset</name>
-<comment>Created by kekeho.</comment>
+<comment>Created by kekeho. Modified by Cj-bc.</comment>
 <images>
 """
 
@@ -98,7 +98,7 @@ def main():
 
     print("Start training")
     dlib.train_shape_predictor(
-        train_xml_filename, "helen-dataset.dat", options)
+        train_xml_filename, "../src/helen-dataset.dat", options)
     print("Finish")
 
 

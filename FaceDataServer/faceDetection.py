@@ -34,12 +34,8 @@ LANDMARK_NUM = {"TIN_CENTER": 19
                 }
 
 # Cascade files directory path
-_CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"
-_LEARNED_MODEL_PATH = os.path.dirname(
-    os.path.abspath(__file__)) + "/learned-models/"
-
-_predictor = dlib.shape_predictor(
-    _LEARNED_MODEL_PATH + 'helen-dataset.dat')
+_SRC_PATH = os.path.dirname(os.path.abspath(__file__)) + "../src/"
+_predictor = dlib.shape_predictor(_SRC_PATH + 'helen-dataset.dat')
 _detector = dlib.get_frontal_face_detector()
 
 
