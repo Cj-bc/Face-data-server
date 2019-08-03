@@ -159,15 +159,6 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
 # }}}
 
 
-# constructDlibDPoints(ps: List[dlib.dpoint]) -> dlib.dpoints {{{
-def constructDlibDPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
-    ret = dlib.dpoints()
-    for p in ps:
-        ret.append(p)
-    return ret
-# }}}
-
-
 # _normalization(face: dlib.dpoints) -> dlib.dpoints {{{
 def _normalization(face: dlib.dpoints) -> dlib.dpoints:
     """Normalize facemark result. FOR INTERNAL USE
@@ -246,7 +237,7 @@ def _normalization(face: dlib.dpoints) -> dlib.dpoints:
     for chin_i, fm_i in enumerate(chin):
         chin[chin_i] = face[fm_i]
 
-    return constructDlibDPoints(chin + nose + outside_lips + inside_lips
-                               + right_eye + left_eye
-                               + right_eyebrow + left_eyebrow)
+    return dlib.dpoints(chin + nose + outside_lips + inside_lips
+                        + right_eye + left_eye
+                        + right_eyebrow + left_eyebrow)
 # }}}

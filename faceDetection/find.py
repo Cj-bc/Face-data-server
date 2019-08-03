@@ -6,13 +6,6 @@ import math
 from .faceDetection import (LANDMARK_NUM, getRawFaceData)
 from .Types import RawFaceData, FaceRotations
 
-# type definitions
-Coord = (int, int)
-
-red = (0, 0, 255)
-green = (0, 255, 0)
-blue = (255, 0, 0)
-
 
 # point_abs(a: dlib.dpoint) -> dlib.dpoint {{{
 def point_abs(a: dlib.dpoint) -> dlib.dpoint:

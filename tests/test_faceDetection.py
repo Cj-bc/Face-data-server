@@ -8,7 +8,6 @@ from faceDetection.faceDetection import (isFaceExist, getBiggestFace
                                          , faceCalibration)
 from conftest import (faceFrame, noFaceFrame, MockedCap, points_front)
 from faceDetection.Types import RawFaceData, CapHasClosedError
-from typing import List, Tuple
 import dlib
 import numpy
 
