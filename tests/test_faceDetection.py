@@ -1,10 +1,10 @@
 import pytest
 from unittest import mock
 from timeout_decorator import timeout, TimeoutError
-from faceDetection.faceDetection import (isFaceExist, getBiggestFace
+from faceDetection.faceDetection import (_isFaceExist, _getBiggestFace
                                          , getRawFaceData
                                          , _normalization, constructDlibDPoints
-                                         , facemark, waitUntilFaceDetect
+                                         , facemark, _waitUntilFaceDetect
                                          , faceCalibration)
 from conftest import (faceFrame, noFaceFrame, MockedCap, points_front)
 from faceDetection.Types import RawFaceData, CapHasClosedError
@@ -32,9 +32,9 @@ def test_getRawFaceData():
 
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
 def check_isFaceExist(faceNum: int, expected: bool):
-    with mock.patch('faceDetection.faceDetection.detector',
+    with mock.patch('faceDetection.faceDetection._detector',
                     return_value=dlib.rectangles(faceNum)):
-        assert isFaceExist(numpy.ndarray(0)) == expected
+        assert _isFaceExist(numpy.ndarray(0)) == expected
 
 
 # --- waitUntilFaceDetect
@@ -43,13 +43,13 @@ def test_waitUntilFaceDetect_CapHasClosedError(frame):
     cap = MockedCap(False, frame)
 
     with pytest.raises(CapHasClosedError):
-        waitUntilFaceDetect(cap)
+        _waitUntilFaceDetect(cap)
 
 
 def test_waitUntilFaceDetect_faceFound():
     cap = MockedCap(True, faceFrame)
 
-    assert waitUntilFaceDetect(cap).all() == faceFrame.all()
+    assert _waitUntilFaceDetect(cap).all() == faceFrame.all()
 
 
 def test_waitUntilFaceDetect_faceNotFound():
@@ -57,7 +57,7 @@ def test_waitUntilFaceDetect_faceNotFound():
 
     @timeout(10)
     def _run():
-        waitUntilFaceDetect(cap)
+        _waitUntilFaceDetect(cap)
 
     with pytest.raises(TimeoutError):
         _run()
@@ -74,11 +74,11 @@ def test_getBiggestFace():
     biggest.resize(194 + 1)
     faces = ([emptyPoints] * 5) + [biggest]
 
-    assert getBiggestFace(faces) == biggest
+    assert _getBiggestFace(faces) == biggest
 
 
 def test_getBiggestFace_noface():
-    assert getBiggestFace([]) == dlib.dpoints(194)
+    assert _getBiggestFace([]) == dlib.dpoints(194)
 
 
 # --- constructDlibDPoints

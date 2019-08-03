@@ -38,11 +38,9 @@ _CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/haarcascades/"
 _LEARNED_MODEL_PATH = os.path.dirname(
     os.path.abspath(__file__)) + "/learned-models/"
 
-predictor = dlib.shape_predictor(
+_predictor = dlib.shape_predictor(
     _LEARNED_MODEL_PATH + 'helen-dataset.dat')
-face_cascade = cv2.CascadeClassifier(
-    _CASCADE_PATH + 'haarcascade_frontalface_default.xml')
-detector = dlib.get_frontal_face_detector()
+_detector = dlib.get_frontal_face_detector()
 
 
 # getRawFaceData(landmark: dlib.dpoints) -> RawFaceData {{{
@@ -76,51 +74,11 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     """
     print("=========== Face calibration ===========")
     input("Please face front and press enter:")
-    frame = waitUntilFaceDetect(cap)
+    frame = _waitUntilFaceDetect(cap)
     print("got your face... wait for a second...")
     face: dlib.dpoints = facemark(frame)
     print("done :)")
     return getRawFaceData(face)
-# }}}
-
-
-# waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image {{{
-def waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
-    """Wait until face(s) is detected. Return frame if it contains faces.
-
-        Raise Exception:
-            CapHasClosedError : this exception might be raised
-                                when 'cap' has been closed by some reason
-    """
-    while cap.isOpened():
-        _, frame = cap.read()
-        if isFaceExist(frame):
-            return frame
-
-    raise CapHasClosedError()
-# }}}
-
-
-# isFaceExist(gray_img: Cv2Image) -> bool {{{
-def isFaceExist(gray_img: Cv2Image) -> bool:
-    """True if faces are exist in image """
-    faces: dlib.rectangles = detector(gray_img, 1)
-    return len(faces) != 0
-
-# }}}
-
-
-# getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints: {{{
-def getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints:
-    """ Return biggest face in given list
-       'biggest face' is one that has biggest width
-
-    """
-    def ln(p: dlib.dpoints) -> float:
-        return abs((p[40] - p[0]).x)
-
-    return reduce(lambda p, q: p if ln(p) > ln(q) else q,
-                  faces, dlib.dpoints(194))
 # }}}
 
 
@@ -146,16 +104,56 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
         [154-173]: right eyebrows
         [174-193]: left eyebrows
     """
-    rects: dlib.rectangles = detector(gray_img, 1)
+    rects: dlib.rectangles = _detector(gray_img, 1)
     wholeFace: List[dlib.dpoints] = []
     for rect in rects:
-        parts: dlib.dpoints = points2dpoints(predictor(gray_img, rect).parts())
+        parts: dlib.dpoints = points2dpoints(_predictor(gray_img, rect).parts())
         wholeFace.append(parts)
 
     if len(wholeFace) == 0:
         return None
 
-    return _normalization(getBiggestFace(wholeFace))
+    return _normalization(_getBiggestFace(wholeFace))
+# }}}
+
+
+# _waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image {{{
+def _waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
+    """Wait until face(s) is detected. Return frame if it contains faces.
+
+        Raise Exception:
+            CapHasClosedError : this exception might be raised
+                                when 'cap' has been closed by some reason
+    """
+    while cap.isOpened():
+        _, frame = cap.read()
+        if _isFaceExist(frame):
+            return frame
+
+    raise CapHasClosedError()
+# }}}
+
+
+# _isFaceExist(gray_img: Cv2Image) -> bool {{{
+def _isFaceExist(gray_img: Cv2Image) -> bool:
+    """True if faces are exist in image """
+    faces: dlib.rectangles = _detector(gray_img, 1)
+    return len(faces) != 0
+
+# }}}
+
+
+# _getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints: {{{
+def _getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints:
+    """ Return biggest face in given list
+       'biggest face' is one that has biggest width
+
+    """
+    def ln(p: dlib.dpoints) -> float:
+        return abs((p[40] - p[0]).x)
+
+    return reduce(lambda p, q: p if ln(p) > ln(q) else q,
+                  faces, dlib.dpoints(194))
 # }}}
 
 
