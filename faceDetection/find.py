@@ -68,7 +68,7 @@ def rotates(landmark: dlib.dpoints, calib: RawFaceData) -> FaceRotations:
     #       user might wink. In that case, I can't recognize properly.
     degreeY = math.acos(raw.eyeDistance / calib.eyeDistance)
     degreeX = math.acos(raw.faceHeigh / calib.faceHeigh)
-    degreeZ = math.atan(abs(eyeLineVector.y / eyeLineVector.x))
+    degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
     # TODO: ^ This some times got error 'Division by 0'
 
     rotateX = degreeX if raw.faceCenter.y > calib.faceCenter.y\
