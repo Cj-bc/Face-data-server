@@ -2,6 +2,8 @@ from typing import NewType, TypeVar
 import numpy
 import dlib
 import dataclasses
+import math
+
 
 # Those values are defined based on this site image:
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
@@ -38,6 +40,28 @@ class RawFaceData:
 #    leftEyeSize: float
     faceHeigh: float
     faceCenter: dlib.dpoint
+
+
+    @classmethod
+    def get(cls: S, landamrk: dlib.dpoints) -> S:
+        """ Return RawFaceData from dlib.points
+        """
+        eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x
+                           - landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
+
+        _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
+                          + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
+        _faceHeighVector  = _middleForehead - landmark[LANDMARK_NUM["TIN_CENTER"]]
+        faceHeigh = math.sqrt(_faceHeighVector.x ** 2 + _faceHeighVector.y ** 2)
+
+        _faceCenterX = (max(map(lambda p: p.x, landmark))
+                        + min(map(lambda p: p.x, landmark))) // 2
+        _faceCenterY = (max(map(lambda p: p.y, landmark))
+                        + min(map(lambda p: p.y, landmark))) // 2
+        faceCenter = dlib.dpoint(_faceCenterX, _faceCenterY)
+
+        return cls(eyeDistance, faceHeigh, faceCenter)
+
 
     def thresholded(self, t):
         """Force eyeDistance / faceHeigh to be smaller than threshold

@@ -19,28 +19,6 @@ _predictor = dlib.shape_predictor(_SRC_PATH + '/helen-dataset.dat')
 _detector = dlib.get_frontal_face_detector()
 
 
-# getRawFaceData(landmark: dlib.dpoints) -> RawFaceData {{{
-def getRawFaceData(landmark: dlib.dpoints) -> RawFaceData:
-    """ Return RawFaceData from dlib.points
-    """
-    eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x
-                       - landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
-
-    _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
-                      + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
-    _faceHeighVector  = _middleForehead - landmark[LANDMARK_NUM["TIN_CENTER"]]
-    faceHeigh = math.sqrt(_faceHeighVector.x ** 2 + _faceHeighVector.y ** 2)
-
-    _faceCenterX = (max(map(lambda p: p.x, landmark))
-                    + min(map(lambda p: p.x, landmark))) // 2
-    _faceCenterY = (max(map(lambda p: p.y, landmark))
-                    + min(map(lambda p: p.y, landmark))) // 2
-    faceCenter = dlib.dpoint(_faceCenterX, _faceCenterY)
-
-    return RawFaceData(eyeDistance, faceHeigh, faceCenter)
-# }}}
-
-
 # faceCalibration(cap: cv2.VideoCapture) -> RawFaceData {{{
 def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     """Calibrate individuals' differences.
@@ -54,7 +32,7 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     print("got your face... wait for a second...")
     face: dlib.dpoints = facemark(frame)
     print("done :)")
-    return getRawFaceData(face)
+    return RawFaceData.get(face)
 # }}}
 
 

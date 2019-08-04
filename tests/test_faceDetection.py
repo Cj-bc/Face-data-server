@@ -11,21 +11,6 @@ import dlib
 import numpy
 
 
-# --- getRawFaceData
-
-
-def test_getRawFaceData():
-    correctRawFaceData = RawFaceData(6, 100, dlib.dpoint(0, 0))
-
-    # faceCenter can't be compared(it compares instance, which always fail).
-    # So I take this way
-    result = getRawFaceData(points_front)
-    assert result.faceHeigh == correctRawFaceData.faceHeigh
-    assert result.eyeDistance == correctRawFaceData.eyeDistance
-    assert result.faceCenter.x == correctRawFaceData.faceCenter.x
-    assert result.faceCenter.y == correctRawFaceData.faceCenter.y
-
-
 # --- isFaceExist
 
 
