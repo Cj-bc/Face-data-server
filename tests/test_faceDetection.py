@@ -5,7 +5,7 @@ from FaceDataServer.faceDetection import (_isFaceExist, _getBiggestFace
                                          , _normalization
                                          , facemark, _waitUntilFaceDetect
                                          , faceCalibration)
-from conftest import (faceFrame, noFaceFrame, MockedCap, points_front)
+from conftest import (faceFrame, noFaceFrame, MockedCap)
 from FaceDataServer.Types import RawFaceData, CapHasClosedError
 import dlib
 import numpy

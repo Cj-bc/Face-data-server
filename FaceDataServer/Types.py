@@ -26,8 +26,6 @@ LANDMARK_NUM = {"TIN_CENTER": 19
                 }
 
 
-
-
 Error = NewType('Error', str)
 Cv2Image = numpy.ndarray
 S = TypeVar('S')
@@ -41,7 +39,6 @@ class RawFaceData:
     faceHeigh: float
     faceCenter: dlib.dpoint
 
-
     @classmethod
     def get(cls: S, landmark: dlib.dpoints) -> S:
         """ Return RawFaceData from dlib.points
@@ -51,8 +48,10 @@ class RawFaceData:
 
         _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
                           + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
-        _faceHeighVector  = _middleForehead - landmark[LANDMARK_NUM["TIN_CENTER"]]
-        faceHeigh = math.sqrt(_faceHeighVector.x ** 2 + _faceHeighVector.y ** 2)
+        _faceHeighVector  = _middleForehead\
+                            - landmark[LANDMARK_NUM["TIN_CENTER"]]
+        faceHeigh = math.sqrt(_faceHeighVector.x ** 2
+                              + _faceHeighVector.y ** 2)
 
         _faceCenterX = (max(map(lambda p: p.x, landmark))
                         + min(map(lambda p: p.x, landmark))) // 2
@@ -61,7 +60,6 @@ class RawFaceData:
         faceCenter = dlib.dpoint(_faceCenterX, _faceCenterY)
 
         return cls(eyeDistance, faceHeigh, faceCenter)
-
 
     def thresholded(self, t):
         """Force eyeDistance / faceHeigh to be smaller than threshold

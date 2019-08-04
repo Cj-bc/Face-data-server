@@ -5,10 +5,9 @@ import cv2
 import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
-                    RawFaceData, LANDMARK_NUM)
+                    RawFaceData)
 from .Utils import points2dpoints
 from functools import reduce
-import math
 
 
 # -- Variables
@@ -61,7 +60,8 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
     rects: dlib.rectangles = _detector(gray_img, 1)
     wholeFace: List[dlib.dpoints] = []
     for rect in rects:
-        parts: dlib.dpoints = points2dpoints(_predictor(gray_img, rect).parts())
+        parts: dlib.dpoints =\
+            points2dpoints(_predictor(gray_img, rect).parts())
         wholeFace.append(parts)
 
     if len(wholeFace) == 0:
