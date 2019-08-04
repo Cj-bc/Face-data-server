@@ -3,7 +3,6 @@
 #
 import dlib
 import math
-from .faceDetection import (getRawFaceData)
 from .Types import RawFaceData, FaceRotations, LANDMARK_NUM
 
 
