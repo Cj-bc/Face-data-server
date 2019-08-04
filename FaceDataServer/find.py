@@ -6,46 +6,6 @@ import math
 from .Types import RawFaceData, FaceRotations, LANDMARK_NUM
 
 
-# point_abs(a: dlib.dpoint) -> dlib.dpoint {{{
-def point_abs(a: dlib.dpoint) -> dlib.dpoint:
-    """return 'dlib.dpoint' which x,y are both absolute value """
-    return dlib.dpoint(abs(a.x), abs(a.y))
-# }}}
-
-
-# area_rect(a: dlib.dpoint, b: dlib.dpoint c: dlib.dpoint, d:...{{{
-def area_rect(a: dlib.dpoint, b: dlib.dpoint,
-              c: dlib.dpoint, d: dlib.dpoint) -> int:
-    """Calculate region of given points
-
-        If we have that points(.) below,
-
-        -----.-------
-        .------------
-        ------------.
-        --------.----
-
-        'area_rect' will returns area of:
-
-        #############
-        #############
-        #############
-        #############
-
-        Not something like:
-
-        -----#-------
-        ##########---
-        --###########
-        ------###----
-    """
-    upper  = max(map(lambda n: n.y, [a, b, c, d]))
-    bottom = min(map(lambda n: n.y, [a, b, c, d]))
-    right  = max(map(lambda n: n.x, [a, b, c, d]))
-    left   = min(map(lambda n: n.x, [a, b, c, d]))
-    return (upper - bottom) * (right - left)
-# }}}
-
 
 # rotates(landmark: dlib.dpoints, calib: RawFaceData) -> FaceRotations
 def rotates(landmark: dlib.dpoints, calib: RawFaceData) -> FaceRotations:
