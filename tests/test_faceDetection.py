@@ -92,10 +92,10 @@ def test_normalization():
               110 , 111 , 112 , 113]
     # }}}
 
-    testPoints = constructDlibDPoints(list(map(lambda n: dlib.dpoint(n, n),
-                                              inList)))
-    correct = constructDlibDPoints(map(lambda n: dlib.dpoint(n, n),
-                                      list(range(0, 194))))
+    testPoints = dlib.dpoints(list(map(lambda n: dlib.dpoint(n, n),
+                              inList)))
+    correct = dlib.dpoints(map(lambda n: dlib.dpoint(n, n),
+                           list(range(0, 194))))
     assert _normalization(testPoints) == correct
 
 

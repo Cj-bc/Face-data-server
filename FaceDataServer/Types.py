@@ -43,7 +43,7 @@ class RawFaceData:
 
 
     @classmethod
-    def get(cls: S, landamrk: dlib.dpoints) -> S:
+    def get(cls: S, landmark: dlib.dpoints) -> S:
         """ Return RawFaceData from dlib.points
         """
         eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x

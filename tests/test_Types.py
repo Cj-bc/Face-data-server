@@ -2,6 +2,8 @@ import pytest
 import dlib
 
 from FaceDataServer.Types import (RawFaceData)
+from conftest import points_front
+
 
 
 @pytest.mark.parametrize('eD,fH,fC', [(2, 2, dlib.dpoint(0, 0)),
