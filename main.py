@@ -4,9 +4,9 @@ import datetime
 import sys
 from typing import (Optional)
 
-from faceDetection.faceDetection import (faceCalibration, facemark)
-from faceDetection.find import (rotates)
-from faceDetection.Types import (RawFaceData, FaceRotations,
+from FaceDataServer.faceDetection import (faceCalibration, facemark)
+from FaceDataServer.find import (rotates)
+from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError)
 
 

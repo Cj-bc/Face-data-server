@@ -4,9 +4,9 @@ import dlib
 from conftest import (points_front, points_right, points_left, points_upside,
                       points_bottom, points_lean_left, points_lean_right)
 from main import main
-from faceDetection.Types import (RawFaceData,
+from FaceDataServer.Types import (RawFaceData,
                       FaceDetectionError, CapHasClosedError)
-from faceDetection.find import (point_abs, area_rect, rotates)
+from FaceDataServer.find import (point_abs, area_rect, rotates)
 
 
 @pytest.mark.parametrize("x,y", [(-1, -1), (-1, 1), (1, -1),

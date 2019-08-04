@@ -1,7 +1,7 @@
 import pytest
 import dlib
 
-from faceDetection.Types import (RawFaceData)
+from FaceDataServer.Types import (RawFaceData)
 
 
 @pytest.mark.parametrize('eD,fH,fC', [(2, 2, dlib.dpoint(0, 0)),

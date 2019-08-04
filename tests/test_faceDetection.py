@@ -1,9 +1,8 @@
 import pytest
 from unittest import mock
 from timeout_decorator import timeout, TimeoutError
-from faceDetection.faceDetection import (_isFaceExist, _getBiggestFace
-                                         , getRawFaceData
-                                         , _normalization, constructDlibDPoints
+from FaceDataServer.faceDetection import (_isFaceExist, _getBiggestFace
+                                         , _normalization
                                          , facemark, _waitUntilFaceDetect
                                          , faceCalibration)
 from conftest import (faceFrame, noFaceFrame, MockedCap, points_front)
@@ -32,7 +31,7 @@ def test_getRawFaceData():
 
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
 def check_isFaceExist(faceNum: int, expected: bool):
-    with mock.patch('faceDetection.faceDetection._detector',
+    with mock.patch('FaceDataServer.faceDetection._detector',
                     return_value=dlib.rectangles(faceNum)):
         assert _isFaceExist(numpy.ndarray(0)) == expected
 
@@ -135,7 +134,7 @@ def test_faceCalibration():
     correct: RawFaceData = RawFaceData(113, 366.82966074187624
                                       , dlib.dpoint(479, 338))
     cap = MockedCap(True, faceFrame)
-    with mock.patch('faceDetection.faceDetection.input', return_value=None):
+    with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
         result: RawFaceData = faceCalibration(cap)
 
     assert result.eyeDistance == correct.eyeDistance
