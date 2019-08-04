@@ -6,7 +6,6 @@ import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
                     RawFaceData)
-from .Utils import points2dpoints
 from functools import reduce
 
 
@@ -61,7 +60,7 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
     wholeFace: List[dlib.dpoints] = []
     for rect in rects:
         parts: dlib.dpoints =\
-            points2dpoints(_predictor(gray_img, rect).parts())
+            _points2dpoints(_predictor(gray_img, rect).parts())
         wholeFace.append(parts)
 
     if len(wholeFace) == 0:
@@ -192,4 +191,18 @@ def _normalization(face: dlib.dpoints) -> dlib.dpoints:
     return dlib.dpoints(chin + nose + outside_lips + inside_lips
                         + right_eye + left_eye
                         + right_eyebrow + left_eyebrow)
+# }}}
+
+
+# _points2dpoints(ps: dlib.points) -> dlib.dpoints: {{{
+def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
+    """convert dlib.points object to dlib.dpoints object.
+        All points() are should be converted to dpoints,
+        as we use float values
+    """
+    ret = dlib.dpoints()
+    for p in ps:
+        ret.append(dlib.dpoint(float(p.x), float(p.y)))
+
+    return ret
 # }}}
