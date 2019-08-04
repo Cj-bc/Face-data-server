@@ -3,8 +3,8 @@
 #
 import dlib
 import math
-from .faceDetection import (LANDMARK_NUM, getRawFaceData)
-from .Types import RawFaceData, FaceRotations
+from .faceDetection import (getRawFaceData)
+from .Types import RawFaceData, FaceRotations, LANDMARK_NUM
 
 
 # point_abs(a: dlib.dpoint) -> dlib.dpoint {{{
