@@ -4,9 +4,8 @@ import datetime
 import sys
 from typing import (Optional)
 
-from faceDetection.faceDetection import (faceCalibration, facemark)
-from faceDetection.find import (rotates)
-from faceDetection.Types import (RawFaceData, FaceRotations,
+from FaceDataServer.faceDetection import (faceCalibration, facemark)
+from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError)
 
 
@@ -28,7 +27,7 @@ def main():
         landmark: Optional[dlib.points] = facemark(frame)
 
         if landmark is not None:
-            rots: FaceRotations = rotates(landmark, calibrated)
+            rots: FaceRotations = FaceRotations.get(landmark, calibrated)
 
         print(f"{datetime.datetime.today()}: {rots.x}, {rots.y}, {rots.z}")
 

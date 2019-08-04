@@ -5,7 +5,7 @@ import dlib
 import math
 from typing import List
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from faceDetection.Types import Cv2Image  # noqa: E402
+from FaceDataServer.Types import Cv2Image  # noqa: E402
 
 faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
