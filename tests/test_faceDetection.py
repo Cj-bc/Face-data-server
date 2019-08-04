@@ -80,19 +80,6 @@ def test_getBiggestFace_noface():
     assert _getBiggestFace([]) == dlib.dpoints(194)
 
 
-# --- constructDlibDPoints
-
-
-def test_constructDlibDPoints():
-    ps = map(lambda x: dlib.dpoint(x, x), list(range(100)))
-
-    correct = dlib.dpoints()
-    for i in range(100):
-        correct.append(dlib.dpoint(i, i))
-
-    assert constructDlibDPoints(ps) == correct
-
-
 # --- _normalization
 
 
