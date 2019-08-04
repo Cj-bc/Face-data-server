@@ -75,6 +75,29 @@ class FaceRotations:
     y: float
     z: float
 
+    @classmethod
+    def get(cls: S, landmark: dlib.dpoints, calib: RawFaceData) -> S:
+        """ calculate face rotations from calibration data and landmark
+        """
+        eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \
+                                landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
+        raw = RawFaceData.get(landmark).thresholded(calib)
+
+        # TODO: how can I notice which side does face face to?
+        #       I can't simply compare eyes sizes, 'cus sometimes
+        #       user might wink. In that case, I can't recognize properly.
+        degreeY = math.acos(raw.eyeDistance / calib.eyeDistance)
+        degreeX = math.acos(raw.faceHeigh / calib.faceHeigh)
+        degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
+        # TODO: ^ This some times got error 'Division by 0'
+
+        rotateX = degreeX if raw.faceCenter.y > calib.faceCenter.y\
+                            else -1 * degreeX
+        rotateY = degreeY if raw.faceCenter.x > calib.faceCenter.x\
+                            else -1 * degreeY
+        # v Is this correct code? v
+        rotateZ = degreeZ
+        return cls(rotateX, rotateY, rotateZ)
 
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
