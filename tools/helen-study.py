@@ -8,13 +8,13 @@ import cv2
 import glob
 
 NOW_ABS_FILEPATH = os.path.dirname(os.path.abspath(__file__))
-HELEN_IMGS_ABS_FILEPATH = NOW_ABS_FILEPATH + '/helen-dataset/'
-HELEN_ANNOTATIONS_ABS_FILEPATH = HELEN_IMGS_ABS_FILEPATH + 'annotations/'
-CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../src/"
+HELEN_IMGS_ABS_FILEPATH = NOW_ABS_FILEPATH + '/helen-dataset'
+HELEN_ANNOTATIONS_ABS_FILEPATH = HELEN_IMGS_ABS_FILEPATH + '/annotations'
+CASCADE_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../src"
 
 face_cascade = cv2.CascadeClassifier(
-    CASCADE_PATH + 'haarcascade_frontalface_default.xml')
-helen_annotations_filelist = glob.glob(HELEN_ANNOTATIONS_ABS_FILEPATH + '*')
+    CASCADE_PATH + '/haarcascade_frontalface_default.xml')
+helen_annotations_filelist = glob.glob(HELEN_ANNOTATIONS_ABS_FILEPATH + '/*')
 
 xml_template_header = """<?xml version='1.0' encoding='ISO-8859-1'?>
 <?xml-stylesheet type='text/xsl' href='image_metadata_stylesheet.xsl'?>
@@ -34,9 +34,10 @@ def generate_xml():
 
     for file_name in helen_annotations_filelist:
         with open(file_name, 'r') as file:
-            img_filename = HELEN_IMGS_ABS_FILEPATH\
+            img_filename = HELEN_IMGS_ABS_FILEPATH + '/'\
                 + file.readline().replace('\n', '')\
                 + '.jpg'  # header is imgfile name
+            print(img_filename)
 
             image_xml = f"""
             <image file='{img_filename}'>
@@ -94,7 +95,7 @@ def main():
     options.num_threads = multiprocessing.cpu_count()  # cpu threads
     options.be_verbose = True
 
-    train_xml_filename = './helen-dataset.xml'
+    train_xml_filename = 'helen-dataset.xml'
 
     print("Start training")
     dlib.train_shape_predictor(
