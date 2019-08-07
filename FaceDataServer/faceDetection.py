@@ -66,7 +66,9 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
     if len(wholeFace) == 0:
         return None
 
-    return _normalization(_getBiggestFace(wholeFace))
+    absolute_coord = _normalization(_getBiggestFace(wholeFace))
+    center = absolute_coord[49]
+    return _toRelative(absolute_coord, center)
 # }}}
 
 
@@ -205,4 +207,12 @@ def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
         ret.append(dlib.dpoint(float(p.x), float(p.y)))
 
     return ret
+# }}}
+
+
+
+# _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints: {{{
+def _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints:
+    converted = list(map(lambda p: p - center, target))
+    return dlib.dpoints(converted)
 # }}}
