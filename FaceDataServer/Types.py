@@ -52,13 +52,7 @@ class RawFaceData:
                             - landmark[LANDMARK_NUM["TIN_CENTER"]]
         faceHeigh = math.sqrt(_faceHeighVector.x ** 2
                               + _faceHeighVector.y ** 2)
-
-        _faceCenterX = (max(map(lambda p: p.x, landmark))
-                        + min(map(lambda p: p.x, landmark))) // 2
-        _faceCenterY = (max(map(lambda p: p.y, landmark))
-                        + min(map(lambda p: p.y, landmark))) // 2
-        faceCenter = dlib.dpoint(_faceCenterX, _faceCenterY)
-
+        faceCenter = landmark["49"]
         return cls(eyeDistance, faceHeigh, faceCenter)
 
     def thresholded(self, t):
