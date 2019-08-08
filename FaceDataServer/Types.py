@@ -33,6 +33,7 @@ S = TypeVar('S')
 # }}}
 
 
+# Coordinates {{{
 class Coord():
     """Base class to express Coordinates
         This is made to be converted from dlib.dpoint
@@ -48,6 +49,11 @@ class Coord():
 class AbsoluteCoord(Coord):
     pass
 
+
+# }}}
+
+
+# Each face parts {{{
 class Part():
     bottom: Coord
     top: Coord
@@ -81,6 +87,7 @@ class Nose(Part):
 
 class EyeBrow(Part):
     pass
+# }}}
 
 
 class Face:
