@@ -9,6 +9,9 @@ import math
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 # ignore
 LANDMARK_NUM = {"TIN_CENTER": 19
+               , "NOSE_R": 44
+               , "NOSE_BOTTOM": 49
+               , "NOSE_L": 54
                , "MOUSE_R": 58
                , "MOUSE_TOP": 65
                , "MOUSE_L": 71
@@ -22,7 +25,13 @@ LANDMARK_NUM = {"TIN_CENTER": 19
                , "RIGHT_EYE_R": 145
                , "RIGHT_EYE_BOTTOM": 149
                , "EYEBROW_LEFT_R": 154
+               , "EYEBROW_LEFT_TOP": 159
+               , "EYEBROW_LEFT_L": 164
+               , "EYEBROW_LEFT_BOTTOM": 169
                , "EYEBROW_RIGHT_L": 174
+               , "EYEBROW_RIGHT_TOP": 179
+               , "EYEBROW_RIGHT_R": 185
+               , "EYEBROW_RIGHT_BOTTOM": 190
                 }
 
 # type aliases {{{
