@@ -115,6 +115,35 @@ class Face:
                    Mouth.default(), Nose.default(), EyeBrow.default()
                    EyeBrow.default())
 
+    @classmethod
+    def fromDPoints(cls: S, points: dlib.dpoints) -> S:
+        """return 'Face' object based on given 'facemark'"""
+        _center = points[LANDMARK_NUM["NOSE_BOTTOM"]]
+        _leye   = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
+                     , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
+                     , points[LANDMARK_NUM["LEFT_EYE_L"]]
+                     , points[LANDMARK_NUM["LEFT_EYE_R"]])
+        _reye   = Eye(points[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
+                     , points[LANDMARK_NUM["RIGHT_EYE_TOP"]]
+                     , points[LANDMARK_NUM["RIGHT_EYE_L"]]
+                     , points[LANDMARK_NUM["RIGHT_EYE_R"]])
+        _mouth  = Mouth(points[LANDMARK_NUM["MOUSE_BOTTOM"]]
+                       , points[LANDMARK_NUM["MOUSE_TOP"]]
+                       , points[LANDMARK_NUM["MOUSE_L"]]
+                       , points[LANDMARK_NUM["MOUSE_R"]])
+        _nose   = Nose(points[LANDMARK_NUM["NOSE_BOTTOM"]]
+                      , points[LANDMARK_NUM["NOSE_L"]]
+                      , points[LANDMARK_NUM["NOSE_R"]])
+        _leb    = EyeBrow(points[LANDMARK_NUM["EYEBROW_LEFT_BOTTOM"]]
+                         , points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]]
+                         , points[LANDMARK_NUM["EYEBROW_LEFT_L"]]
+                         , points[LANDMARK_NUM["EYEBROW_LEFT_R"]])
+        _reb    = EyeBrow(points[LANDMARK_NUM["EYEBROW_RIGHT_BOTTOM"]]
+                         , points[LANDMARK_NUM["EYEBROW_RIGHT_TOP"]]
+                         , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
+                         , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
+
+        return cls(_center, _leye, _reye, _mouth, _nose, _leb, _reb)
 
 
 @dataclasses.dataclass(frozen=True)
