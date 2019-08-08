@@ -25,10 +25,73 @@ LANDMARK_NUM = {"TIN_CENTER": 19
                , "EYEBROW_RIGHT_L": 174
                 }
 
+# type aliases {{{
 
 Error = NewType('Error', str)
 Cv2Image = numpy.ndarray
 S = TypeVar('S')
+# }}}
+
+
+class Coord():
+    """Base class to express Coordinates
+        This is made to be converted from dlib.dpoint
+    """
+    x: float
+    y: float
+
+    @staticmethod
+    def default(cls):
+        """return default coordinate."""
+        return cls(0, 0)
+
+class AbsoluteCoord(Coord):
+    pass
+
+class Part():
+    bottom: Coord
+    top: Coord
+    leftSide: Coord
+    rightSide: Coord
+
+    @staticmethod
+    def default(cls):
+        """return default coordinate."""
+        return cls(0, 0, 0, 0)
+
+
+class Eye(Part):
+    pass
+
+
+class Mouth(Part):
+    pass
+
+
+class Nose(Part):
+    pass
+
+
+class EyeBrow(Part):
+    pass
+
+
+class Face:
+    center: AbsoluteCoord
+    leftEye: Eye
+    rightEye: Eye
+    mouth: Mouth
+    nose: Nose
+    leftEyeBrow: EyeBrow
+    rightEyeBrow: EyeBrow
+
+    @classmethod
+    def default(cls):
+        """return default coordinate."""
+        return cls(AbsoluteCoord.default(), Eye.default(), Eye.default()
+                   Mouth.default(), Nose.default(), EyeBrow.default()
+                   EyeBrow.default())
+
 
 
 @dataclasses.dataclass(frozen=True)
