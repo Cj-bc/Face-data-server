@@ -69,7 +69,14 @@ class Mouth(Part):
 
 
 class Nose(Part):
-    pass
+    top = None
+
+    def __init__(self: S, b: Coord, l: Coord, r: Coord) -> S:
+        self.bottom = b
+        self.leftSide = l
+        self.rightSide = r
+
+        return self
 
 
 class EyeBrow(Part):
