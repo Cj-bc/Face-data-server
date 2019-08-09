@@ -112,8 +112,8 @@ class Face:
     def default(cls):
         """return default coordinate."""
         return cls(AbsoluteCoord.default(), Eye.default(), Eye.default()
-                   Mouth.default(), Nose.default(), EyeBrow.default()
-                   EyeBrow.default())
+                   , Mouth.default(), Nose.default(), EyeBrow.default()
+                   , EyeBrow.default())
 
     @classmethod
     def fromDPoints(cls: S, points: dlib.dpoints) -> S:
