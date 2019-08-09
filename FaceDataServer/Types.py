@@ -247,12 +247,14 @@ class FaceRotations:
     z: float
 
     @classmethod
-    def get(cls: S, landmark: dlib.dpoints, calib: RawFaceData) -> S:
+    def get(cls: S, face: Face, calib: RawFaceData) -> S:
         """ calculate face rotations from calibration data and landmark
         """
-        eyeLineVector = landmark[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]] - \
-                                landmark[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
-        raw = RawFaceData.get(landmark).thresholded(calib)
+        eyeLineVector = face.rightEye.bottom - face.leftEye.bottom
+        raw = RawFaceData.get(face).thresholded(calib)
+        leftEdge2Center  = face.leftTemple - raw.faceCenter
+        rightEdge2Center = raw.faceCenter - face.rightTemple
+        chin2Center = raw.faceCenter - Coord.fromDpoint(landmark[LANDMARK_NUM["TIN_CENTER"]])
 
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
