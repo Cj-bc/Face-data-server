@@ -57,6 +57,12 @@ class Coord:
     def __sub__(self: S, other: S) -> S:
         return Coord(self.x - other.x, self.y - other.y)
 
+    def __add__(self: S, other: S) -> S:
+        return Coord(self.x + other.x, self.y + other.y)
+
+    def __truediv__(self: S, other: Num) -> S:
+        return Coord(self.x / other, self.y / other)
+
     @classmethod
     def default(cls):
         """return default coordinate."""
