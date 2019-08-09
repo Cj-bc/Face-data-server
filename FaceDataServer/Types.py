@@ -86,6 +86,20 @@ class Part():
     leftSide: Coord
     rightSide: Coord
 
+    def __init__(self, b, t, l, r ):
+        def _coord(c):
+            if type(c) == Coord:
+                return c
+            elif type(c) == dlib.dpoint:
+                return Coord.fromDPoint(c)
+            else:
+                raise TypeError
+
+        self.bottom =_coord(b)
+        self.top = _coord(t)
+        self.leftSide = _coord(l)
+        self.rightSide = _coord(r)
+
     def __sub__(self: S, other: S) -> S:
         return Part(self.bottom - other.bottom
                    , self.top - other.top
