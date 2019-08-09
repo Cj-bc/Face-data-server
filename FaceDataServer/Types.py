@@ -155,7 +155,7 @@ class Face:
     @classmethod
     def fromDPoints(cls: S, points: dlib.dpoints) -> S:
         """return 'Face' object based on given 'facemark'"""
-        _center = points[LANDMARK_NUM["NOSE_BOTTOM"]]
+        _center = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
         _leye   = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
                      , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
                      , points[LANDMARK_NUM["LEFT_EYE_L"]]
