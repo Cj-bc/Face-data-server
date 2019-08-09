@@ -62,6 +62,10 @@ class Coord:
         """return default coordinate."""
         return cls(0, 0)
 
+    @classmethod
+    def fromDPoint(cls: S, p: dlib.dpoint) -> S:
+        return cls(p.x, p.y)
+
 
 class AbsoluteCoord(Coord):
     def __sub__(self: S, other: S) -> S:
