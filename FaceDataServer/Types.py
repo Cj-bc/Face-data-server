@@ -43,20 +43,29 @@ S = TypeVar('S')
 
 
 # Coordinates {{{
-class Coord():
+class Coord:
     """Base class to express Coordinates
         This is made to be converted from dlib.dpoint
     """
     x: float
     y: float
 
-    @staticmethod
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __sub__(self: S, other: S) -> S:
+        return Coord(self.x - other.x, self.y - other.y)
+
+    @classmethod
     def default(cls):
         """return default coordinate."""
         return cls(0, 0)
 
+
 class AbsoluteCoord(Coord):
-    pass
+    def __sub__(self: S, other: S) -> S:
+        return AbsoluteCoord(self.x - other.x, self.y - other.y)
 
 
 # }}}
