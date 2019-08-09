@@ -218,19 +218,18 @@ class RawFaceData:
     faceCenter: dlib.dpoint
 
     @classmethod
-    def get(cls: S, landmark: dlib.dpoints) -> S:
+    def get(cls: S, face: Face) -> S:
         """ Return RawFaceData from dlib.points
         """
-        eyeDistance  = abs(landmark[LANDMARK_NUM["RIGHT_EYE_L"]].x
-                           - landmark[LANDMARK_NUM["LEFT_EYE_R"]].x)
+        eyeDistance  = abs(face.rightEye.leftSide.x - face.leftEye.rightSide.x)
 
-        _middleForehead = (landmark[LANDMARK_NUM["EYEBROW_LEFT_R"]]
-                          + landmark[LANDMARK_NUM["EYEBROW_RIGHT_L"]]) / 2
+        _middleForehead = (face.leftEyeBrow.rightSide
+                          + face.rightEyeBrow.leftSide) / 2
         _faceHeighVector  = _middleForehead\
-                            - landmark[LANDMARK_NUM["TIN_CENTER"]]
+                            - Coord.fromDPoint(landmark[LANDMARK_NUM["TIN_CENTER"]])
         faceHeigh = math.sqrt(_faceHeighVector.x ** 2
                               + _faceHeighVector.y ** 2)
-        faceCenter = landmark["49"]
+        faceCenter = face.center
         return cls(eyeDistance, faceHeigh, faceCenter)
 
     def thresholded(self, t):
