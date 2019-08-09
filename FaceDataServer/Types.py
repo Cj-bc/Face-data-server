@@ -51,6 +51,9 @@ class Coord:
     x: float
     y: float
 
+    def __repr__(self):
+        return f"Coord({self.x}, {self.y})"
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -96,6 +99,9 @@ class Part():
     top: Coord
     leftSide: Coord
     rightSide: Coord
+
+    def __repr__(self):
+        return f"Part({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
 
     def __init__(self, b, t, l, r ):
         def _coord(c):
