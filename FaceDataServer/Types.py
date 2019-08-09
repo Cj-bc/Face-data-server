@@ -39,6 +39,7 @@ LANDMARK_NUM = {"TIN_CENTER": 19
 Error = NewType('Error', str)
 Cv2Image = numpy.ndarray
 S = TypeVar('S')
+Num = Union[int, float]
 # }}}
 
 
