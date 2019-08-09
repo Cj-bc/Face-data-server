@@ -78,6 +78,12 @@ class Part():
     leftSide: Coord
     rightSide: Coord
 
+    def __sub__(self: S, other: S) -> S:
+        return Part(self.bottom - other.bottom
+                   , self.top - other.top
+                   , self.leftSide - other.leftSide
+                   , self.rightSide - other.rightSide)
+
     @staticmethod
     def default(cls):
         """return default coordinate."""
