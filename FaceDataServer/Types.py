@@ -116,6 +116,17 @@ class Part():
                    , self.leftSide - other.leftSide
                    , self.rightSide - other.rightSide)
 
+    def __add__(self: S, other: S) -> S:
+        return Part(self.bottom + other.bottom
+                   , self.top + other.top
+                   , self.leftSide + other.leftSide
+                   , self.rightSide + other.rightSide)
+
+    def __truediv__(self: S, other: Num) -> S:
+        return Part(self.bottom / other , self.top / other
+                   , self.leftSide / other , self.rightSide / other)
+
+
     @staticmethod
     def default(cls):
         """return default coordinate."""
