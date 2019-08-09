@@ -6,7 +6,28 @@ from typing import (Optional)
 
 from FaceDataServer.faceDetection import (faceCalibration, facemark)
 from FaceDataServer.Types import (RawFaceData, FaceRotations,
-                                 FaceDetectionError)
+                                 FaceDetectionError, Face)
+
+
+def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData, prevFace: Face):
+    """ capture face image and output each rotations
+        [Recursive method]
+    """
+    if not cap.isOpened():
+        return (cap, _calib, prevFace)
+
+    rots: FaceRotations = FaceRotations(0, 0, 0)
+    _, frame = cap.read()
+    landmark: Optional[dlib.points] = facemark(frame)
+
+    if landmark is not None:
+        face: Face = Face.fromDPoints(landmark)
+        rots: FaceRotations = FaceRotations.get(face, calibrated)
+
+    print(f"{datetime.datetime.today()}: {rots.x}, {rots.y}, {rots.z}")
+
+    return faceDetectionLoop(cap, _calib, face)
+
 
 
 def main():
@@ -21,15 +42,8 @@ def main():
         print("Aborting")
         sys.exit(1)
 
-    while cap.isOpened():
-        rots: FaceRotations = FaceRotations(0, 0, 0)
-        _, frame = cap.read()
-        landmark: Optional[dlib.points] = facemark(frame)
 
-        if landmark is not None:
-            rots: FaceRotations = FaceRotations.get(landmark, calibrated)
-
-        print(f"{datetime.datetime.today()}: {rots.x}, {rots.y}, {rots.z}")
+    _, _, _ = faceDetectionLoop(cap, calibrated, Face.default())
 
     cap.release()
 
