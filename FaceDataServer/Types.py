@@ -84,7 +84,6 @@ class AbsoluteCoord(Coord):
         return AbsoluteCoord(self.x - other.x, self.y - other.y)
 
 
-
 class RelativeCoord(Coord):
     def __sub__(self: S, other: S) -> S:
         return RelativeCoord(self.x - other.x, self.y - other.y)
@@ -103,9 +102,10 @@ class Part():
     rightSide: Coord
 
     def __repr__(self):
-        return f"Part({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
+        return f"Part({self.bottom}, {self.top}, \
+                 {self.leftSide}, {self.rightSide})"
 
-    def __init__(self, b, t, l, r ):
+    def __init__(self, b, t, l, r):
         def _coord(c):
             if type(c) == Coord:
                 return c
@@ -114,7 +114,7 @@ class Part():
             else:
                 raise TypeError
 
-        self.bottom =_coord(b)
+        self.bottom = _coord(b)
         self.top = _coord(t)
         self.leftSide = _coord(l)
         self.rightSide = _coord(r)
@@ -134,7 +134,6 @@ class Part():
     def __truediv__(self: S, other: Num) -> S:
         return Part(self.bottom / other , self.top / other
                    , self.leftSide / other , self.rightSide / other)
-
 
     @staticmethod
     def default(cls):
@@ -192,7 +191,7 @@ class Face:
         """return 'Face' object based on given 'facemark'"""
         _center = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
         _ltemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
-        _rtemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]])
+        _rtemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]]) # noqa
         _tin    = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TIN_CENTER"]])
         _leye   = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
                      , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
@@ -265,9 +264,10 @@ class FaceRotations:
         """
         eyeLineVector = face.rightEye.bottom - face.leftEye.bottom
         raw = RawFaceData.get(face).thresholded(calib)
-        leftEdge2Center  = face.leftTemple - raw.faceCenter
-        rightEdge2Center = raw.faceCenter - face.rightTemple
-        chin2Center = raw.faceCenter - Coord.fromDpoint(landmark[LANDMARK_NUM["TIN_CENTER"]])
+        # those values are used in the near future.Just ignore this for linting
+        leftEdge2Center  = face.leftTemple - raw.faceCenter # noqa
+        rightEdge2Center = raw.faceCenter - face.rightTemple # noqa
+        chin2Center = raw.faceCenter - Coord.fromDpoint(face.tinCenter) # noqa
 
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
@@ -284,6 +284,7 @@ class FaceRotations:
         # v Is this correct code? v
         rotateZ = degreeZ
         return cls(rotateX, rotateY, rotateZ)
+
 
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""

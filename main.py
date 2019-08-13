@@ -9,7 +9,8 @@ from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError, Face)
 
 
-def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData, prevFace: Face):
+def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData
+                     , prevFace: Face):
     """ capture face image and output each rotations
         [Recursive method]
     """
@@ -29,7 +30,6 @@ def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData, prevFace: Face
     return faceDetectionLoop(cap, _calib, face)
 
 
-
 def main():
     print("connecting to camera...")
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
@@ -41,7 +41,6 @@ def main():
         print(f"ERROR: Unexpected things are happened: {e}")
         print("Aborting")
         sys.exit(1)
-
 
     _, _, _ = faceDetectionLoop(cap, calibrated, Face.default())
 

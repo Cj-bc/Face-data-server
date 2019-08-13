@@ -210,7 +210,6 @@ def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
 # }}}
 
 
-
 # _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints: {{{
 def _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints:
     converted = list(map(lambda p: p - center, target))
