@@ -62,6 +62,8 @@ class Coord:
 
     def __sub__(self: S, other: S) -> S:
         return Coord(self.x - other.x, self.y - other.y)
+    def __neg__(self: S) --> S:
+        return Coord(-self.x, -self.y)
 
     def __add__(self: S, other: S) -> S:
         return Coord(self.x + other.x, self.y + other.y)
