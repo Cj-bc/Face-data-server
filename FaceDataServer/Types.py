@@ -122,11 +122,6 @@ class Part():
         self.leftSide = _coord(l)
         self.rightSide = _coord(r)
 
-    def __sub__(self: S, other: S) -> S:
-        return Part(self.bottom - other.bottom
-                   , self.top - other.top
-                   , self.leftSide - other.leftSide
-                   , self.rightSide - other.rightSide)
     def __neg__(self: S) -> S:
         return Part(-self.bottom , -self.top
                    , -self.leftSide , -self.rightSide)
@@ -136,6 +131,9 @@ class Part():
                    , self.top + other.top
                    , self.leftSide + other.leftSide
                    , self.rightSide + other.rightSide)
+
+    def __sub__(self: S, other: S) -> S:
+        return self + (-other)
 
     def __truediv__(self: S, other: Num) -> S:
         return Part(self.bottom / other , self.top / other
