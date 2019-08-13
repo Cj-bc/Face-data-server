@@ -7,6 +7,7 @@ from conftest import (points_front, points_right, points_left
                      , points_lean_left, points_lean_right)
 
 
+# RawFaceData {{{
 @pytest.mark.parametrize('eD,fH,fC', [(2, 2, dlib.dpoint(0, 0)),
                                       (1, 1, dlib.dpoint(0, 0)),
                                       (1, 1, dlib.dpoint(-1, -1))
@@ -35,7 +36,7 @@ def test_RawFaceData_get():
     assert result.eyeDistance == correctRawFaceData.eyeDistance
     assert result.faceCenter.x == correctRawFaceData.faceCenter.x
     assert result.faceCenter.y == correctRawFaceData.faceCenter.y
-
+# }}}
 
 @pytest.mark.parametrize("points,th", [(points_front, (0, 0, 0)),
                                        (points_right, (0, -1, 0)),
