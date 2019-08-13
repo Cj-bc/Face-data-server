@@ -6,11 +6,12 @@ import dlib
 from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord)
 from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
-                     , points_lean_left, points_lean_right)
+                     , points_lean_left, points_lean_right
+                     , finiteFloatCallable)
 
 
 # Part {{{
-@given(st.integers(), st.integers())
+@given(finiteFloatCallable, finiteFloatCallable)
 def test_Part__init__(x, y):
     """ Assert both 'Coord' and 'dlib.dpoint' can be used """
     assert Part(Coord(x, y)) == Part(dlib.dpoint(x, y))
