@@ -170,6 +170,7 @@ class Face:
     center: AbsoluteCoord
     leftTemple: RelativeCoord
     rightTemple: RelativeCoord
+    tinCenter: RelativeCoord
     leftEye: Eye
     rightEye: Eye
     mouth: Mouth
@@ -190,6 +191,7 @@ class Face:
         _center = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
         _ltemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
         _rtemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]])
+        _tin    = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TIN_CENTER"]])
         _leye   = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
                      , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
                      , points[LANDMARK_NUM["LEFT_EYE_L"]]
@@ -214,7 +216,7 @@ class Face:
                          , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
                          , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
 
-        return cls(_center, _ltemp, _rtemp, _leye, _reye
+        return cls(_center, _ltemp, _rtemp, _tin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
 
 
