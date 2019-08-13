@@ -179,6 +179,21 @@ class Face:
     leftEyeBrow: EyeBrow
     rightEyeBrow: EyeBrow
 
+    def __init__(self: S, c: AbsoluteCoord, lt: RelativeCoord,
+                 rt: RelativeCoord, tc: RelativeCoord, le: Eye,
+                 re: Eye, m: Mouth, n: Nose, leb: EyeBrow,
+                 reb: EyeBrow) -> None:
+        self.center = c
+        self.leftTemple = lt
+        self.rightTemple = rt
+        self.tinCenter = tc
+        self.leftEye = le
+        self.rightEye = re
+        self.mouth = m
+        self.nose = n
+        self.leftEyeBrow = leb
+        self.rightEyeBrow = reb
+
     @classmethod
     def default(cls):
         """return default coordinate."""
