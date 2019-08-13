@@ -1,5 +1,5 @@
 import pytest
-import hypothesis import given
+from hypothesis import given
 import hypothesis.strategies as st
 import dlib
 
