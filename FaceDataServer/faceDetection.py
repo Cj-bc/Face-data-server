@@ -5,7 +5,7 @@ import cv2
 import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
-                    RawFaceData)
+                    RawFaceData, Face)
 from functools import reduce
 
 
@@ -28,7 +28,7 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     input("Please face front and press enter:")
     frame = _waitUntilFaceDetect(cap)
     print("got your face... wait for a second...")
-    face: dlib.dpoints = facemark(frame)
+    face: Face = Face.fromDPoints(facemark(frame))
     print("done :)")
     return RawFaceData.get(face)
 # }}}
