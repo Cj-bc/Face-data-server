@@ -18,6 +18,11 @@ def test_Coord__eq__(n, m):
     assert Coord(n, m) != Coord(n, m-1.0)
     if n != m:
         assert Coord(n, m) != Coord(m, n)
+
+
+@given(st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
+def test_Coord__neg__(c):
+    assert -(-c) == c
 # }}}
 
 
