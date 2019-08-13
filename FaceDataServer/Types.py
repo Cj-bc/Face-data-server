@@ -135,7 +135,7 @@ class Part():
         return Part(self.bottom / other , self.top / other
                    , self.leftSide / other , self.rightSide / other)
 
-    @staticmethod
+    @classmethod
     def default(cls):
         """return default coordinate."""
         return cls(0, 0, 0, 0)
