@@ -8,9 +8,9 @@ import math
 # Those values are defined based on this site image:
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 # ignore
-LANDMARK_NUM = {"LEFT_TEMPLE": 0
+LANDMARK_NUM = {"TEMPLE_LEFT": 0
                , "TIN_CENTER": 19
-               , "RIGHT_TEMPLE": 40
+               , "TEMPLE_RIGHT": 40
                , "NOSE_R": 44
                , "NOSE_BOTTOM": 49
                , "NOSE_L": 54
