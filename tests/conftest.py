@@ -12,7 +12,8 @@ faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
 
 
-finiteFloatCallable = st.floats(allow_infinity=False, allow_nan=False)
+finiteFloatCallable = st.floats(allow_infinity=False, allow_nan=False
+                               , min_value=0.0, max_value=1.0e4)
 
 def constructPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
     """ helper function.
