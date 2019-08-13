@@ -157,6 +157,9 @@ class Nose(Part):
         self.leftSide = l
         self.rightSide = r
 
+    def default(cls):
+        """return default coordinate."""
+        return cls(Coord(0, 0), Coord(0, 0), Coord(0, 0))
 
 
 class EyeBrow(Part):
