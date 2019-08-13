@@ -18,6 +18,7 @@ def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData
         return (cap, _calib, prevFace)
 
     rots: FaceRotations = FaceRotations(0, 0, 0)
+    face: Face = Face.default()
     _, frame = cap.read()
     landmark: Optional[dlib.points] = facemark(frame)
 
