@@ -60,7 +60,10 @@ class Coord:
         self.x = x
         self.y = y
 
-    def __neg__(self: S) --> S:
+    def __eq__(self: S, other: S) -> S:
+        return self.x == other.x and self.y == other.y
+
+    def __neg__(self: S) -> S:
         return Coord(-self.x, -self.y)
 
     def __add__(self: S, other: S) -> S:
