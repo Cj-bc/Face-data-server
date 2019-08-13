@@ -23,6 +23,16 @@ def test_Coord__eq__(n, m):
 @given(st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
 def test_Coord__neg__(c):
     assert -(-c) == c
+
+
+@given(st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
+      , st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
+      , st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
+def test_Coord__add__(a, b, c):
+    assert (a + b) + c == a + (b + c)
+    assert a + b == b + a
+    assert a + Coord(0.0, 0.0) == a
+    assert a + -a == Coord(0.0, 0.0)
 # }}}
 
 
