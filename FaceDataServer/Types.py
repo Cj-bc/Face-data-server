@@ -1,4 +1,4 @@
-from typing import NewType, TypeVar
+from typing import NewType, TypeVar, Union
 import numpy
 import dlib
 import dataclasses
