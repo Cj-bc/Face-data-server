@@ -13,6 +13,7 @@ mypy = "*"
 [packages]
 dlib = "*"
 opencv-python = "*"
+hypothesis = "*"
 
 [requires]
 python_version = "3.7"
