@@ -1,10 +1,25 @@
 import pytest
+import hypothesis import given
+import hypothesis.strategies as st
 import dlib
 
-from FaceDataServer.Types import (RawFaceData, FaceRotations)
+from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord)
 from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
                      , points_lean_left, points_lean_right)
+
+
+# Part {{{
+@given(st.integers(), st.integers())
+def test_Part__init__(x, y):
+    """ Assert both 'Coord' and 'dlib.dpoint' can be used """
+    assert Part(Coord(x, y)) == Part(dlib.dpoint(x, y))
+
+
+def test_Part__init__typeMismatch():
+    with pytest.raises(TypeError):
+        Part(0, 1, 2, 3, 4)
+# }}}
 
 
 # RawFaceData {{{
