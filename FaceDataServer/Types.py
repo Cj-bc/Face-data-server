@@ -60,13 +60,14 @@ class Coord:
         self.x = x
         self.y = y
 
-    def __sub__(self: S, other: S) -> S:
-        return Coord(self.x - other.x, self.y - other.y)
     def __neg__(self: S) --> S:
         return Coord(-self.x, -self.y)
 
     def __add__(self: S, other: S) -> S:
         return Coord(self.x + other.x, self.y + other.y)
+
+    def __sub__(self: S, other: S) -> S:
+        return self + (-other)
 
     def __truediv__(self: S, other: Num) -> S:
         return Coord(self.x / other, self.y / other)
