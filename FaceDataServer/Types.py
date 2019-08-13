@@ -157,7 +157,6 @@ class Nose(Part):
         self.leftSide = l
         self.rightSide = r
 
-        return self
 
 
 class EyeBrow(Part):
