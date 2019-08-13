@@ -10,6 +10,17 @@ from conftest import (points_front, points_right, points_left
                      , finiteFloatCallable)
 
 
+# Coord {{{
+@given(finiteFloatCallable, finiteFloatCallable)
+def test_Coord__eq__(n, m):
+    assert Coord(n, m) == Coord(n, m)
+    assert Coord(n, m) != Coord(n-1.0, m)
+    assert Coord(n, m) != Coord(n, m-1.0)
+    if n != m:
+        assert Coord(n, m) != Coord(m, n)
+# }}}
+
+
 # Part {{{
 @given(finiteFloatCallable, finiteFloatCallable)
 def test_Part__init__(x, y):
