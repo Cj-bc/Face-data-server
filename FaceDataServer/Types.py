@@ -127,6 +127,9 @@ class Part():
                    , self.top - other.top
                    , self.leftSide - other.leftSide
                    , self.rightSide - other.rightSide)
+    def __neg__(self: S) -> S:
+        return Part(-self.bottom , -self.top
+                   , -self.leftSide , -self.rightSide)
 
     def __add__(self: S, other: S) -> S:
         return Part(self.bottom + other.bottom
