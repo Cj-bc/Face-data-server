@@ -50,6 +50,15 @@ def test_Coord__sub__(a):
 def test_Coord__truediv__(x, y, d):
     assume(d != 0.0)
     assert Coord(x, y) / d == Coord(x / d, y / d)
+
+
+def test_Coord_default():
+    assert Coord.default() == Coord(0, 0)
+
+
+@given(st.builds(dlib.dpoint, finiteFloatCallable, finiteFloatCallable))
+def test_Coord_fromDPoint(p):
+    assert Coord.fromDPoint(p) == Coord(p.x, p.y)
 # }}}
 
 
