@@ -1,3 +1,4 @@
+from typing import Tuple
 import pytest
 from hypothesis import given, assume
 import hypothesis.strategies as st
@@ -63,10 +64,20 @@ def test_Coord_fromDPoint(p):
 
 
 # Part {{{
-@given(finiteFloatCallable, finiteFloatCallable)
-def test_Part__init__(x, y):
+@given(st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable))
+def test_Part__init__(b, t, l, r):
     """ Assert both 'Coord' and 'dlib.dpoint' can be used """
-    assert Part(Coord(x, y)) == Part(dlib.dpoint(x, y))
+    def _2C(t: Tuple[float, float]):
+        return Coord(t[0], t[1])
+
+    def _2P(t: Tuple[float, float]):
+        return dlib.dpoint(t[0], t[1])
+
+    assert Part(_2C(b), _2C(t), _2C(l), _2C(r)) == \
+                Part(_2P(b), _2P(t), _2P(l), _2P(r))
 
 
 def test_Part__init__typeMismatch():
