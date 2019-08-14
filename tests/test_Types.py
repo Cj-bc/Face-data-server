@@ -29,6 +29,10 @@ def test_Coord__neg__(c):
       , st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
       , st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
 def test_Coord__add__(a, b, c):
+    # Needed to avoid test failures due to errors in floating point calc
+    assume((a.x + b.x) + c.x == a.x + (b.x + c.x))
+    assume((a.y + b.y) + c.y == a.y + (b.y + c.y))
+
     assert (a + b) + c == a + (b + c)
     assert a + b == b + a
     assert a + Coord(0.0, 0.0) == a
