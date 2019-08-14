@@ -92,8 +92,7 @@ def test_Part__add__(a, b, c):
     assert (a + b) + c == a + (b + c)
     assert a + b == b + a
     assert a + Part.default() == a
-    # TODO: I don't know how to define __mul__ 4 this class
-    # assert a + -a == 0
+    assert a + -a == Part(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
 # }}}
 
 
