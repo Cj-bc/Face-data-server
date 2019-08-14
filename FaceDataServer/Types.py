@@ -86,6 +86,9 @@ class Coord:
 
 
 class AbsoluteCoord(Coord):
+    def __repr__(self):
+        return f"AbsoluteCoord({self.x}, {self.y})"
+
     def fromCoord(c: Coord) -> S:
         return AbsoluteCoord(c.x, c.y)
 
@@ -94,6 +97,8 @@ class AbsoluteCoord(Coord):
 
 
 class RelativeCoord(Coord):
+    def __repr__(self):
+        return f"RelativeCoord({self.x}, {self.y})"
 
     def fromCoord(c: Coord) -> S:
         return RelativeCoord(c.x, c.y)
