@@ -33,6 +33,12 @@ def test_Coord__add__(a, b, c):
     assert a + b == b + a
     assert a + Coord(0.0, 0.0) == a
     assert a + -a == Coord(0.0, 0.0)
+
+
+# TODO: Is this appropriate hypothesis?
+@given(st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
+def test_Coord__sub__(a):
+    assert a - a == Coord(0.0, 0.0)
 # }}}
 
 
