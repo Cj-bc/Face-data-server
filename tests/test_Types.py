@@ -8,7 +8,7 @@ from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord)
 from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
                      , points_lean_left, points_lean_right
-                     , finiteFloatCallable)
+                     , finiteFloatCallable, PartStrategies, CoordStrategies)
 
 
 # Coord {{{
@@ -26,9 +26,7 @@ def test_Coord__neg__(c):
     assert -(-c) == c
 
 
-@given(st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
-      , st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
-      , st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
+@given(CoordStrategies, CoordStrategies, CoordStrategies)
 def test_Coord__add__(a, b, c):
     # Needed to avoid test failures due to errors in floating point calc
     assume((a.x + b.x) + c.x == a.x + (b.x + c.x))
@@ -84,9 +82,7 @@ def test_Part__init__typeMismatch():
     with pytest.raises(TypeError):
         Part(0, 1, 2, 3, 4)
 
-@given(st.builds(Part, st.floats(), st.floats())
-      , st.builds(Part, st.floats(), st.floats())
-      , st.builds(Part, st.floats(), st.floats()))
+@given(PartStrategies, PartStrategies, PartStrategies)
 def test_Part__add__(a, b, c):
     """ the properties are taken from here:
         http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#t:Num

@@ -6,7 +6,7 @@ import math
 import hypothesis.strategies as st
 from typing import List
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from FaceDataServer.Types import Cv2Image  # noqa: E402
+from FaceDataServer.Types import Cv2Image, Coord, Part  # noqa: E402
 
 faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
@@ -14,6 +14,10 @@ noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
 
 finiteFloatCallable = st.floats(allow_infinity=False, allow_nan=False
                                , min_value=0.0, max_value=1.0e4)
+
+CoordStrategies = st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
+PartStrategies = st.builds(Part, CoordStrategies, CoordStrategies
+                          , CoordStrategies, CoordStrategies)
 
 def constructPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
     """ helper function.
