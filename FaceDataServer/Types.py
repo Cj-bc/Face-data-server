@@ -86,8 +86,11 @@ class Coord:
 
 
 class AbsoluteCoord(Coord):
-    def __sub__(self: S, other: S) -> S:
-        return AbsoluteCoord(self.x - other.x, self.y - other.y)
+    def fromCoord(c: Coord) -> S:
+        return AbsoluteCoord(c.x, c.y)
+
+    def __add__(self: S, other: S) -> S:
+        return fromCoord(self + other)
 
 
 class RelativeCoord(Coord):
