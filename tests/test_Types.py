@@ -1,5 +1,5 @@
 import pytest
-from hypothesis import given
+from hypothesis import given, assume
 import hypothesis.strategies as st
 import dlib
 
@@ -39,6 +39,13 @@ def test_Coord__add__(a, b, c):
 @given(st.builds(Coord, finiteFloatCallable, finiteFloatCallable))
 def test_Coord__sub__(a):
     assert a - a == Coord(0.0, 0.0)
+
+
+# TODO: Is this appropriate hypothesis?
+@given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
+def test_Coord__truediv__(x, y, d):
+    assume(d != 0.0)
+    assert Coord(x, y) / d == Coord(x / d, y / d)
 # }}}
 
 
