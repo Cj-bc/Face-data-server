@@ -78,6 +78,12 @@ def test_Part__init__typeMismatch():
     with pytest.raises(TypeError):
         Part(0, 1, 2, 3, 4)
 
+
+@given(PartStrategies)
+def test_Part__neg__(a):
+    assert -(-a) == a
+
+
 @given(PartStrategies, PartStrategies, PartStrategies)
 def test_Part__add__(a, b, c):
     """ the properties are taken from here:
