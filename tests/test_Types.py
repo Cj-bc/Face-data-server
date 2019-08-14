@@ -72,6 +72,19 @@ def test_Part__init__(x, y):
 def test_Part__init__typeMismatch():
     with pytest.raises(TypeError):
         Part(0, 1, 2, 3, 4)
+
+@given(st.builds(Part, st.floats(), st.floats())
+      , st.builds(Part, st.floats(), st.floats())
+      , st.builds(Part, st.floats(), st.floats()))
+def test_Part__add__(a, b, c):
+    """ the properties are taken from here:
+        http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#t:Num
+        """
+    assert (a + b) + c == a + (b + c)
+    assert a + b == b + a
+    assert a + Part.default() == a
+    # TODO: I don't know how to define __mul__ 4 this class
+    # assert a + -a == 0
 # }}}
 
 
