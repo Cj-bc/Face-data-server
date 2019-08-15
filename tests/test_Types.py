@@ -5,7 +5,8 @@ import hypothesis.strategies as st
 import dlib
 
 from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord, Nose
-                                 , AbsoluteCoord, RelativeCoord)
+                                 , AbsoluteCoord, RelativeCoord
+                                 , Face, Eye, Mouth, Nose, EyeBrow)
 from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
                      , points_lean_left, points_lean_right
@@ -191,6 +192,26 @@ def test_Face_default():
                                  , RelativeCoord.default(), RelativeCoord.default()
                                  , Eye.default(), Eye.default(), Mouth.default()
                                  , Nose.default(), EyeBrow.default(), EyeBrow.default())
+
+
+def test_Face_fromDPoints():
+    points = dlib.dpoints([dlib.dpoint(x, x) for x in range(194)])
+    # Those values are defined in LANDMARK_NUM
+    correct = Face(AbsoluteCoord(49, 49), RelativeCoord(0, 0)
+                  , RelativeCoord(40, 40), RelativeCoord(19, 19)
+                  , Eye(Coord(129, 129), Coord(120, 120), Coord(124, 124)
+                       , Coord(114, 114))
+                  , Eye(Coord(149, 149), Coord(140, 140), Coord(135, 135)
+                       , Coord(145, 145))
+                  , Mouth(Coord(79, 79), Coord(65, 65), Coord(71, 71)
+                         , Coord(58, 58))
+                  , Nose(Coord(79, 79), Coord(54, 54), Coord(58, 58))
+                  , EyeBrow(Coord(169, 169), Coord(159, 159), Coord(164, 164)
+                           , Coord(154, 154))
+                  , EyeBrow(Coord(190, 190), Coord(179, 179), Coord(174, 174)
+                           , Coord(185, 185)))
+    assert Face.fromDPoints(points) == correct
+
 # }}}
 
 # RawFaceData {{{
