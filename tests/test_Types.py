@@ -197,19 +197,19 @@ def test_Face_default():
 def test_Face_fromDPoints():
     points = dlib.dpoints([dlib.dpoint(x, x) for x in range(194)])
     # Those values are defined in LANDMARK_NUM
-    correct = Face(AbsoluteCoord(49, 49), RelativeCoord(0, 0)
-                  , RelativeCoord(40, 40), RelativeCoord(19, 19)
-                  , Eye(Coord(129, 129), Coord(120, 120), Coord(124, 124)
-                       , Coord(114, 114))
-                  , Eye(Coord(149, 149), Coord(140, 140), Coord(135, 135)
-                       , Coord(145, 145))
-                  , Mouth(Coord(79, 79), Coord(65, 65), Coord(71, 71)
-                         , Coord(58, 58))
-                  , Nose(Coord(79, 79), Coord(54, 54), Coord(58, 58))
-                  , EyeBrow(Coord(169, 169), Coord(159, 159), Coord(164, 164)
-                           , Coord(154, 154))
-                  , EyeBrow(Coord(190, 190), Coord(179, 179), Coord(174, 174)
-                           , Coord(185, 185)))
+    correct = Face(AbsoluteCoord(49.0, 49.0), RelativeCoord(0.0, 0.0)
+                  , RelativeCoord(40.0, 40.0), RelativeCoord(19.0, 19.0)
+                  , Eye(Coord(129.0, 129.0), Coord(120.0, 120.0), Coord(124.0, 124.0)
+                       , Coord(114.0, 114.0))
+                  , Eye(Coord(149.0, 149.0), Coord(140.0, 140.0), Coord(135.0, 135.0)
+                       , Coord(145.0, 145.0))
+                  , Mouth(Coord(79.0, 79.0), Coord(65.0, 65.0), Coord(71.0, 71.0)
+                         , Coord(58.0, 58.0))
+                  , Nose(Coord(49.0, 49.0), Coord(54.0, 54.0), Coord(44.0, 44.0))
+                  , EyeBrow(Coord(169.0, 169.0), Coord(159.0, 159.0), Coord(164.0, 164.0)
+                           , Coord(154.0, 154.0))
+                  , EyeBrow(Coord(190.0, 190.0), Coord(179.0, 179.0), Coord(174.0, 174.0)
+                           , Coord(185.0, 185.0)))
     assert Face.fromDPoints(points) == correct
 
 # }}}
