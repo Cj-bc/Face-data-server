@@ -123,9 +123,9 @@ class Part():
 
     def __eq__(self: S, other: S) -> bool:
         return self.bottom == other.bottom and \
-               self.top == other.top and \
-               self.leftSide == other.leftSide and \
-               self.rightSide == other.rightSide
+            self.top == other.top and \
+            self.leftSide == other.leftSide and \
+            self.rightSide == other.rightSide
 
     def __repr__(self):
         return f"Part({self.bottom}, {self.top}, \

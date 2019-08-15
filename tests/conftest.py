@@ -19,6 +19,7 @@ CoordStrategies = st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
 PartStrategies = st.builds(Part, CoordStrategies, CoordStrategies
                           , CoordStrategies, CoordStrategies)
 
+
 def constructPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
     """ helper function.
         Construct dlib.points from list of dlib.point
