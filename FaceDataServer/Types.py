@@ -232,6 +232,9 @@ class Face:
         self.leftEyeBrow = leb
         self.rightEyeBrow = reb
 
+    def __repr__(self: S) -> str:
+        return f"Face({self.center}, {self.leftTemple}, {self.rightTemple}, {self.tinCenter}, {self.leftEye}, {self.rightEye}, {self.mouth}, {self.nose}, {self.leftEyeBrow}, {self.rightEyeBrow})"
+
 
     def __eq__(self: S, other: S) -> bool:
         return self.center == other.center and self.leftTemple == other.leftTemple \
