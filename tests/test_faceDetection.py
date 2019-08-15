@@ -14,17 +14,16 @@ import dlib
 import numpy
 
 
-# --- isFaceExist
-
-
+# isFaceExist {{{
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
 def check_isFaceExist(faceNum: int, expected: bool):
     with mock.patch('FaceDataServer.faceDetection._detector',
                     return_value=dlib.rectangles(faceNum)):
         assert _isFaceExist(numpy.ndarray(0)) == expected
+# }}}
 
 
-# --- waitUntilFaceDetect
+# waitUntilFaceDetect {{{
 @pytest.mark.parametrize("frame", [faceFrame, noFaceFrame])
 def test_waitUntilFaceDetect_CapHasClosedError(frame):
     cap = MockedCap(False, frame)
@@ -48,11 +47,10 @@ def test_waitUntilFaceDetect_faceNotFound():
 
     with pytest.raises(TimeoutError):
         _run()
+# }}}
 
 
-# --- getBiggestFace
-
-
+# getBiggestFace {{{
 def test_getBiggestFace():
     emptyPoints = dlib.dpoints(194)
 
@@ -66,11 +64,10 @@ def test_getBiggestFace():
 
 def test_getBiggestFace_noface():
     assert _getBiggestFace([]) == dlib.dpoints(194)
+# }}}
 
 
-# --- _normalization
-
-
+# _normalization {{{
 def test_normalization():
     # inList {{{
     inList = [0, 1, 10, 86, 87, 88, 89, 90, 91, 92,
@@ -100,11 +97,10 @@ def test_normalization():
     correct = dlib.dpoints(list(map(lambda n: dlib.dpoint(n, n),
                                     list(range(0, 194)))))
     assert _normalization(testPoints) == correct
+# }}}
 
 
-# faceCalibration
-
-
+# faceCalibration {{{
 def test_faceCalibration():
     correct: RawFaceData = RawFaceData(113, 366.82966074187624
                                       , dlib.dpoint(479, 338))
@@ -116,10 +112,10 @@ def test_faceCalibration():
     assert result.faceHeigh == correct.faceHeigh
     assert result.faceCenter.x == correct.faceCenter.x
     assert result.faceCenter.y == correct.faceCenter.y
+# }}}
 
-# -- facemark
 
-
+# facemark {{{
 def test_facemark():
     # definition of correct_points {{{
     correct_points = [
@@ -167,6 +163,7 @@ def test_facemark():
 
 def test_facemark_noface():
     assert facemark(noFaceFrame) is None
+# }}}
 
 
 # _toRelative {{{
