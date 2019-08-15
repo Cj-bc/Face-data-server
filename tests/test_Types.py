@@ -4,11 +4,13 @@ from hypothesis import given, assume
 import hypothesis.strategies as st
 import dlib
 
-from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord, Nose)
+from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord, Nose
+                                 , AbsoluteCoord, RelativeCoord)
 from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
                      , points_lean_left, points_lean_right
-                     , finiteFloatCallable, PartStrategies, CoordStrategies)
+                     , finiteFloatCallable, PartStrategies, CoordStrategies
+                     , AbsoluteCoordStrategies, RelativeCoordStrategies)
 
 
 # Coord {{{
@@ -58,6 +60,56 @@ def test_Coord_default():
 @given(st.builds(dlib.dpoint, finiteFloatCallable, finiteFloatCallable))
 def test_Coord_fromDPoint(p):
     assert Coord.fromDPoint(p) == Coord(p.x, p.y)
+# }}}
+
+
+# AbsoluteCoord {{{
+def test_AbsoluteCoord_fromCoord():
+    assert type(AbsoluteCoord.fromCoord(Coord(0, 0))) == type(AbsoluteCoord(0, 0))
+
+
+@given(AbsoluteCoordStrategies, AbsoluteCoordStrategies, AbsoluteCoordStrategies)
+def test_AbsoluteCoord__add__(a, b, c):
+    # Needed to avoid test failures due to errors in floating point calc
+    assume((a.x + b.x) + c.x == a.x + (b.x + c.x))
+    assume((a.y + b.y) + c.y == a.y + (b.y + c.y))
+
+    assert (a + b) + c == a + (b + c)
+    assert a + b == b + a
+    assert a + AbsoluteCoord(0.0, 0.0) == a
+    assert a + -a == AbsoluteCoord(0.0, 0.0)
+
+
+# TODO: Is this appropriate hypothesis?
+@given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
+def test_AbsoluteCoord__truediv__(x, y, d):
+    assume(d != 0.0)
+    assert AbsoluteCoord(x, y) / d == AbsoluteCoord(x / d, y / d)
+# }}}
+
+
+# RelativeCoord {{{
+def test_RelativeCoord_fromCoord():
+    assert type(RelativeCoord.fromCoord(Coord(0, 0))) == type(RelativeCoord(0, 0))
+
+
+@given(RelativeCoordStrategies, RelativeCoordStrategies, RelativeCoordStrategies)
+def test_RelativeCoord__add__(a, b, c):
+    # Needed to avoid test failures due to errors in floating point calc
+    assume((a.x + b.x) + c.x == a.x + (b.x + c.x))
+    assume((a.y + b.y) + c.y == a.y + (b.y + c.y))
+
+    assert (a + b) + c == a + (b + c)
+    assert a + b == b + a
+    assert a + RelativeCoord(0.0, 0.0) == a
+    assert a + -a == RelativeCoord(0.0, 0.0)
+
+
+# TODO: Is this appropriate hypothesis?
+@given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
+def test_RelativeCoord__truediv__(x, y, d):
+    assume(d != 0.0)
+    assert RelativeCoord(x, y) / d == RelativeCoord(x / d, y / d)
 # }}}
 
 
