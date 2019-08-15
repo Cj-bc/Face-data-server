@@ -1,11 +1,14 @@
 import pytest
 from unittest import mock
+from hypothesis import given
+import hypothesis.strategies as st
 from timeout_decorator import timeout, TimeoutError
+from typing import Tuple
 from FaceDataServer.faceDetection import (_isFaceExist, _getBiggestFace
                                          , _normalization
                                          , facemark, _waitUntilFaceDetect
-                                         , faceCalibration)
-from conftest import (faceFrame, noFaceFrame, MockedCap)
+                                         , faceCalibration, _toRelative)
+from conftest import (faceFrame, noFaceFrame, MockedCap, finiteFloatCallable)
 from FaceDataServer.Types import RawFaceData, CapHasClosedError
 import dlib
 import numpy
@@ -167,6 +170,9 @@ def test_facemark_noface():
 
 
 # _toRelative {{{
+@given(st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable))
 def test__toRelative(a, b, c):
     def _mkp(t: Tuple[float, float]) -> dlib.dpoint():
         return dlib.dpoint(t[0], t[1])
