@@ -117,6 +117,22 @@ def test_Part_default():
 # }}}
 
 
+# Nose {{{
+@given(CoordStrategies, CoordStrategies, CoordStrategies)
+def test_Nose__init__(a, b, c):
+    nose = Nose(a, b, c)
+
+    assert nose.bottom == a
+    assert nose.top == None
+    assert nose.leftSide == b
+    assert nose.rightSide == c
+
+
+def test_Nose_default():
+    assert Nose.default() == Nose(Coord(0, 0), Coord(0, 0), Coord(0, 0))
+# }}}
+
+
 # RawFaceData {{{
 @pytest.mark.parametrize('eD,fH,fC', [(2, 2, dlib.dpoint(0, 0)),
                                       (1, 1, dlib.dpoint(0, 0)),
