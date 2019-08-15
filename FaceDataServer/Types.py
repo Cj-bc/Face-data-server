@@ -222,6 +222,17 @@ class Face:
         self.leftEyeBrow = leb
         self.rightEyeBrow = reb
 
+
+    def __eq__(self: S, other: S) -> bool:
+        return self.center == other.center and self.leftTemple == other.leftTemple \
+                   and self.rightTemple == other.rightTemple and self.tinCenter == other.tinCenter \
+                   and self.leftEye == other.leftEye and self.rightEye == other.rightEye \
+                   and self.mouth == other.mouth and self.nose == other.nose \
+                   and self.leftEyeBrow == other.leftEyeBrow \
+                   and self.rightEyeBrow == other.rightEyeBrow
+
+                
+
     @classmethod
     def default(cls):
         """return default coordinate."""
