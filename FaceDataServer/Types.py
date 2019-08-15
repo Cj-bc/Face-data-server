@@ -93,10 +93,10 @@ class AbsoluteCoord(Coord):
         return AbsoluteCoord(c.x, c.y)
 
     def __add__(self: S, other: S) -> S:
-        return self.fromCoord(self + other)
+        return AbsoluteCoord(self.x + other.x, self.y + other.y)
 
     def __truediv__(self: S, other: Num) -> S:
-        return self.fromCoord(self / other)
+        return AbsoluteCoord(self.x / other, self.y / other)
 
 
 class RelativeCoord(Coord):
@@ -107,10 +107,10 @@ class RelativeCoord(Coord):
         return RelativeCoord(c.x, c.y)
 
     def __add__(self: S, other: S) -> S:
-        return self.fromCoord(self + other)
+        return RelativeCoord(self.x + other.x, self.y + other.y)
 
     def __truediv__(self: S, other: Num) -> S:
-        return self.fromCoord(self / other)
+        return RelativeCoord(self.x / other, self.y / other)
 # }}}
 
 
