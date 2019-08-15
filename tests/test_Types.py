@@ -97,6 +97,14 @@ def test_Part__add__(a, b, c):
     assert a + b == b + a
     assert a + Part.default() == a
     assert a + -a == Part(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
+
+
+@given(PartStrategies, finiteFloatCallable)
+def test_Part__truediv__(p, d):
+    assume(d != 0)
+
+    assert p / d == Part(p.bottom / d, p.top / d
+                        , p.leftSide / d, p.rightSide / d)
 # }}}
 
 
