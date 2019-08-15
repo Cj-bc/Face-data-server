@@ -180,6 +180,6 @@ def test__toRelative(a, b, c):
     def _pSub(t: Tuple[float, float], c: Tuple[float, float]) -> dlib.dpoint:
         return dlib.dpoint(t[0] - c[0], t[1] - c[1])
 
-    assert _toRelative(dlib.dpoints([_mkp(a), _mkp(b), _mkp(c)])) \
+    assert _toRelative(dlib.dpoints([_mkp(a), _mkp(b)]), _mkp(c)) \
                == dlib.dpoints([_pSub(a, c), _pSub(b, c)])
 # }}}
