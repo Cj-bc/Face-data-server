@@ -110,6 +110,10 @@ def test_Part__truediv__(p, d):
 
     assert p / d == Part(p.bottom / d, p.top / d
                         , p.leftSide / d, p.rightSide / d)
+
+
+def test_Part_default():
+    assert Part.default() == Part(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
 # }}}
 
 
