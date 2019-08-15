@@ -4,7 +4,7 @@ from hypothesis import given, assume
 import hypothesis.strategies as st
 import dlib
 
-from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord)
+from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord, Nose)
 from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
                      , points_lean_left, points_lean_right
