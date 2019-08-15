@@ -185,6 +185,14 @@ def test_Nose_default():
 # }}}
 
 
+# Face {{{
+def test_Face_default():
+    assert Face.default() == Face(AbsoluteCoord.default(), RelativeCoord.default()
+                                 , RelativeCoord.default(), RelativeCoord.default()
+                                 , Eye.default(), Eye.default(), Mouth.default()
+                                 , Nose.default(), EyeBrow.default(), EyeBrow.default())
+# }}}
+
 # RawFaceData {{{
 @pytest.mark.parametrize('eD,fH,fC', [(2, 2, dlib.dpoint(0, 0)),
                                       (1, 1, dlib.dpoint(0, 0)),
