@@ -179,10 +179,20 @@ class Mouth(Part):
 class Nose(Part):
     top = None
 
-    def __init__(self: S, b: Coord, l: Coord, r: Coord) -> S:
-        self.bottom = b
-        self.leftSide = l
-        self.rightSide = r
+    def __init__(self, b, l, r):
+        def _coord(c):
+            if type(c) == Coord:
+                return c
+            elif type(c) == dlib.dpoint:
+                return Coord.fromDPoint(c)
+            else:
+                raise TypeError
+
+        self.bottom = _coord(b)
+        self.leftSide = _coord(l)
+        self.rightSide = _coord(r)
+
+
 
     @classmethod
     def default(cls):
