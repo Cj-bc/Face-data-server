@@ -307,7 +307,7 @@ class RawFaceData:
         _middleForehead = (face.leftEyeBrow.rightSide
                           + face.rightEyeBrow.leftSide) / 2
         _faceHeighVector  = _middleForehead\
-                            - Coord.fromDPoint(face.tinCenter)
+                            - face.tinCenter
         faceHeigh = math.sqrt(_faceHeighVector.x ** 2
                               + _faceHeighVector.y ** 2)
         faceCenter = face.center
