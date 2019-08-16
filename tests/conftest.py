@@ -6,7 +6,8 @@ import math
 import hypothesis.strategies as st
 from typing import List
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from FaceDataServer.Types import Cv2Image, Coord, Part, AbsoluteCoord, RelativeCoord  # noqa: E402
+from FaceDataServer.Types import (Cv2Image, Coord, Part, AbsoluteCoord, RelativeCoord  # noqa: E402
+                                 , Face, Eye, Mouth, Nose, EyeBrow)
 
 faceFrame: Cv2Image = cv2.imread('tests/src/face.jpg')
 noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
@@ -58,21 +59,47 @@ def _leanFace(dpoints: dlib.dpoints, angle: float) -> dlib.dpoints:
     return dlib.dpoints(_leanedDPointsL)
 
 
-points_front = _constructLandmark((-25, 30), (0, -50), (25, 30), (3, 25),
-                                  (10, 20), (-3, 25), (-10, 20),
-                                  (5, 50), (-5, 50))
-points_right = _constructLandmark((-25, 30), (0, -50), (20, 30), (-2, 25),
-                                  (5, 20), (-3, 25), (-10, 20),
-                                  (0, 50), (-5, 50))
-points_left = _constructLandmark((-20, 30), (0, -50), (25, 30), (3, 25),
-                                 (10, 20), (2, 25), (-5, 20),
-                                 (5, 50), (0, 50))
-points_upside = _constructLandmark((-25, 30), (0, -40), (25, 30), (3, 30),
-                                   (10, 10), (-3, 30), (-10, 10),
-                                   (5, 50), (-5, 50))
-points_bottom = _constructLandmark((-24, 30), (0, -60), (25, 30), (3, 10),
-                                   (10, 0), (-3, 10), (-10, 0),
-                                   (5, 30), (-5, 30))
+points_front = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
+                   , RelativeCoord(-25, 30), RelativeCoord(0, -50)
+                   , Eye(Coord(10, 20), Coord(None, None), Coord(-3, 25), Coord(3, 25))
+                   , Eye(Coord(5, 50), Coord(None, None), Coord(-10, 20), Coord(-5, 50))
+                   , Mouth(Coord(None, None), Coord(None, None), Coord(None, None), Coord(None, None))
+                   , Nose(Coord(0, 0), Coord(None, None), Coord(None, None))
+                   , EyeBrow(Coord(None, None), Coord(None, None), Coord(None, None), Coord(5, 50))
+                   , EyeBrow(Coord(None, None), Coord(None, None), Coord(-5, 50), Coord(None, None)))
+points_right = Face(AbsoluteCoord(0, 0), RelativeCoord(20, 30)
+                   , RelativeCoord(-25, 30), RelativeCoord(0, -50)
+                   , Eye(Coord(5, 20), Coord(None, None), Coord(None, None), Coord(2, 25))
+                   , Eye(Coord(None, None), Coord(None, None), Coord(-3, 25), Coord(None, None))
+                   , Mouth(Coord(None, None), Coord(None, None), Coord(None, None), Coord(None, None))
+                   , Nose(Coord(None, None), Coord(None, None), Coord(None, None))
+                   , EyeBrow(Coord(None, None), Coord(None, None), Coord(None, None), Coord(0, 50))
+                   , EyeBrow(Coord(None, None), Coord(None, None), Coord(-5, 50), Coord(None, None)))
+points_left = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
+                  , RelativeCoord(-20, 30), RelativeCoord(0, -50)
+                  , Eye(Coord(10, 20), Coord(None, None), Coord(None, None), Coord(3, 25))
+                  , Eye(Coord(-5, 20), Coord(None, None), Coord(2, 25), Coord(None, None))
+                  , Mouth(Coord(None, None), Coord(None, None), Coord(None, None), Coord(None, None))
+                  , Nose(Coord(None, None), Coord(None, None), Coord(None, None))
+                  , EyeBrow(Coord(None, None), Coord(None, None), Coord(None, None), Coord(5, 50))
+                  , EyeBrow(Coord(None, None), Coord(None, None), Coord(0, 50), Coord(None, None)))
+points_upside = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
+                    , RelativeCoord(-25, 30), RelativeCoord(0, -40)
+                    , Eye(Coord(10, 10), Coord(None, None), Coord(None, None), Coord(3, 30))
+                    , Eye(Coord(-10, 10), Coord(None, None), Coord(-3, 30), Coord(None, None))
+                    , Mouth(Coord(None, None), Coord(None, None), Coord(None, None), Coord(None, None))
+                    , Nose(Coord(None, None), Coord(None, None), Coord(None, None))
+                    , EyeBrow(Coord(None, None), Coord(None, None), Coord(None, None), Coord(5, 50))
+                    , EyeBrow(Coord(None, None), Coord(None, None), Coord(-5, 50), Coord(None, None)))
+points_bottom = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
+                    , RelativeCoord(-25, 30), RelativeCoord(0, -60)
+                    , Eye(Coord(10, 0), Coord(None, None), Coord(None, None), Coord(3, 10))
+                    , Eye(Coord(-10, 0), Coord(None, None), Coord(-3, 10), Coord(None, None))
+                    , Mouth(Coord(None, None), Coord(None, None), Coord(None, None), Coord(None, None))
+                    , Nose(Coord(None, None), Coord(None, None), Coord(None, None))
+                    , EyeBrow(Coord(None, None), Coord(None, None), Coord(None, None), Coord(5, 30))
+                    , EyeBrow(Coord(None, None), Coord(None, None), Coord(-5, 30), Coord(None, None)))
+
 points_lean_left = _leanFace(points_front, math.pi / 4)
 points_lean_right = _leanFace(points_front, -(math.pi / 4))
 
