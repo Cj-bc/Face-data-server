@@ -13,7 +13,7 @@ noFaceFrame: Cv2Image = cv2.imread('tests/src/noface.png')
 
 
 finiteFloatCallable = st.floats(allow_infinity=False, allow_nan=False
-                               , min_value=0.0, max_value=1.0e4, width=32)
+                               , min_value=0.0, max_value=1.0e4, width=16)
 
 CoordStrategies = st.builds(Coord, finiteFloatCallable, finiteFloatCallable)
 AbsoluteCoordStrategies = st.builds(AbsoluteCoord, finiteFloatCallable, finiteFloatCallable)
