@@ -23,42 +23,6 @@ PartStrategies = st.builds(Part, CoordStrategies, CoordStrategies
                           , CoordStrategies, CoordStrategies)
 
 
-def constructPoints(ps: List[dlib.dpoint]) -> dlib.dpoints:
-    """ helper function.
-        Construct dlib.points from list of dlib.point
-    """
-    ret = dlib.dpoints()
-    for p in ps:
-        ret.append(p)
-
-    return ret
-
-
-def _constructLandmark(side_right, tin_center, side_left, left_eye_r,
-                       left_eye_bottom, right_eye_l, right_eye_bottom,
-                       eyebrow_left_r, eyebrow_right_l):
-    ls = [side_right] + [(0, 0)] * 18 + [tin_center] + [(0, 0)] * 20 +\
-         [side_left] + [(0, 0)] * 73 + [left_eye_r] +\
-         [(0, 0)] * 14 + [left_eye_bottom] + [(0, 0)] * 5 +\
-         [right_eye_l] + [(0, 0)] * 13 + [right_eye_bottom] +\
-         [(0, 0)] * 4 + [eyebrow_left_r] + [(0, 0)] * 19 +\
-         [eyebrow_right_l] + [(0, 0)] * 21
-    l_points = list(map(lambda n: dlib.dpoint(n[0], n[1]), ls))
-    return constructPoints(l_points)
-
-
-def _leanFace(dpoints: dlib.dpoints, angle: float) -> dlib.dpoints:
-    """rotate given 'dpoints' for 'angle' degree.
-    """
-    def _leanOnePoint(p: dlib.dpoint) -> dlib.dpoint:
-        # As X/Y axis are swapped, sin/cos are also swapped
-        return dlib.dpoint(p.x * math.cos(angle),
-                           p.y * math.sin(angle))
-
-    _leanedDPointsL = list(map(_leanOnePoint, dpoints))
-    return dlib.dpoints(_leanedDPointsL)
-
-
 points_front = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
                    , RelativeCoord(-25, 30), RelativeCoord(0, -50)
                    , Eye(Coord(10, 20), Coord(0, 0), Coord(-3, 25), Coord(3, 25))
