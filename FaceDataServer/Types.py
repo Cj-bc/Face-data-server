@@ -250,7 +250,11 @@ class Face:
                    and self.leftEyeBrow == other.leftEyeBrow \
                    and self.rightEyeBrow == other.rightEyeBrow
 
-                
+    def __mul__(s: S, o: Num) -> S:
+        return Face(s.center * o, s.leftTemple * o, s.rightTemple * o
+                   , s.tinCenter * o, s.leftEye * o, s.rightEye * o
+                   , s.mouth * o, s.nose * o, s.leftEyeBrow * o
+                   , s.rightEyeBrow * o)
 
     @classmethod
     def default(cls):
