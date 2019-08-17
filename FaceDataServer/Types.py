@@ -183,7 +183,7 @@ class Mouth(Part):
 
 
 class Nose(Part):
-    top = None
+    top = Coord(0, 0)
 
     def __init__(self, b, l, r):
         def _coord(c):
