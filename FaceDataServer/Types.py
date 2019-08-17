@@ -72,8 +72,11 @@ class Coord:
     def __sub__(self: S, other: S) -> S:
         return self + (-other)
 
+    def __mul__(self: S, other: Num) -> S:
+        return Coord(self.x * other, self.y * other)
+
     def __truediv__(self: S, other: Num) -> S:
-        return Coord(self.x / other, self.y / other)
+        return self * (1 / other)
 
     @classmethod
     def default(cls):
@@ -95,8 +98,8 @@ class AbsoluteCoord(Coord):
     def __add__(self: S, other: S) -> S:
         return AbsoluteCoord(self.x + other.x, self.y + other.y)
 
-    def __truediv__(self: S, other: Num) -> S:
-        return AbsoluteCoord(self.x / other, self.y / other)
+    def __mul__(self: S, other: Num) -> S:
+        return AbsoluteCoord(self.x * other, self.y * other)
 
 
 class RelativeCoord(Coord):
@@ -109,8 +112,8 @@ class RelativeCoord(Coord):
     def __add__(self: S, other: S) -> S:
         return RelativeCoord(self.x + other.x, self.y + other.y)
 
-    def __truediv__(self: S, other: Num) -> S:
-        return RelativeCoord(self.x / other, self.y / other)
+    def __mul__(self: S, other: Num) -> S:
+        return RelativeCoord(self.x * other, self.y * other)
 # }}}
 
 
