@@ -161,9 +161,12 @@ class Part():
     def __sub__(self: S, other: S) -> S:
         return self + (-other)
 
+    def __mul__(self: S, other: Num) -> S:
+        return Part(self.bottom * other , self.top * other
+                   , self.leftSide * other , self.rightSide * other)
+
     def __truediv__(self: S, other: Num) -> S:
-        return Part(self.bottom / other , self.top / other
-                   , self.leftSide / other , self.rightSide / other)
+        return self * (1 / other)
 
     @classmethod
     def default(cls):
