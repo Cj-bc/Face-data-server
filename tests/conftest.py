@@ -100,8 +100,8 @@ points_bottom = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
                     , EyeBrow(Coord(None, None), Coord(None, None), Coord(None, None), Coord(5, 30))
                     , EyeBrow(Coord(None, None), Coord(None, None), Coord(-5, 30), Coord(None, None)))
 
-points_lean_left = _leanFace(points_front, math.pi / 4)
-points_lean_right = _leanFace(points_front, -(math.pi / 4))
+points_lean_left =  points_front * (math.pi / 4)
+points_lean_right = points_front * -(math.pi / 4)
 
 
 class MockedCap():
