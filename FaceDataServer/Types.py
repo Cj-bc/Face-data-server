@@ -171,7 +171,7 @@ class Part():
     @classmethod
     def default(cls):
         """return default coordinate."""
-        return cls(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
+        return cls(Coord.default(), Coord.default(), Coord.default(), Coord.default())
 
 
 class Eye(Part):
@@ -203,7 +203,7 @@ class Nose(Part):
     @classmethod
     def default(cls):
         """return default coordinate."""
-        return cls(Coord(0, 0), Coord(0, 0), Coord(0, 0))
+        return cls(Coord.default(), Coord.default(), Coord.default())
 
 
 class EyeBrow(Part):
