@@ -75,14 +75,16 @@ points_bottom = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
 points_lean_left =  points_front * (math.pi / 4)
 points_lean_right = points_front * -(math.pi / 4)
 
-def round_Part(s: Part) -> str:
-    return format(s.top.x, '.12g') + " " + format(s.top.y, '.12g') + " " \
-               + format(s.bottom.x, '.12g') + " " + format(s.bottom.y, '.12g') + " " \
-               + format(s.leftSide.x, '.12g') + " " + format(s.leftSide.y, '.12g') + " " \
-               + format(s.rightSide.x, '.12g') + " " + format(s.rightSide.y, '.12g')
 
 def round_Coord(s: Coord) -> str:
     return format(s.x, '.12g') + " " + format(s.y, '.12g')
+
+
+def round_Part(s: Part) -> str:
+    return round_Coord(s.top) + " " \
+               + round_Coord(s.bottom) + " " \
+               + round_Coord(s.leftSide) + " " \
+               + round_Coord(s.rightSide)
 
 
 def round_Face(s: Face) -> str:
