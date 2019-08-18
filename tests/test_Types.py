@@ -11,7 +11,8 @@ from conftest import (points_front, points_right, points_left
                      , points_upside, points_bottom
                      , points_lean_left, points_lean_right
                      , finiteFloatCallable, PartStrategies, CoordStrategies
-                     , AbsoluteCoordStrategies, RelativeCoordStrategies)
+                     , AbsoluteCoordStrategies, RelativeCoordStrategies
+                     , round_Part, round_Coord)
 
 
 # Coord {{{
@@ -51,7 +52,7 @@ def test_Coord__sub__(a):
 @given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
 def test_Coord__truediv__(x, y, d):
     assume(d != 0.0)
-    assert Coord(x, y) / d == Coord(x / d, y / d)
+    assert round_Coord(Coord(x, y) / d) == round_Coord(Coord(x / d, y / d))
 
 
 def test_Coord_default():
@@ -85,7 +86,7 @@ def test_AbsoluteCoord__add__(a, b, c):
 @given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
 def test_AbsoluteCoord__truediv__(x, y, d):
     assume(d != 0.0)
-    assert AbsoluteCoord(x, y) / d == AbsoluteCoord(x / d, y / d)
+    assert round_Coord(AbsoluteCoord(x, y) / d) == round_Coord(AbsoluteCoord(x / d, y / d))
 # }}}
 
 
@@ -110,7 +111,7 @@ def test_RelativeCoord__add__(a, b, c):
 @given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
 def test_RelativeCoord__truediv__(x, y, d):
     assume(d != 0.0)
-    assert RelativeCoord(x, y) / d == RelativeCoord(x / d, y / d)
+    assert round_Coord(RelativeCoord(x, y) / d) == round_Coord(RelativeCoord(x / d, y / d))
 # }}}
 
 
@@ -146,7 +147,7 @@ def test_Part__add__(a, b, c):
     """ the properties are taken from here:
         http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#t:Num
         """
-    assert (a + b) + c == a + (b + c)
+    assert round_Part((a + b) + c) == round_Part(a + (b + c))
     assert a + b == b + a
     assert a + Part.default() == a
     assert a + -a == Part(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
@@ -161,8 +162,8 @@ def test_Part__sub__(a):
 def test_Part__truediv__(p, d):
     assume(d != 0)
 
-    assert p / d == Part(p.bottom / d, p.top / d
-                        , p.leftSide / d, p.rightSide / d)
+    assert round_Part(p / d) == round_Part(Part(p.bottom / d, p.top / d
+                        , p.leftSide / d, p.rightSide / d))
 
 
 def test_Part_default():
