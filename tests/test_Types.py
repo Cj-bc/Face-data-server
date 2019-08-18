@@ -156,11 +156,10 @@ def test_Part__sub__(a):
 
 
 @given(PartStrategies, finiteFloatCallable)
-def test_Part__truediv__(p, d):
+def test_Part_mul_and_div(p, d):
     assume(d != 0)
 
-    assert round_Part(p / d) == round_Part(Part(p.bottom / d, p.top / d
-                        , p.leftSide / d, p.rightSide / d))
+    assert round_Part(p / d * d) == round_Part(p)
 
 
 def test_Part_default():
