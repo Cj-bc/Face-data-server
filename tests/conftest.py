@@ -21,6 +21,14 @@ AbsoluteCoordStrategies = st.builds(AbsoluteCoord, finiteFloatCallable, finiteFl
 RelativeCoordStrategies = st.builds(RelativeCoord, finiteFloatCallable, finiteFloatCallable)
 PartStrategies = st.builds(Part, CoordStrategies, CoordStrategies
                           , CoordStrategies, CoordStrategies)
+FaceStrategies = st.builds(Face, AbsoluteCoordStrategies, RelativeCoordStrategies
+                          , RelativeCoordStrategies, RelativeCoordStrategies
+                          , st.builds(Eye, CoordStrategies, CoordStrategies, CoordStrategies, CoordStrategies)
+                          , st.builds(Eye, CoordStrategies, CoordStrategies, CoordStrategies, CoordStrategies)
+                          , st.builds(Mouth, CoordStrategies, CoordStrategies, CoordStrategies, CoordStrategies)
+                          , st.builds(Nose, CoordStrategies, CoordStrategies, CoordStrategies)
+                          , st.builds(EyeBrow, CoordStrategies, CoordStrategies, CoordStrategies, CoordStrategies)
+                          , st.builds(EyeBrow, CoordStrategies, CoordStrategies, CoordStrategies, CoordStrategies))
 
 
 points_front = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
@@ -75,6 +83,18 @@ def round_Part(s: Part) -> str:
 
 def round_Coord(s: Coord) -> str:
     return format(s.x, '.12g') + " " + format(s.y, '.12g')
+
+
+def round_Face(s: Face) -> str:
+    return round_Coord(s.center) + " " \
+               + round_Coord(s.leftTemple) + " " \
+               + round_Coord(s.rightTemple) + " " \
+               + round_Coord(s.tinCenter) + " " \
+               + round_Part(s.leftEye) + " " \
+               + round_Part(s.rightEye) + " " \
+               + round_Part(s.leftEyeBrow) + " " \
+               + round_Part(s.rightEyeBrow)
+
 
 class MockedCap():
     opened: bool = True

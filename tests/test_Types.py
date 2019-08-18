@@ -12,7 +12,8 @@ from conftest import (points_front, points_right, points_left
                      , points_lean_left, points_lean_right
                      , finiteFloatCallable, PartStrategies, CoordStrategies
                      , AbsoluteCoordStrategies, RelativeCoordStrategies
-                     , round_Part, round_Coord)
+                     , FaceStrategies
+                     , round_Part, round_Coord, round_Face)
 
 
 # Coord {{{
@@ -209,6 +210,12 @@ def test_Face_fromDPoints():
                            , Coord(185.0, 185.0)))
     assert Face.fromDPoints(points) == correct
 
+
+# is this good test?
+@given(FaceStrategies, finiteFloatCallable)
+def test_Face_mul_and_div(f, d):
+    assume(d != 0.0)
+    assert round_Face(f / d * d) == round_Face(f)
 # }}}
 
 # RawFaceData {{{
