@@ -48,11 +48,10 @@ def test_Coord__sub__(a):
     assert a - a == Coord(0.0, 0.0)
 
 
-# TODO: Is this appropriate hypothesis?
-@given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
-def test_Coord__truediv__(x, y, d):
+@given(CoordStrategies, finiteFloatCallable)
+def test_Coord_mul_and_div(c, d):
     assume(d != 0.0)
-    assert round_Coord(Coord(x, y) / d) == round_Coord(Coord(x / d, y / d))
+    assert round_Coord(c / d * d) == round_Coord(c)
 
 
 def test_Coord_default():
@@ -82,11 +81,10 @@ def test_AbsoluteCoord__add__(a, b, c):
     assert a + -a == AbsoluteCoord(0.0, 0.0)
 
 
-# TODO: Is this appropriate hypothesis?
-@given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
-def test_AbsoluteCoord__truediv__(x, y, d):
+@given(CoordStrategies, finiteFloatCallable)
+def test_AbsoluteCoord_mul_and_div(c, d):
     assume(d != 0.0)
-    assert round_Coord(AbsoluteCoord(x, y) / d) == round_Coord(AbsoluteCoord(x / d, y / d))
+    assert c / d * d
 # }}}
 
 
@@ -107,11 +105,10 @@ def test_RelativeCoord__add__(a, b, c):
     assert a + -a == RelativeCoord(0.0, 0.0)
 
 
-# TODO: Is this appropriate hypothesis?
-@given(finiteFloatCallable, finiteFloatCallable, finiteFloatCallable)
-def test_RelativeCoord__truediv__(x, y, d):
+@given(CoordStrategies, finiteFloatCallable)
+def test_RelativeCoord_mul_and_div(c, d):
     assume(d != 0.0)
-    assert round_Coord(RelativeCoord(x, y) / d) == round_Coord(RelativeCoord(x / d, y / d))
+    assert round_Coord(c / d * d) == round_Coord(c)
 # }}}
 
 
