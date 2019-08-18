@@ -177,7 +177,7 @@ def test_Nose__init__(a, b, c):
     nose = Nose(a, b, c)
 
     assert nose.bottom == a
-    assert nose.top == None
+    assert nose.top == Coord(0, 0)
     assert nose.leftSide == b
     assert nose.rightSide == c
 
