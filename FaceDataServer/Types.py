@@ -256,6 +256,9 @@ class Face:
                    , s.mouth * o, s.nose * o, s.leftEyeBrow * o
                    , s.rightEyeBrow * o)
 
+    def __truediv__(s: S, o: Num) -> S:
+        return s * (1/o)
+
     @classmethod
     def default(cls):
         """return default coordinate."""
