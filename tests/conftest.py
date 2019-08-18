@@ -34,7 +34,7 @@ FaceStrategies = st.builds(Face, AbsoluteCoordStrategies, RelativeCoordStrategie
 points_front = Face(AbsoluteCoord(0, 0), RelativeCoord(25, 30)
                    , RelativeCoord(-25, 30), RelativeCoord(0, -50)
                    , Eye(Coord(10, 20), Coord(0, 0), Coord(-3, 25), Coord(3, 25))
-                   , Eye(Coord(5, 50), Coord(0, 0), Coord(-10, 20), Coord(-5, 50))
+                   , Eye(Coord(-10, 20), Coord(0, 0), Coord(-3, 25), Coord(0, 0))
                    , Mouth(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
                    , Nose(Coord(0, 0), Coord(0, 0), Coord(0, 0))
                    , EyeBrow(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(5, 50))
