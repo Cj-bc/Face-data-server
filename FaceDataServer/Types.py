@@ -64,19 +64,19 @@ class Coord:
         return self.x == other.x and self.y == other.y
 
     def __neg__(self: S) -> S:
-        return Coord(-self.x, -self.y)
+        return self.__class__(-self.x, -self.y)
 
     def __add__(self: S, other: S) -> S:
-        return Coord(self.x + other.x, self.y + other.y)
+        return self.__class__(self.x + other.x, self.y + other.y)
 
     def __sub__(self: S, other: S) -> S:
         return self + (-other)
 
     def __mul__(self: S, other: Num) -> S:
-        return Coord(self.x * other, self.y * other)
+        return self.__class__(self.x * other, self.y * other)
 
     def __truediv__(self: S, other: Num) -> S:
-        return Coord(self.x / other, self.y / other)
+        return self.__class__(self.x / other, self.y / other)
         # I don't know why but the expr below won't work correctly
         # return self * (1 / other)
 
@@ -97,12 +97,6 @@ class AbsoluteCoord(Coord):
     def fromCoord(c: Coord) -> S:
         return AbsoluteCoord(c.x, c.y)
 
-    def __add__(self: S, other: S) -> S:
-        return AbsoluteCoord(self.x + other.x, self.y + other.y)
-
-    def __mul__(self: S, other: Num) -> S:
-        return AbsoluteCoord(self.x * other, self.y * other)
-
 
 class RelativeCoord(Coord):
     def __repr__(self):
@@ -110,12 +104,6 @@ class RelativeCoord(Coord):
 
     def fromCoord(c: Coord) -> S:
         return RelativeCoord(c.x, c.y)
-
-    def __add__(self: S, other: S) -> S:
-        return RelativeCoord(self.x + other.x, self.y + other.y)
-
-    def __mul__(self: S, other: Num) -> S:
-        return RelativeCoord(self.x * other, self.y * other)
 # }}}
 
 
@@ -151,11 +139,11 @@ class Part():
         self.rightSide = _coord(r)
 
     def __neg__(self: S) -> S:
-        return Part(-self.bottom , -self.top
+        return self.__class__(-self.bottom , -self.top
                    , -self.leftSide , -self.rightSide)
 
     def __add__(self: S, other: S) -> S:
-        return Part(self.bottom + other.bottom
+        return self.__class__(self.bottom + other.bottom
                    , self.top + other.top
                    , self.leftSide + other.leftSide
                    , self.rightSide + other.rightSide)
@@ -164,11 +152,11 @@ class Part():
         return self + (-other)
 
     def __mul__(self: S, other: Num) -> S:
-        return Part(self.bottom * other , self.top * other
+        return self.__class__(self.bottom * other , self.top * other
                    , self.leftSide * other , self.rightSide * other)
 
     def __truediv__(self: S, other: Num) -> S:
-        return Part(self.bottom / other , self.top / other
+        return self.__class__(self.bottom / other , self.top / other
                    , self.leftSide / other , self.rightSide / other)
         # I don't know why but the expr below won't work correctly
         # return self * (1 / other)
