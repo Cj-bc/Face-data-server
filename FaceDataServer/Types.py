@@ -76,7 +76,9 @@ class Coord:
         return Coord(self.x * other, self.y * other)
 
     def __truediv__(self: S, other: Num) -> S:
-        return self * (1 / other)
+        return Coord(self.x / other, self.y / other)
+        # I don't know why but the expr below won't work correctly
+        # return self * (1 / other)
 
     @classmethod
     def default(cls):
@@ -166,7 +168,10 @@ class Part():
                    , self.leftSide * other , self.rightSide * other)
 
     def __truediv__(self: S, other: Num) -> S:
-        return self * (1 / other)
+        return Part(self.bottom / other , self.top / other
+                   , self.leftSide / other , self.rightSide / other)
+        # I don't know why but the expr below won't work correctly
+        # return self * (1 / other)
 
     @classmethod
     def default(cls):
@@ -257,7 +262,12 @@ class Face:
                    , s.rightEyeBrow * o)
 
     def __truediv__(s: S, o: Num) -> S:
-        return s * (1/o)
+        # I don't know why but the expr below won't work correctly
+        # return s * (1 / o)
+        return Face(s.center / o, s.leftTemple / o, s.rightTemple / o
+                   , s.tinCenter / o, s.leftEye / o, s.rightEye / o
+                   , s.mouth / o, s.nose / o, s.leftEyeBrow / o
+                   , s.rightEyeBrow / o)
 
     @classmethod
     def default(cls):
