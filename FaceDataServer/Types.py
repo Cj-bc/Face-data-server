@@ -168,16 +168,24 @@ class Part():
 
 
 class Eye(Part):
-    pass
+    def __repr__(self):
+        return f"Eye({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
 
 
 class Mouth(Part):
-    pass
+    def __repr__(self):
+        return f"Mouth({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
 
 
 class Nose(Part):
     top = Coord(0, 0)
 
+    def __repr__(self):
+                return f"Nose({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
+
+    # TODO:
+    # can't I do something like:
+    #   super.__init__(b, None, l, r)
     def __init__(self, b, l, r):
         def _coord(c):
             if type(c) == Coord:
@@ -200,7 +208,8 @@ class Nose(Part):
 
 
 class EyeBrow(Part):
-    pass
+    def __repr__(self):
+        return f"EyeBrow({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
 # }}}
 
 
