@@ -199,6 +199,28 @@ class Nose(Part):
         self.leftSide = _coord(l)
         self.rightSide = _coord(r)
 
+    def __neg__(self: S) -> S:
+        return self.__class__(-self.bottom
+                             , -self.leftSide , -self.rightSide)
+
+    def __add__(self: S, other: S) -> S:
+        return self.__class__(self.bottom + other.bottom
+                             , self.leftSide + other.leftSide
+                             , self.rightSide + other.rightSide)
+
+    def __sub__(self: S, other: S) -> S:
+        return self + (-other)
+
+    def __mul__(self: S, other: Num) -> S:
+        return self.__class__(self.bottom * other
+                             , self.leftSide * other , self.rightSide * other)
+
+    def __truediv__(self: S, other: Num) -> S:
+        return self.__class__(self.bottom / other
+                             , self.leftSide / other , self.rightSide / other)
+        # I don't know why but the expr below won't work correctly
+        # return self * (1 / other)
+
 
 
     @classmethod
