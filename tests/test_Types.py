@@ -52,7 +52,7 @@ def test_Coord__sub__(a):
 @given(CoordStrategies, finiteFloatCallable)
 def test_Coord_mul_and_div(c, d):
     assume(d != 0.0)
-    assert round_Coord(c / d * d) == round_Coord(c)
+    assert round_Coord(c * d / d) == round_Coord(c)
 
 
 def test_Coord_default():
@@ -85,7 +85,7 @@ def test_AbsoluteCoord__add__(a, b, c):
 @given(CoordStrategies, finiteFloatCallable)
 def test_AbsoluteCoord_mul_and_div(c, d):
     assume(d != 0.0)
-    assert c / d * d
+    assert c * d / d
 # }}}
 
 
@@ -109,7 +109,7 @@ def test_RelativeCoord__add__(a, b, c):
 @given(CoordStrategies, finiteFloatCallable)
 def test_RelativeCoord_mul_and_div(c, d):
     assume(d != 0.0)
-    assert round_Coord(c / d * d) == round_Coord(c)
+    assert round_Coord(c * d / d) == round_Coord(c)
 # }}}
 
 
@@ -160,7 +160,7 @@ def test_Part__sub__(a):
 def test_Part_mul_and_div(p, d):
     assume(d != 0)
 
-    assert round_Part(p / d * d) == round_Part(p)
+    assert round_Part(p * d / d) == round_Part(p)
 
 
 def test_Part_default():
@@ -215,8 +215,10 @@ def test_Face_fromDPoints():
 @given(FaceStrategies, finiteFloatCallable)
 def test_Face_mul_and_div(f, d):
     assume(d != 0.0)
-    assert round_Face(f / d * d) == round_Face(f)
+    assume(1 / d * d == 1)
+    assert round_Face(f * d / d) == round_Face(f)
 # }}}
+
 
 # RawFaceData {{{
 @pytest.mark.parametrize('eD,fH,fC', [(2, 2, dlib.dpoint(0, 0)),
