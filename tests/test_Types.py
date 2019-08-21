@@ -239,12 +239,20 @@ def test_RawFaceData_thresholded_affect():
 # --- RawFaceData.get
 
 
-def test_RawFaceData_get():
-    correctRawFaceData = RawFaceData(6, 100, dlib.dpoint(0, 0))
+@pytest.mark.parametrize('face, eD, fH, fC'
+                        , [(points_front, 6, 100, dlib.dpoint(0, 0))
+                        , (points_left, 5, 100, dlib.dpoint(3, 0))
+                        , (points_right, 5, 100, dlib.dpoint(-3, 0))
+                        , (points_upside, 6, 90, dlib.dpoint(0, 5))
+                        , (points_bottom, 6, 90, dlib.dpoint(0, -10))
+                        , (points_lean_left, 6, 100, dlib.dpoint(0, 0))
+                        , (points_lean_right, 6, 100, dlib.dpoint(0, 0))])
+def test_RawFaceData_get(face, eD, fH, fC):
+    correctRawFaceData = RawFaceData(eD, fH, fC)
 
     # faceCenter can't be compared(it compares instance, which always fail).
     # So I take this way
-    result = RawFaceData.get(points_front)
+    result = RawFaceData.get(face)
     assert result.faceHeigh == correctRawFaceData.faceHeigh
     assert result.eyeDistance == correctRawFaceData.eyeDistance
     assert result.faceCenter.x == correctRawFaceData.faceCenter.x
