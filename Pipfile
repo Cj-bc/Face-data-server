@@ -14,6 +14,7 @@ mypy = "*"
 dlib = "*"
 opencv-python = "*"
 hypothesis = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.7"
