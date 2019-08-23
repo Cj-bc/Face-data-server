@@ -3,6 +3,7 @@ from pathlib import Path
 import cv2
 import dlib
 import math
+import numpy as np
 import hypothesis.strategies as st
 from typing import List
 sys.path.insert(0, str(Path(__file__).parent.parent))
