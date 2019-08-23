@@ -344,7 +344,8 @@ class RawFaceData:
     def get(cls: S, face: Face) -> S:
         """ Return RawFaceData from dlib.points
         """
-        eyeDistance  = abs(face.leftEye.rightSide.x - face.rightEye.leftSide.x)
+        _eyeVector  = face.leftEye.rightSide - face.rightEye.leftSide
+        eyeDistance = math.sqrt(_eyeVector.x ** 2 + _eyeVector.y ** 2)
 
         _middleForehead = (face.leftEyeBrow.rightSide
                           + face.rightEyeBrow.leftSide) / 2
