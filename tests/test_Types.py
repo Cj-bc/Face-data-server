@@ -3,6 +3,7 @@ import pytest
 from hypothesis import given, assume
 import hypothesis.strategies as st
 import dlib
+import math
 
 from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord, Nose
                                  , AbsoluteCoord, RelativeCoord
@@ -253,10 +254,14 @@ def test_RawFaceData_get(face, eD, fH, fC):
     # faceCenter can't be compared(it compares instance, which always fail).
     # So I take this way
     result = RawFaceData.get(face)
-    assert result.faceHeigh == correctRawFaceData.faceHeigh
-    assert result.eyeDistance == correctRawFaceData.eyeDistance
-    assert result.faceCenter.x == correctRawFaceData.faceCenter.x
-    assert result.faceCenter.y == correctRawFaceData.faceCenter.y
+    assert math.isclose(result.faceHeigh, correctRawFaceData.faceHeigh)\
+            , f"result.faceHeigh: [{result.faceHeigh}], cerrect: [{correctRawFaceData.faceHeigh}]"
+    assert math.isclose(result.eyeDistance, correctRawFaceData.eyeDistance)\
+            , f"result.eyeDistance: [{result.eyeDistance}], correctRawFaceData.eyeDistance: [{correctRawFaceData.eyeDistance}]"
+    assert math.isclose(result.faceCenter.x, correctRawFaceData.faceCenter.x)\
+            , f"result.faceCenter.x: [{result.faceCenter.x}], correctRawFaceData.faceCenter.x: [{correctRawFaceData.faceCenter.x}]"
+    assert math.isclose(result.faceCenter.y, correctRawFaceData.faceCenter.y)\
+            , f"result.faceCenter.y: [{result.faceCenter.y}], correctRawFaceData.faceCenter.y: [{correctRawFaceData.faceCenter.y}]"
 # }}}
 
 
