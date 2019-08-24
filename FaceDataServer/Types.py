@@ -345,14 +345,15 @@ class RawFaceData:
         """ Return RawFaceData from dlib.points
         """
         _eyeVector  = face.leftEye.rightSide - face.rightEye.leftSide
-        eyeDistance = math.sqrt(_eyeVector.x ** 2 + _eyeVector.y ** 2)
+        eyeDistance = round(math.sqrt(_eyeVector.x ** 2 + _eyeVector.y ** 2), 15)
 
         _middleForehead = (face.leftEyeBrow.rightSide
                           + face.rightEyeBrow.leftSide) / 2
         _faceHeighVector  = _middleForehead\
                             - face.tinCenter
-        faceHeigh = math.sqrt(_faceHeighVector.x ** 2
-                              + _faceHeighVector.y ** 2)
+        faceHeigh = round(math.sqrt(_faceHeighVector.x ** 2
+                                   + _faceHeighVector.y ** 2)
+                         , 15)
         faceCenter = face.center
         return cls(eyeDistance, faceHeigh, faceCenter)
 
@@ -384,9 +385,9 @@ class FaceRotations:
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
         #       user might wink. In that case, I can't recognize properly.
-        degreeY = math.acos(raw.eyeDistance / calib.eyeDistance)
-        degreeX = math.acos(raw.faceHeigh / calib.faceHeigh)
-        degreeZ = math.atan(eyeLineVector.y / eyeLineVector.x)
+        degreeY = math.acos(round(raw.eyeDistance / calib.eyeDistance, 15))
+        degreeX = math.acos(round(raw.faceHeigh / calib.faceHeigh, 15))
+        degreeZ = math.atan(round(eyeLineVector.y / eyeLineVector.x, 15))
         # TODO: ^ This some times got error 'Division by 0'
 
         rotateX = degreeX if raw.faceCenter.y > calib.faceCenter.y\
