@@ -281,7 +281,7 @@ def test_FaceRotations_get(points, th):
         if threshold == -1:
             assert n < 0
         elif threshold == 0:
-            assert n == 0
+            assert math.isclose(n, 0)
         else:
             assert n > 0
 
