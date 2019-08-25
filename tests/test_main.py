@@ -82,3 +82,17 @@ def test_main_FaceDetectionError(error):
                 main()
 
             assert e.value.code == 1
+
+
+def test_main_NoCameraFound(capsys):
+    class MockedCap():
+        def isOpened(self):
+            return False
+
+    with mock.patch('main.cv2.VideoCapture', return_value=MockedCap()):
+        with pytest.raises(SystemExit) as e:
+            main()
+
+        stdout = capsys.readouterr()
+        assert stdout.out == "connecting to camera...\nERROR: Cannot connect to camera\n Aborting\n"
+        assert e.value.code == 1
