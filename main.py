@@ -34,6 +34,11 @@ def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData
 def main():
     print("connecting to camera...")
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print(f"ERROR: Cannot connect to camera\n Aborting")
+        sys.exit(1)
+
     print("camera connected.")
 
     try:
