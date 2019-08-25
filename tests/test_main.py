@@ -76,8 +76,12 @@ def test_faceDetectionLoop_withoutFace(capsys):
 
 @pytest.mark.parametrize("error", [FaceDetectionError, CapHasClosedError])
 def test_main_FaceDetectionError(error):
+    class MockedCap():
+        def isOpened(self):
+            return False
+
     with mock.patch('main.faceCalibration', side_effect=error):
-        with mock.patch('main.cv2.VideoCapture', return_value=None):
+        with mock.patch('main.cv2.VideoCapture', return_value=MockedCap()):
             with pytest.raises(SystemExit) as e:
                 main()
 
