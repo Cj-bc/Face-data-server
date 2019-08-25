@@ -26,7 +26,7 @@ def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData
         face: Face = Face.fromDPoints(landmark)
         rots: FaceRotations = FaceRotations.get(face, _calib)
 
-    print(f"{datetime.datetime.today()}: {rots.x}, {rots.y}, {rots.z}")
+    print(f"[{datetime.datetime.today()}] {rots.x}, {rots.y}, {rots.z}")
 
     return faceDetectionLoop(cap, _calib, face)
 
