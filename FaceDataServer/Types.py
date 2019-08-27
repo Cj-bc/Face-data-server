@@ -164,24 +164,28 @@ class Part():
     @classmethod
     def default(cls):
         """return default coordinate."""
-        return cls(Coord.default(), Coord.default(), Coord.default(), Coord.default())
+        return cls(Coord.default(), Coord.default()
+                  , Coord.default(), Coord.default())
 
 
 class Eye(Part):
     def __repr__(self):
-        return f"Eye({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
+        return f"Eye({self.bottom}, {self.top}"\
+               f", {self.leftSide}, {self.rightSide})"
 
 
 class Mouth(Part):
     def __repr__(self):
-        return f"Mouth({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
+        return f"Mouth({self.bottom}, {self.top},"\
+               f"{self.leftSide}, {self.rightSide})"
 
 
 class Nose(Part):
     top = Coord(0, 0)
 
     def __repr__(self):
-                return f"Nose({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
+        return f"Nose({self.bottom}, {self.top}"\
+               f", {self.leftSide}, {self.rightSide})"
 
     # TODO:
     # can't I do something like:
@@ -221,8 +225,6 @@ class Nose(Part):
         # I don't know why but the expr below won't work correctly
         # return self * (1 / other)
 
-
-
     @classmethod
     def default(cls):
         """return default coordinate."""
@@ -231,7 +233,8 @@ class Nose(Part):
 
 class EyeBrow(Part):
     def __repr__(self):
-        return f"EyeBrow({self.bottom}, {self.top}, {self.leftSide}, {self.rightSide})"
+        return f"EyeBrow({self.bottom}, {self.top}"\
+               f", {self.leftSide}, {self.rightSide})"
 # }}}
 
 
@@ -263,16 +266,23 @@ class Face:
         self.rightEyeBrow = reb
 
     def __repr__(self: S) -> str:
-        return f"Face({self.center}, {self.leftTemple}, {self.rightTemple}, {self.tinCenter}, {self.leftEye}, {self.rightEye}, {self.mouth}, {self.nose}, {self.leftEyeBrow}, {self.rightEyeBrow})"
-
+        return f"Face({self.center}, {self.leftTemple}"\
+               f", {self.rightTemple}, {self.tinCenter}"\
+               f", {self.leftEye}, {self.rightEye}"\
+               f", {self.mouth}, {self.nose}"\
+               f", {self.leftEyeBrow}, {self.rightEyeBrow})"
 
     def __eq__(self: S, other: S) -> bool:
-        return self.center == other.center and self.leftTemple == other.leftTemple \
-                   and self.rightTemple == other.rightTemple and self.tinCenter == other.tinCenter \
-                   and self.leftEye == other.leftEye and self.rightEye == other.rightEye \
-                   and self.mouth == other.mouth and self.nose == other.nose \
-                   and self.leftEyeBrow == other.leftEyeBrow \
-                   and self.rightEyeBrow == other.rightEyeBrow
+        return self.center == other.center\
+            and self.leftTemple == other.leftTemple \
+            and self.rightTemple == other.rightTemple \
+            and self.tinCenter == other.tinCenter \
+            and self.leftEye == other.leftEye \
+            and self.rightEye == other.rightEye \
+            and self.mouth == other.mouth \
+            and self.nose == other.nose \
+            and self.leftEyeBrow == other.leftEyeBrow \
+            and self.rightEyeBrow == other.rightEyeBrow
 
     def __mul__(s: S, o: Num) -> S:
         return Face(s.center * o, s.leftTemple * o, s.rightTemple * o
@@ -345,7 +355,8 @@ class RawFaceData:
         """ Return RawFaceData from dlib.points
         """
         _eyeVector  = face.leftEye.rightSide - face.rightEye.leftSide
-        eyeDistance = round(math.sqrt(_eyeVector.x ** 2 + _eyeVector.y ** 2), 15)
+        eyeDistance = round(math.sqrt(_eyeVector.x ** 2
+                            + _eyeVector.y ** 2), 15)
 
         _middleForehead = (face.leftEyeBrow.rightSide
                           + face.rightEyeBrow.leftSide) / 2

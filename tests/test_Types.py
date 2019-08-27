@@ -5,7 +5,7 @@ import hypothesis.strategies as st
 import dlib
 import math
 
-from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord, Nose
+from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord
                                  , AbsoluteCoord, RelativeCoord
                                  , Face, Eye, Mouth, Nose, EyeBrow)
 from conftest import (points_front, points_right, points_left
@@ -68,10 +68,11 @@ def test_Coord_fromDPoint(p):
 
 # AbsoluteCoord {{{
 def test_AbsoluteCoord_fromCoord():
-    assert type(AbsoluteCoord.fromCoord(Coord(0, 0))) == type(AbsoluteCoord(0, 0))
+    assert isinstance(AbsoluteCoord.fromCoord(Coord(0, 0)), AbsoluteCoord)
 
 
-@given(AbsoluteCoordStrategies, AbsoluteCoordStrategies, AbsoluteCoordStrategies)
+@given(AbsoluteCoordStrategies, AbsoluteCoordStrategies
+      , AbsoluteCoordStrategies)
 def test_AbsoluteCoord__add__(a, b, c):
     # Needed to avoid test failures due to errors in floating point calc
     assume((a.x + b.x) + c.x == a.x + (b.x + c.x))
@@ -92,10 +93,11 @@ def test_AbsoluteCoord_mul_and_div(c, d):
 
 # RelativeCoord {{{
 def test_RelativeCoord_fromCoord():
-    assert type(RelativeCoord.fromCoord(Coord(0, 0))) == type(RelativeCoord(0, 0))
+    assert isinstance(RelativeCoord.fromCoord(Coord(0, 0)), RelativeCoord)
 
 
-@given(RelativeCoordStrategies, RelativeCoordStrategies, RelativeCoordStrategies)
+@given(RelativeCoordStrategies, RelativeCoordStrategies
+      , RelativeCoordStrategies)
 def test_RelativeCoord__add__(a, b, c):
     # Needed to avoid test failures due to errors in floating point calc
     assume((a.x + b.x) + c.x == a.x + (b.x + c.x))
@@ -165,7 +167,8 @@ def test_Part_mul_and_div(p, d):
 
 
 def test_Part_default():
-    assert Part.default() == Part(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
+    assert Part.default()\
+        == Part(Coord(0, 0), Coord(0, 0), Coord(0, 0), Coord(0, 0))
 # }}}
 
 
@@ -187,10 +190,13 @@ def test_Nose_default():
 
 # Face {{{
 def test_Face_default():
-    assert Face.default() == Face(AbsoluteCoord.default(), RelativeCoord.default()
-                                 , RelativeCoord.default(), RelativeCoord.default()
-                                 , Eye.default(), Eye.default(), Mouth.default()
-                                 , Nose.default(), EyeBrow.default(), EyeBrow.default())
+    assert Face.default() == Face(AbsoluteCoord.default()
+                                 , RelativeCoord.default()
+                                 , RelativeCoord.default()
+                                 , RelativeCoord.default()
+                                 , Eye.default(), Eye.default()
+                                 , Mouth.default() , Nose.default()
+                                 , EyeBrow.default(), EyeBrow.default())
 
 
 def test_Face_fromDPoints():
@@ -198,17 +204,18 @@ def test_Face_fromDPoints():
     # Those values are defined in LANDMARK_NUM
     correct = Face(AbsoluteCoord(49.0, 49.0), RelativeCoord(0.0, 0.0)
                   , RelativeCoord(40.0, 40.0), RelativeCoord(19.0, 19.0)
-                  , Eye(Coord(129.0, 129.0), Coord(120.0, 120.0), Coord(124.0, 124.0)
-                       , Coord(114.0, 114.0))
-                  , Eye(Coord(149.0, 149.0), Coord(140.0, 140.0), Coord(135.0, 135.0)
-                       , Coord(145.0, 145.0))
-                  , Mouth(Coord(79.0, 79.0), Coord(65.0, 65.0), Coord(71.0, 71.0)
-                         , Coord(58.0, 58.0))
-                  , Nose(Coord(49.0, 49.0), Coord(54.0, 54.0), Coord(44.0, 44.0))
-                  , EyeBrow(Coord(169.0, 169.0), Coord(159.0, 159.0), Coord(164.0, 164.0)
-                           , Coord(154.0, 154.0))
-                  , EyeBrow(Coord(190.0, 190.0), Coord(179.0, 179.0), Coord(174.0, 174.0)
-                           , Coord(185.0, 185.0)))
+                  , Eye(Coord(129.0, 129.0), Coord(120.0, 120.0)
+                       , Coord(124.0, 124.0) , Coord(114.0, 114.0))
+                  , Eye(Coord(149.0, 149.0), Coord(140.0, 140.0)
+                       , Coord(135.0, 135.0) , Coord(145.0, 145.0))
+                  , Mouth(Coord(79.0, 79.0), Coord(65.0, 65.0)
+                         , Coord(71.0, 71.0) , Coord(58.0, 58.0))
+                  , Nose(Coord(49.0, 49.0), Coord(54.0, 54.0)
+                        , Coord(44.0, 44.0))
+                  , EyeBrow(Coord(169.0, 169.0), Coord(159.0, 159.0)
+                           , Coord(164.0, 164.0) , Coord(154.0, 154.0))
+                  , EyeBrow(Coord(190.0, 190.0), Coord(179.0, 179.0)
+                           , Coord(174.0, 174.0) , Coord(185.0, 185.0)))
     assert Face.fromDPoints(points) == correct
 
 
@@ -255,13 +262,20 @@ def test_RawFaceData_get(face, eD, fH, fC):
     # So I take this way
     result = RawFaceData.get(face)
     assert math.isclose(result.faceHeigh, correctRawFaceData.faceHeigh)\
-            , f"result.faceHeigh: [{result.faceHeigh}], cerrect: [{correctRawFaceData.faceHeigh}]"
+            , f"result.faceHeigh: [{result.faceHeigh}],"\
+            " cerrect: [{correctRawFaceData.faceHeigh}]"
     assert math.isclose(result.eyeDistance, correctRawFaceData.eyeDistance)\
-            , f"result.eyeDistance: [{result.eyeDistance}], correctRawFaceData.eyeDistance: [{correctRawFaceData.eyeDistance}]"
+            , f"result.eyeDistance: [{result.eyeDistance}],"\
+            " correctRawFaceData.eyeDistance:"\
+            " [{correctRawFaceData.eyeDistance}]"
     assert math.isclose(result.faceCenter.x, correctRawFaceData.faceCenter.x)\
-            , f"result.faceCenter.x: [{result.faceCenter.x}], correctRawFaceData.faceCenter.x: [{correctRawFaceData.faceCenter.x}]"
+            , f"result.faceCenter.x: [{result.faceCenter.x}],"\
+            " correctRawFaceData.faceCenter.x:"\
+            " [{correctRawFaceData.faceCenter.x}]"
     assert math.isclose(result.faceCenter.y, correctRawFaceData.faceCenter.y)\
-            , f"result.faceCenter.y: [{result.faceCenter.y}], correctRawFaceData.faceCenter.y: [{correctRawFaceData.faceCenter.y}]"
+            , f"result.faceCenter.y: [{result.faceCenter.y}],"\
+            " correctRawFaceData.faceCenter.y:"\
+            " [{correctRawFaceData.faceCenter.y}]"
 # }}}
 
 
