@@ -129,8 +129,8 @@ def test_Part__init__(b, t, l, r):
     def _2P(t: Tuple[float, float]):
         return dlib.dpoint(t[0], t[1])
 
-    assert Part(_2C(b), _2C(t), _2C(l), _2C(r)) == \
-                Part(_2P(b), _2P(t), _2P(l), _2P(r))
+    assert Part(_2C(b), _2C(t), _2C(l), _2C(r)) \
+               == Part(_2P(b), _2P(t), _2P(l), _2P(r))
 
 
 def test_Part__init__typeMismatch():
@@ -147,7 +147,7 @@ def test_Part__neg__(a):
 def test_Part__add__(a, b, c):
     """ the properties are taken from here:
         http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#t:Num
-        """
+    """
     assert round_Part((a + b) + c) == round_Part(a + (b + c))
     assert a + b == b + a
     assert a + Part.default() == a
