@@ -187,6 +187,7 @@ def test_facemark_noface():
       , st.tuples(finiteFloatCallable, finiteFloatCallable))
 def test__toRelative(a, b, c):
     def _mkp(t: Tuple[float, float]) -> dlib.dpoint:
+        """ make dlib.dpoint from Tuple"""
         return dlib.dpoint(t[0], t[1])
 
     def _pSub(t: Tuple[float, float], c: Tuple[float, float]) -> dlib.dpoint:

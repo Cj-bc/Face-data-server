@@ -345,8 +345,6 @@ class Face:
 @dataclasses.dataclass(frozen=True)
 class RawFaceData:
     eyeDistance: float
-#    rightEyeSize: float
-#    leftEyeSize: float
     faceHeigh: float
     faceCenter: dlib.dpoint
 
