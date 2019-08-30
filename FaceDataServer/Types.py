@@ -9,7 +9,7 @@ import math
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
 # ignore
 LANDMARK_NUM = {"TEMPLE_LEFT": 0
-               , "TIN_CENTER": 19
+               , "CHIN_CENTER": 19
                , "TEMPLE_RIGHT": 40
                , "NOSE_R": 44
                , "NOSE_BOTTOM": 49
@@ -242,7 +242,7 @@ class Face:
     center: AbsoluteCoord
     leftTemple: RelativeCoord
     rightTemple: RelativeCoord
-    tinCenter: RelativeCoord
+    chinCenter: RelativeCoord
     leftEye: Eye
     rightEye: Eye
     mouth: Mouth
@@ -257,7 +257,7 @@ class Face:
         self.center = c
         self.leftTemple = lt
         self.rightTemple = rt
-        self.tinCenter = tc
+        self.chinCenter = tc
         self.leftEye = le
         self.rightEye = re
         self.mouth = m
@@ -267,7 +267,7 @@ class Face:
 
     def __repr__(self: S) -> str:
         return f"Face({self.center}, {self.leftTemple}"\
-               f", {self.rightTemple}, {self.tinCenter}"\
+               f", {self.rightTemple}, {self.chinCenter}"\
                f", {self.leftEye}, {self.rightEye}"\
                f", {self.mouth}, {self.nose}"\
                f", {self.leftEyeBrow}, {self.rightEyeBrow})"
@@ -276,7 +276,7 @@ class Face:
         return self.center == other.center\
             and self.leftTemple == other.leftTemple \
             and self.rightTemple == other.rightTemple \
-            and self.tinCenter == other.tinCenter \
+            and self.chinCenter == other.chinCenter \
             and self.leftEye == other.leftEye \
             and self.rightEye == other.rightEye \
             and self.mouth == other.mouth \
@@ -286,7 +286,7 @@ class Face:
 
     def __mul__(s: S, o: Num) -> S:
         return Face(s.center * o, s.leftTemple * o, s.rightTemple * o
-                   , s.tinCenter * o, s.leftEye * o, s.rightEye * o
+                   , s.chinCenter * o, s.leftEye * o, s.rightEye * o
                    , s.mouth * o, s.nose * o, s.leftEyeBrow * o
                    , s.rightEyeBrow * o)
 
@@ -294,7 +294,7 @@ class Face:
         # I don't know why but the expr below won't work correctly
         # return s * (1 / o)
         return Face(s.center / o, s.leftTemple / o, s.rightTemple / o
-                   , s.tinCenter / o, s.leftEye / o, s.rightEye / o
+                   , s.chinCenter / o, s.leftEye / o, s.rightEye / o
                    , s.mouth / o, s.nose / o, s.leftEyeBrow / o
                    , s.rightEyeBrow / o)
 
@@ -313,7 +313,7 @@ class Face:
         _center = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
         _ltemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
         _rtemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]]) # noqa
-        _tin    = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TIN_CENTER"]])
+        _chin    = RelativeCoord.fromDPoint(points[LANDMARK_NUM["CHIN_CENTER"]])
         _leye   = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
                      , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
                      , points[LANDMARK_NUM["LEFT_EYE_L"]]
@@ -338,7 +338,7 @@ class Face:
                          , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
                          , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
 
-        return cls(_center, _ltemp, _rtemp, _tin, _leye, _reye
+        return cls(_center, _ltemp, _rtemp, _chin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
 
 
@@ -359,7 +359,7 @@ class RawFaceData:
         _middleForehead = (face.leftEyeBrow.rightSide
                           + face.rightEyeBrow.leftSide) / 2
         _faceHeighVector  = _middleForehead\
-                            - face.tinCenter
+                            - face.chinCenter
         faceHeigh = round(math.sqrt(_faceHeighVector.x ** 2
                                    + _faceHeighVector.y ** 2)
                          , 15)
@@ -389,7 +389,7 @@ class FaceRotations:
         # those values are used in the near future.Just ignore this for linting
         leftEdge2Center  = face.leftTemple - raw.faceCenter # noqa
         rightEdge2Center = raw.faceCenter - face.rightTemple # noqa
-        chin2Center = raw.faceCenter - face.tinCenter # noqa
+        chin2Center = raw.faceCenter - face.chinCenter # noqa
 
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes

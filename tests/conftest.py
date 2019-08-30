@@ -170,7 +170,7 @@ def round_Face(s: Face) -> str:
     return round_Coord(s.center) + " " \
         + round_Coord(s.leftTemple) + " " \
         + round_Coord(s.rightTemple) + " " \
-        + round_Coord(s.tinCenter) + " " \
+        + round_Coord(s.chinCenter) + " " \
         + round_Part(s.leftEye) + " " \
         + round_Part(s.rightEye) + " " \
         + round_Part(s.leftEyeBrow) + " " \
