@@ -1,27 +1,29 @@
 import pytest
 from unittest import mock
+from hypothesis import given
+import hypothesis.strategies as st
 from timeout_decorator import timeout, TimeoutError
+from typing import Tuple
 from FaceDataServer.faceDetection import (_isFaceExist, _getBiggestFace
                                          , _normalization
                                          , facemark, _waitUntilFaceDetect
-                                         , faceCalibration)
-from conftest import (faceFrame, noFaceFrame, MockedCap)
+                                         , faceCalibration, _toRelative)
+from conftest import (faceFrame, noFaceFrame, MockedCap, finiteFloatCallable)
 from FaceDataServer.Types import RawFaceData, CapHasClosedError
 import dlib
 import numpy
 
 
-# --- isFaceExist
-
-
+# isFaceExist {{{
 @pytest.mark.parametrize("faceNum,expected", [(0, False), (1, True)])
 def check_isFaceExist(faceNum: int, expected: bool):
     with mock.patch('FaceDataServer.faceDetection._detector',
                     return_value=dlib.rectangles(faceNum)):
         assert _isFaceExist(numpy.ndarray(0)) == expected
+# }}}
 
 
-# --- waitUntilFaceDetect
+# waitUntilFaceDetect {{{
 @pytest.mark.parametrize("frame", [faceFrame, noFaceFrame])
 def test_waitUntilFaceDetect_CapHasClosedError(frame):
     cap = MockedCap(False, frame)
@@ -45,11 +47,10 @@ def test_waitUntilFaceDetect_faceNotFound():
 
     with pytest.raises(TimeoutError):
         _run()
+# }}}
 
 
-# --- getBiggestFace
-
-
+# getBiggestFace {{{
 def test_getBiggestFace():
     emptyPoints = dlib.dpoints(194)
 
@@ -63,11 +64,10 @@ def test_getBiggestFace():
 
 def test_getBiggestFace_noface():
     assert _getBiggestFace([]) == dlib.dpoints(194)
+# }}}
 
 
-# --- _normalization
-
-
+# _normalization {{{
 def test_normalization():
     # inList {{{
     inList = [0, 1, 10, 86, 87, 88, 89, 90, 91, 92,
@@ -97,14 +97,13 @@ def test_normalization():
     correct = dlib.dpoints(list(map(lambda n: dlib.dpoint(n, n),
                                     list(range(0, 194)))))
     assert _normalization(testPoints) == correct
+# }}}
 
 
-# faceCalibration
-
-
+# faceCalibration {{{
 def test_faceCalibration():
     correct: RawFaceData = RawFaceData(113, 366.82966074187624
-                                      , dlib.dpoint(479, 338))
+                                      , dlib.dpoint(0, 0))
     cap = MockedCap(True, faceFrame)
     with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
         result: RawFaceData = faceCalibration(cap)
@@ -113,47 +112,62 @@ def test_faceCalibration():
     assert result.faceHeigh == correct.faceHeigh
     assert result.faceCenter.x == correct.faceCenter.x
     assert result.faceCenter.y == correct.faceCenter.y
+# }}}
 
-# -- facemark
 
-
+# facemark {{{
 def test_facemark():
     # definition of correct_points {{{
-    correct_points = [
-        (280, 295), (282, 312), (286, 329), (290, 347), (295, 364), (301, 380),
-        (307, 397), (314, 413), (323, 428), (332, 442), (344, 456), (357, 468),
-        (372, 478), (387, 487), (403, 494), (419, 501), (436, 508), (452, 515),
-        (469, 521), (486, 526), (503, 531), (521, 534), (539, 535), (557, 534),
-        (574, 530), (589, 523), (602, 512), (613, 498), (621, 483), (628, 467),
-        (635, 450), (642, 433), (648, 416), (653, 399), (658, 382), (662, 365),
-        (666, 348), (669, 330), (671, 313), (672, 295), (671, 277), (542, 277),
-        (535, 288), (529, 301), (525, 315), (528, 329), (539, 337), (553, 341),
-        (566, 342), (581, 343), (595, 344), (609, 342), (621, 336), (631, 326),
-        (634, 312), (631, 298), (626, 285), (619, 272), (490, 410), (499, 405),
-        (510, 401), (520, 398), (530, 394), (541, 390), (551, 387), (562, 385),
-        (572, 384), (584, 383), (595, 382), (606, 381), (617, 383), (624, 390),
-        (625, 400), (621, 410), (616, 419), (607, 426), (597, 431), (586, 433),
-        (575, 434), (563, 433), (553, 431), (542, 429), (531, 426), (521, 423),
-        (510, 420), (500, 416), (622, 398), (615, 401), (606, 403), (597, 404),
-        (589, 406), (580, 407), (571, 408), (561, 408), (552, 408), (543, 408),
-        (534, 408), (525, 408), (516, 409), (506, 409), (497, 408), (506, 408),
-        (515, 407), (524, 407), (533, 406), (542, 404), (551, 404), (560, 404),
-        (569, 404), (578, 403), (586, 402), (595, 400), (604, 398), (613, 397),
-        (601, 207), (604, 201), (609, 196), (614, 192), (620, 189), (626, 186),
-        (633, 185), (640, 185), (647, 186), (653, 190), (657, 195), (657, 202),
-        (654, 207), (648, 210), (641, 212), (635, 213), (627, 213), (620, 212),
-        (614, 210), (607, 209), (494, 213), (488, 207), (480, 202), (472, 199),
-        (463, 197), (454, 198), (445, 199), (437, 202), (429, 206), (422, 210),
-        (414, 216), (420, 220), (428, 222), (437, 223), (446, 224), (455, 223),
-        (464, 222), (473, 220), (482, 219), (491, 219), (600, 172), (602, 163),
-        (608, 155), (617, 150), (626, 147), (635, 144), (645, 142), (654, 142),
-        (663, 144), (670, 149), (675, 157), (678, 168), (670, 169), (662, 166),
-        (653, 165), (645, 165), (635, 166), (626, 169), (617, 172), (608, 175),
-        (532, 164), (518, 154), (502, 149), (484, 147), (466, 146), (448, 146),
-        (430, 148), (414, 154), (398, 162), (384, 172), (372, 184), (384, 187),
-        (401, 182), (418, 177), (435, 174), (454, 172), (472, 172), (490, 173),
-        (507, 176), (526, 177)]
-    # }}}
+    correct_points = [(-301, -48), (-299, -31), (-295, -14), (-291, 4)
+                     , (-286, 21), (-280, 37), (-274, 54), (-267, 70)
+                     , (-258, 85), (-249, 99), (-237, 113), (-224, 125)
+                     , (-209, 135), (-194, 144), (-178 , 151), (-162, 158)
+                     , (-145, 165), (-129, 172), (-112, 178), (-95, 183)
+                     , (-78, 188), (-60, 191), (-42, 192), (-24, 191)
+                     , (-7, 187), (8, 180), (21, 169), (32, 155)
+                     , (40, 140), (47, 124), (54, 107), (61, 90)
+                     , (67, 73), (72, 56), (77, 39), (81, 22), (85, 5)
+                     , (88, -13), (90, -30), (91, -48), (90, -66)
+                     , (-39, -66), (-46, -55), (-52, -42), (-56, -28)
+                     , (-53, - 14), (-42, -6), (-28, -2), (-15, -1)
+                     , (0, 0), (14, 1), (28, -1), (40, -7)
+                     , (50, -17), (53, -31), (50, -45), (45, -58)
+                     , (38, -71), (-91, 67), (-82, 62), (-71, 58)
+                     , (-61, 55), (-51, 51), (-40, 47), (-30, 44)
+                     , (-19, 42), (-9, 41), (3, 40), (14, 39)
+                     , (25, 38), (36, 40), (43, 47), (44, 57)
+                     , (40, 67), (35, 76), (26, 83), (16, 88)
+                     , (5, 90), (-6, 91), (-18, 90), (-28, 88)
+                     , (-39, 86), (-50, 83), (-60, 80), (-71, 77)
+                     , (-81, 73), (41, 55), (34, 58), (25, 60)
+                     , (16, 61), (8, 63), (-1, 64), (-10, 65)
+                     , (-20, 65), (-29, 65), (-38, 65), (-47, 65)
+                     , (-56, 65), (-65, 66), (-75, 66), (-84, 65)
+                     , (-75, 65), (-66, 64), (-57, 64), (-48, 63)
+                     , (-39, 61), (-30, 61), (-21, 61), (-12, 61)
+                     , (-3, 60), (5, 59), (14, 57), (23, 55)
+                     , (32, 54), (20, -136), (23, -142), (28, -147)
+                     , (33, -151), (39, -154), (45, -157), (52, -158)
+                     , (59, -158), (66, -157), (72, -153), (76, -148)
+                     , (76, -141), (73, -136), (67, -133), (60, -131)
+                     , (54, -130), (46, -130), (39, -131), (33, -133)
+                     , (26, -134), (-87, -130), (-93, -136), (-101, -141)
+                     , (-109, -144), (-118, -146), (-127, -145), (-136, -144)
+                     , (-144, -141), (-152, -137), (-159, -133), (-167, -127)
+                     , (-161, -123), (-153, -121), (-144 , -120), (-135, -119)
+                     , (-126, -120), (-117, -121), (-108, -123), (-99, -124)
+                     , (-90, -124), (19, -171), (21, -180), (27, -188)
+                     , (36, -193), (45, -196) , (54, -199), (64, -201)
+                     , (73, -201), (82, -199), (89, -194), (94, -186)
+                     , (97, -175), (89, -174), (81, -177), (72, -178)
+                     , (64, -178), (54, -177), (45, -174), (36, -171)
+                     , (27, -168), (-49, -179), (-63, -189), (-79, -194)
+                     , (-97, -196), (-115, -197), (-133, -197), (-151, -195)
+                     , (-167, -189), (-183, -181), (-197, -171), (-209, -159)
+                     , (-197, -156), (-180, -161), (-163, -166), (-146, -169)
+                     , (-127, -171), (-109, -171), (-91, -170), (-74, -167)
+                     , (-55, -166)]
+# }}}
 
     correct = dlib.dpoints()
     for p in correct_points:
@@ -164,3 +178,21 @@ def test_facemark():
 
 def test_facemark_noface():
     assert facemark(noFaceFrame) is None
+# }}}
+
+
+# _toRelative {{{
+@given(st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable)
+      , st.tuples(finiteFloatCallable, finiteFloatCallable))
+def test__toRelative(a, b, c):
+    def _mkp(t: Tuple[float, float]) -> dlib.dpoint:
+        """ make dlib.dpoint from Tuple"""
+        return dlib.dpoint(t[0], t[1])
+
+    def _pSub(t: Tuple[float, float], c: Tuple[float, float]) -> dlib.dpoint:
+        return dlib.dpoint(t[0] - c[0], t[1] - c[1])
+
+    assert _toRelative(dlib.dpoints([_mkp(a), _mkp(b)]), _mkp(c)) \
+               == dlib.dpoints([_pSub(a, c), _pSub(b, c)])
+# }}}
