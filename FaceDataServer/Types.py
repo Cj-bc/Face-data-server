@@ -346,7 +346,7 @@ class Face:
 class RawFaceData:
     eyeDistance: float
     faceHeigh: float
-    faceCenter: dlib.dpoint
+    faceCenter: AbsoluteCoord
 
     @classmethod
     def get(cls: S, face: Face) -> S:
