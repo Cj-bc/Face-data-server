@@ -8,9 +8,9 @@ import math
 from FaceDataServer.Types import (RawFaceData, FaceRotations, Part, Coord
                                  , AbsoluteCoord, RelativeCoord
                                  , Face, Eye, Mouth, Nose, EyeBrow)
-from conftest import (points_front, points_right, points_left
-                     , points_upside, points_bottom
-                     , points_lean_left, points_lean_right
+from conftest import (face_front, face_right, face_left
+                     , face_upside, face_bottom
+                     , face_lean_left, face_lean_right
                      , finiteFloatCallable, PartStrategies, CoordStrategies
                      , AbsoluteCoordStrategies, RelativeCoordStrategies
                      , FaceStrategies
@@ -248,13 +248,13 @@ def test_RawFaceData_thresholded_affect():
 
 
 @pytest.mark.parametrize('face, eD, fH, fC'
-                        , [(points_front, 6, 100, dlib.dpoint(0, 0))
-                        , (points_left, 5, 100, dlib.dpoint(3, 0))
-                        , (points_right, 5, 100, dlib.dpoint(-3, 0))
-                        , (points_upside, 6, 90, dlib.dpoint(0, 5))
-                        , (points_bottom, 6, 90, dlib.dpoint(0, -10))
-                        , (points_lean_left, 6, 100, dlib.dpoint(0, 0))
-                        , (points_lean_right, 6, 100, dlib.dpoint(0, 0))])
+                        , [(face_front, 6, 100, dlib.dpoint(0, 0))
+                        , (face_left, 5, 100, dlib.dpoint(3, 0))
+                        , (face_right, 5, 100, dlib.dpoint(-3, 0))
+                        , (face_upside, 6, 90, dlib.dpoint(0, 5))
+                        , (face_bottom, 6, 90, dlib.dpoint(0, -10))
+                        , (face_lean_left, 6, 100, dlib.dpoint(0, 0))
+                        , (face_lean_right, 6, 100, dlib.dpoint(0, 0))])
 def test_RawFaceData_get(face, eD, fH, fC):
     correctRawFaceData = RawFaceData(eD, fH, fC)
 
@@ -279,13 +279,13 @@ def test_RawFaceData_get(face, eD, fH, fC):
 # }}}
 
 
-@pytest.mark.parametrize("points,th", [(points_front, (0, 0, 0)),
-                                       (points_right, (0, -1, 0)),
-                                       (points_left, (0, 1, 0)),
-                                       (points_upside, (1, 0, 0)),
-                                       (points_bottom, (-1, 0, 0)),
-                                       (points_lean_left, (0, 0, 1)),
-                                       (points_lean_right, (0, 0, -1))])
+@pytest.mark.parametrize("points,th", [(face_front, (0, 0, 0)),
+                                       (face_right, (0, -1, 0)),
+                                       (face_left, (0, 1, 0)),
+                                       (face_upside, (1, 0, 0)),
+                                       (face_bottom, (-1, 0, 0)),
+                                       (face_lean_left, (0, 0, 1)),
+                                       (face_lean_right, (0, 0, -1))])
 def test_FaceRotations_get(points, th):
     calib = RawFaceData(6.0, 100.0, dlib.dpoint(0, 0))
 
