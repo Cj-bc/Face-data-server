@@ -432,10 +432,20 @@ class FaceRotations:
 
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
-    pass
+    exitCode = ExitCode.ERR_UNKNOWN
+
+    def __init__(self, e_fileCode, ex=None):
+        """ Use ex to force the class to have that value as exit code
+        """
+        if ex is not None:
+            self.exitCode = ex
+        else:
+            self.exitCode = self.exitCode | e_fileCode
 
 
 class CapHasClosedError(FaceDetectionError):
     """Exception raised for unexpected cv2.VideoCapture close"""
+    exitCode = ExitCode.CameraNotFound
+
     def __str__(self):
         return "The camera connection has been closed. Please try again"

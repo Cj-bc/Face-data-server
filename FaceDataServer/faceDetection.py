@@ -5,7 +5,7 @@ import cv2
 import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
-                    RawFaceData, Face)
+                    RawFaceData, Face, ExitCode)
 from functools import reduce
 
 
@@ -85,7 +85,7 @@ def _waitUntilFaceDetect(cap: cv2.VideoCapture) -> Cv2Image:
         if _isFaceExist(frame):
             return frame
 
-    raise CapHasClosedError()
+    raise CapHasClosedError(ExitCode.FILE_FACEDETECTION)
 # }}}
 
 
