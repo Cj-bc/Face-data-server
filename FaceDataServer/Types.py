@@ -36,6 +36,28 @@ LANDMARK_NUM = {"TEMPLE_LEFT": 0
                , "EYEBROW_RIGHT_BOTTOM": 190
                 }
 
+
+class ExitCode():
+    """
+    Exit Codes are constructed with these pattern:
+        0b00000000
+          +==~~---
+          || | |---- Number in that 'kind'
+          || |------ Specify kind of error
+          ||-------- Specify which file is that
+          |--------- MUST BE 0, as exit code 126+ is treated as fatal error
+    """
+    Ok = 0
+    FILE_MAIN          = 0b00100000
+    FILE_TYPE          = 0b01000000
+    FILE_FACEDETECTION = 0b01100000
+
+    ERR_UNKNOWN = 0b00001000
+    ERR_IO      = 0b00010000
+
+    CameraNotFound = ERR_IO | 0b00000001
+
+
 # type aliases {{{
 
 Error = NewType('Error', str)
