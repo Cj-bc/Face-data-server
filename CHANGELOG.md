@@ -1,0 +1,196 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [0.7.0] - 2019-08-30 -- Use relative coordinate
+
+### Added
+- New classes to FaceDataServer.Types, 'Face', 'Part', 'Nose', 'Eye',
+- 'faceDetectionLoop' to main.py, which will be recursively called while execution
+- dependency: hypothesis for property-based testing
+- tests for newly added methods, classes
+- New classes to test.conftest:
+- dependency: numpy for matrix manipulation
+- Add tests for faceDetectionLoop
+
+### Changed
+- use 'RELATIVE' coordinate to calculate angles
+- facemark() returns relative coordinates
+- RawFaceData.faceCenter points head of nose
+- LANDMARK_NUM has:
+    - TEMPLE_{LEFT,RIGHTJ}
+    - NOSE_{R,BOTTOM,L}
+    - EYEBROW_LEFT_{TOP,L,BOTTOM}
+    - EYEBROW_RIGHT_{TOP,R,BOTTOM}
+- RawFaceData.get require Face object as 2nd argument
+- main() uses looping procedure
+- convert tests.conftest.points_* to Face object
+- Rename tests.conftest.{points,face}_*
+- Test all face_* on test_RawFaceData_get
+- Use math.isclose() to assert values in tests
+- round all values of RawFaceData (reffer to commit message of 4af0dbc)
+- Exit if camera isn't connected
+- Update all tests
+
+### Fixed
+- RawFaceData.get calculate eyeDistance correctly
+
+
+## [0.6.1] - 2019/08/05 -- reconstruct namespaces
+
+### Changed
+- Change package name: FaceDataServer.
+- Add 'tools' dir to store some tool scripts(currently, dlib's training script).
+- Add 'src' dir and move cascade file & .dat file to there.
+- Remove 'getRawFaceData' and add 'RawFaceData.get()' which does the same work as getRawFaceData
+- Move 'LANDMARK_NUM' to FaceDataServer.Type
+- Remove 'find.rotates' and add 'FaceRotations.get' which does the same work as find.rotates
+- Hide some methods which was used locally
+- Move 'points2dpoints' to 'FaceDataServer.faceDetection' because it was only used there
+- Split test for 'main.main' to 'test/test_main.py'
+- Change gitignore to follow apth change
+- Change to use 'mypy --strict' for linting
+
+### Removed
+- 'FaceDataServer.faceDetection.constructDlibDPoints'
+- FaceDataServer/Utils.py
+- FaceDataServer/find.py (removed: Coord, red, green, blue, point_abs, ara_rect)
+- tests/test_find.py
+
+
+## [0.6.0] - 2019-08-02 -- Use dlib.dpoints
+
+### Added
+- 'make init'
+- 'make lint'
+- Tests for Z axis in faceDetection.find.rotate()
+- Add faceDetection/Util.py; 'points2dpoints' to convert dlib.points to dlib.dpoints
+
+### Changed
+- Ignore W503 in flake8 execution
+- Travis caches faceDetection/learned-models and virtualenvs dir
+- Travis applies environment variable DEV as 'true'
+- Travis uses 'make init' instead of 'pipenv install --dev'
+- Travis pulls LFS file only if cache isn't found
+- Travis uses 'make {test,lint}' instead of pipenv script
+- Use dlib.dpoint instead of dlib.point to store float coordinate
+- Disable mypy's 'no stub file for' waring
+
+### Fixed
+- Fix travis CI status badge URL to develop branch
+- Path manipulation in face-data-server executable
+- Fix method to calculate faceHeight in getRawFaceData
+- Correct tests.test_faceDetection.test_getRawFaceData
+- Fix coordinates of tests.conftest.points_*
+
+### Removed
+- Pipenv script: lint (as it couldn't execute both flake8 and mypy at once)
+
+## [0.5.1] - 2019-07-28
+
+### Added
+- Python dependencies for lint: flake8, mypy
+- Pipenv command: pipenv lint, pipenv test
+
+### Changed
+- Execute lint and test in travis.yml
+
+## [0.5.0] - 2019-07-28 -- adding Travis CI support
+
+### Added
+- travis.yml
+- travis CI badge to README
+
+### Fixed
+- Reset LFS file path
+- Remove unused fixtures of tests.Types.test_RawFaceData_thresholded_affect()
+
+
+## [0.4.0] - 2019-07-26 -- adding Makefile
+
+### Added
+- Makefile
+- Make commands: run, test, install, uninstall
+- New installation&uninstallation with Make to README
+
+### Fixed
+- Fix face-data-server executable to correctly cd to its dir
+
+
+## [0.3.0] - 2019-07-26
+
+### Added
+- test for RawFaceData.threshold
+- 'face-data-server', which is shellscript executable wrapper
+- Add usesage of 'face-data-server' to README
+
+### Changed
+- Move dev-only packages to [dev-package]
+- Remove debug codes
+- Update Pipfile.lock
+
+
+## [0.2.1] - 2019-07-26 -- adding docs
+
+### Added
+- README articles about usage and installation
+- article about used degrees in doc/spec/overview
+- doc/spec/howToDetect which describe how I detect X/Y/Z rotations
+- Note to refer Japanese docs for accurate info in English README
+
+### Changed
+- Move all files in face_detection to upper dir
+- Rename 'face_detection' module to 'faceDetection'
+- Sort LANDMARK_NUM by its keys
+- Move main code to main.py
+- Wrap main code to be main()
+- Update Pipfile.lock
+
+### Removed
+- face_detection dir
+
+### Fixed
+- Rewrite type annotation for find.rotate()
+- Make getBiggestFace return proper length of dlib.dpoints() whatever it got
+
+## [0.2.0] - 2019-07-24 -- adding tests
+
+### Added
+- python dependencies: pytest, pytest-cov, timeout-decorator
+- face_detection/tests/*
+- Print each rotations to stdout from main()
+
+### Changed
+- Move face_detection/FaceDataServer/faceDetetion.py to face_detection/faceDetetion.py
+
+### Removed
+- main() won't quit when 'q' key is pressed, as it doesn't have meaning without GUI
+
+
+### Fixed
+- Correct calculation of eyebrow Y in getRawFaecData
+- Make _normalization return dlib.dpoints object
+- Correct conditional expression to negate rotateY in face_detection.find.rotates()
+
+## [0.1.0] - 2019-07-17 -- Initial version
+
+### Added
+- README for en,ja
+- Gitignore file
+- face_detection/Pipfile
+- python dependencies: dlib, opencv-python
+- face_detection/find.py
+- face_detection/haarcascades/haarcascade_frontalface_default.xml
+- face_detection/learned-models/helen-data-stydy.py
+- face_detection/.gitattribute
+- face_detection/faceDetetion/faceDetection.py
+- face_detection/faceDetetion/Types.py
+- docs/ja/spec/overview.md
+- docs/en/spec/overview.md
+
+
+---
+vim: ft=CHANGELOG
