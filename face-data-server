@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# Face-data-server wrapper script
+#
+#
+# Copyright 2018 (c) Cj-bc
+# This software is released under MIT License
+#
+# @(#) version -
+if test -h ${BASH_SOURCE[0]};then
+    cd $(dirname $(readlink ${BASH_SOURCE[0]}))
+else
+    cd ${BASH_SOURCE[0]%/*}
+fi
+
+which pipenv >/dev/null 2>&1 || return 1
+pipenv run python main.py "$@"

@@ -1,0 +1,17 @@
+[flake8]
+ignore =  # E127: continuation line over-indented for visual indent
+          #       disabled reason: I'm not sure how to fix this!!
+          E127
+          # E128: continuation line under-indented for visual indent
+          #       disabled reason: this privent me using elm-style indent
+          E128
+          # E203: whitespace before ','
+          #       disabled reason: the same as E128
+          E203
+          # E221: multiple spaces before operator
+          #       disabled reason: it prevents me make visual indent be vertical
+          E221
+          # W503: Line break occurred before a binary operator
+          #       disabled reason: it is old rule and conflict with W504, which is recommended
+          W503
+# vim: ft=toml

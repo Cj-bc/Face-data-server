@@ -1,0 +1,24 @@
+language: python
+python: "3.7"
+cache:
+  directories:
+    - faceDetection/learned-models
+    - $HOME/.local/share/virtualenvs
+
+dst:
+  - xenial
+  - bionic
+
+env: DEV=true
+
+before_install: pip install pipenv
+
+install: travis_wait 25 make init
+
+before_script:
+  - echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
+  - test -f faceDetection/learned-models/helen-dataset.dat || git lfs pull
+
+script:
+  - make test
+  - make lint

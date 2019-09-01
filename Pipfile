@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+timeout-decorator = "*"
+flake8 = "*"
+mypy = "*"
+
+[packages]
+dlib = "*"
+opencv-python = "*"
+hypothesis = "*"
+numpy = "*"
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+test = "pipenv run pytest"
