@@ -15,6 +15,7 @@ dlib = "*"
 opencv-python = "*"
 hypothesis = "*"
 numpy = "*"
+grpcio-tools = "*"
 
 [requires]
 python_version = "3.7"
