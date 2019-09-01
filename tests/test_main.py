@@ -86,7 +86,7 @@ def test_main_FaceDetectionError(error):
             with pytest.raises(SystemExit) as e:
                 main()
 
-            assert e.value.code == 1
+            assert e.value.code != 0
 
 
 def test_main_NoCameraFound(capsys):
@@ -101,4 +101,4 @@ def test_main_NoCameraFound(capsys):
         stdout = capsys.readouterr()
         assert stdout.out == "connecting to camera...\n"\
             "ERROR: Cannot connect to camera\n Aborting\n"
-        assert e.value.code == 1
+        assert e.value.code != 0
