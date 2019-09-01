@@ -6,7 +6,7 @@ from typing import (Optional)
 
 from FaceDataServer.faceDetection import (faceCalibration, facemark)
 from FaceDataServer.Types import (RawFaceData, FaceRotations,
-                                 FaceDetectionError, Face)
+                                 FaceDetectionError, Face, ExitCode)
 
 
 def faceDetectionLoop(cap: cv2.VideoCapture, _calib: RawFaceData
@@ -37,7 +37,7 @@ def main():
 
     if not cap.isOpened():
         print(f"ERROR: Cannot connect to camera\n Aborting")
-        sys.exit(1)
+        sys.exit(ExitCode.CameraNotFound | ExitCode.FILE_MAIN)
 
     print("camera connected.")
 
@@ -46,7 +46,10 @@ def main():
     except FaceDetectionError as e:
         print(f"ERROR: Unexpected things are happened: {e}")
         print("Aborting")
-        sys.exit(1)
+        if hasattr(e, 'exitCode'):
+            sys.exit(e.exitCode)
+        else:
+            sys.exit(ExitCode.FILE_MAIN | ExitCode.ERR_UNKNOWN | 0b00000001)
 
     _, _, _ = faceDetectionLoop(cap, calibrated, Face.default())
 
