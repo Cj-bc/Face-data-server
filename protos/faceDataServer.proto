@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+service FaceDataServer {
+  rpc StartStream(stream ReqCommand) returns (stream FaceData) {}
+}
+
+message ReqCommand {
+  enum msg {
+    // Start Face-Data-Server
+    START = 0;
+    // Stop sending FaceData while server is still on
+    STOP  = 1;
+    // Stop server itself
+    EXIT  = 2;
+  }
+
+}
+message FaceData {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
