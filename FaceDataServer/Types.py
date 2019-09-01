@@ -36,6 +36,28 @@ LANDMARK_NUM = {"TEMPLE_LEFT": 0
                , "EYEBROW_RIGHT_BOTTOM": 190
                 }
 
+
+class ExitCode():
+    """
+    Exit Codes are constructed with these pattern:
+        0b00000000
+          +==~~---
+          || | |---- Number in that 'kind'
+          || |------ Specify kind of error
+          ||-------- Specify which file is that
+          |--------- MUST BE 0, as exit code 126+ is treated as fatal error
+    """
+    Ok = 0
+    FILE_MAIN          = 0b00100000
+    FILE_TYPE          = 0b01000000
+    FILE_FACEDETECTION = 0b01100000
+
+    ERR_UNKNOWN = 0b00001000
+    ERR_IO      = 0b00010000
+
+    CameraNotFound = ERR_IO | 0b00000001
+
+
 # type aliases {{{
 
 Error = NewType('Error', str)
@@ -310,35 +332,35 @@ class Face:
     @classmethod
     def fromDPoints(cls: S, points: dlib.dpoints) -> S:
         """return 'Face' object based on given 'facemark'"""
-        _center = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
-        _ltemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
-        _rtemp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]]) # noqa
-        _chin    = RelativeCoord.fromDPoint(points[LANDMARK_NUM["CHIN_CENTER"]])
-        _leye   = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
-                     , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
-                     , points[LANDMARK_NUM["LEFT_EYE_L"]]
-                     , points[LANDMARK_NUM["LEFT_EYE_R"]])
-        _reye   = Eye(points[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
-                     , points[LANDMARK_NUM["RIGHT_EYE_TOP"]]
-                     , points[LANDMARK_NUM["RIGHT_EYE_L"]]
-                     , points[LANDMARK_NUM["RIGHT_EYE_R"]])
-        _mouth  = Mouth(points[LANDMARK_NUM["MOUSE_BOTTOM"]]
-                       , points[LANDMARK_NUM["MOUSE_TOP"]]
-                       , points[LANDMARK_NUM["MOUSE_L"]]
-                       , points[LANDMARK_NUM["MOUSE_R"]])
-        _nose   = Nose(points[LANDMARK_NUM["NOSE_BOTTOM"]]
-                      , points[LANDMARK_NUM["NOSE_L"]]
-                      , points[LANDMARK_NUM["NOSE_R"]])
-        _leb    = EyeBrow(points[LANDMARK_NUM["EYEBROW_LEFT_BOTTOM"]]
-                         , points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]]
-                         , points[LANDMARK_NUM["EYEBROW_LEFT_L"]]
-                         , points[LANDMARK_NUM["EYEBROW_LEFT_R"]])
-        _reb    = EyeBrow(points[LANDMARK_NUM["EYEBROW_RIGHT_BOTTOM"]]
-                         , points[LANDMARK_NUM["EYEBROW_RIGHT_TOP"]]
-                         , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
-                         , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
+        _c     = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
+        _ltmp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
+        _rtmp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]])
+        _chin  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["CHIN_CENTER"]])
+        _leye  = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
+                    , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
+                    , points[LANDMARK_NUM["LEFT_EYE_L"]]
+                    , points[LANDMARK_NUM["LEFT_EYE_R"]])
+        _reye  = Eye(points[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
+                    , points[LANDMARK_NUM["RIGHT_EYE_TOP"]]
+                    , points[LANDMARK_NUM["RIGHT_EYE_L"]]
+                    , points[LANDMARK_NUM["RIGHT_EYE_R"]])
+        _mouth = Mouth(points[LANDMARK_NUM["MOUSE_BOTTOM"]]
+                      , points[LANDMARK_NUM["MOUSE_TOP"]]
+                      , points[LANDMARK_NUM["MOUSE_L"]]
+                      , points[LANDMARK_NUM["MOUSE_R"]])
+        _nose  = Nose(points[LANDMARK_NUM["NOSE_BOTTOM"]]
+                     , points[LANDMARK_NUM["NOSE_L"]]
+                     , points[LANDMARK_NUM["NOSE_R"]])
+        _leb   = EyeBrow(points[LANDMARK_NUM["EYEBROW_LEFT_BOTTOM"]]
+                        , points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]]
+                        , points[LANDMARK_NUM["EYEBROW_LEFT_L"]]
+                        , points[LANDMARK_NUM["EYEBROW_LEFT_R"]])
+        _reb   = EyeBrow(points[LANDMARK_NUM["EYEBROW_RIGHT_BOTTOM"]]
+                        , points[LANDMARK_NUM["EYEBROW_RIGHT_TOP"]]
+                        , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
+                        , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
 
-        return cls(_center, _ltemp, _rtemp, _chin, _leye, _reye
+        return cls(_c, _ltmp, _rtmp, _chin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
 
 
@@ -410,10 +432,20 @@ class FaceRotations:
 
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
-    pass
+    exitCode = ExitCode.ERR_UNKNOWN
+
+    def __init__(self, e_fileCode, ex=None):
+        """ Use ex to force the class to have that value as exit code
+        """
+        if ex is not None:
+            self.exitCode = ex
+        else:
+            self.exitCode = self.exitCode | e_fileCode
 
 
 class CapHasClosedError(FaceDetectionError):
     """Exception raised for unexpected cv2.VideoCapture close"""
+    exitCode = ExitCode.CameraNotFound
+
     def __str__(self):
         return "The camera connection has been closed. Please try again"
