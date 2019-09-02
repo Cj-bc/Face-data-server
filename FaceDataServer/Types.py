@@ -370,6 +370,10 @@ class RawFaceData:
     faceHeigh: float
     faceCenter: AbsoluteCoord
 
+    @staticmethod
+    def default() -> S:
+        return RawFaceData(0.0, 0.0, AbsoluteCoord.default())
+
     @classmethod
     def get(cls: S, face: Face) -> S:
         """ Return RawFaceData from dlib.points
