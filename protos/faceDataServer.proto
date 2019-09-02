@@ -1,7 +1,16 @@
 syntax = "proto3";
 
 service FaceDataServer {
-  rpc streamData(stream ReqCommand) returns (stream FaceData) {}
+  rpc init(VoidCom) returns (Status) {}
+  rpc startStream(ReqCommand) returns (stream FaceData) {}
+  rpc stopStream(VoidCom) returns (Status) {}
+}
+
+message VoidCom {}
+
+message Status {
+  bool success = 1;
+  int32 exitCode = 2;
 }
 
 message ReqCommand {
