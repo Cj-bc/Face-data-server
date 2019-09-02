@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x14\x66\x61\x63\x65\x44\x61taServer.proto\"2\n\nReqCommand\"$\n\x03msg\x12\t\n\x05START\x10\x00\x12\x08\n\x04STOP\x10\x01\x12\x08\n\x04\x45XIT\x10\x02\"+\n\x08\x46\x61\x63\x65\x44\x61ta\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x32<\n\x0e\x46\x61\x63\x65\x44\x61taServer\x12*\n\nstreamData\x12\x0b.ReqCommand\x1a\t.FaceData\"\x00(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x14\x66\x61\x63\x65\x44\x61taServer.proto\"\t\n\x07VoidCom\"+\n\x06Status\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x10\n\x08\x65xitCode\x18\x02 \x01(\x05\"2\n\nReqCommand\"$\n\x03msg\x12\t\n\x05START\x10\x00\x12\x08\n\x04STOP\x10\x01\x12\x08\n\x04\x45XIT\x10\x02\"+\n\x08\x46\x61\x63\x65\x44\x61ta\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x32{\n\x0e\x46\x61\x63\x65\x44\x61taServer\x12\x1b\n\x04init\x12\x08.VoidCom\x1a\x07.Status\"\x00\x12)\n\x0bstartStream\x12\x0b.ReqCommand\x1a\t.FaceData\"\x00\x30\x01\x12!\n\nstopStream\x12\x08.VoidCom\x1a\x07.Status\"\x00\x62\x06proto3')
 )
 
 
@@ -46,10 +46,72 @@ _REQCOMMAND_MSG = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=38,
-  serialized_end=74,
+  serialized_start=94,
+  serialized_end=130,
 )
 _sym_db.RegisterEnumDescriptor(_REQCOMMAND_MSG)
+
+
+_VOIDCOM = _descriptor.Descriptor(
+  name='VoidCom',
+  full_name='VoidCom',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=24,
+  serialized_end=33,
+)
+
+
+_STATUS = _descriptor.Descriptor(
+  name='Status',
+  full_name='Status',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='success', full_name='Status.success', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='exitCode', full_name='Status.exitCode', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=35,
+  serialized_end=78,
+)
 
 
 _REQCOMMAND = _descriptor.Descriptor(
@@ -72,8 +134,8 @@ _REQCOMMAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=24,
-  serialized_end=74,
+  serialized_start=80,
+  serialized_end=130,
 )
 
 
@@ -117,14 +179,30 @@ _FACEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=76,
-  serialized_end=119,
+  serialized_start=132,
+  serialized_end=175,
 )
 
 _REQCOMMAND_MSG.containing_type = _REQCOMMAND
+DESCRIPTOR.message_types_by_name['VoidCom'] = _VOIDCOM
+DESCRIPTOR.message_types_by_name['Status'] = _STATUS
 DESCRIPTOR.message_types_by_name['ReqCommand'] = _REQCOMMAND
 DESCRIPTOR.message_types_by_name['FaceData'] = _FACEDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+VoidCom = _reflection.GeneratedProtocolMessageType('VoidCom', (_message.Message,), {
+  'DESCRIPTOR' : _VOIDCOM,
+  '__module__' : 'faceDataServer_pb2'
+  # @@protoc_insertion_point(class_scope:VoidCom)
+  })
+_sym_db.RegisterMessage(VoidCom)
+
+Status = _reflection.GeneratedProtocolMessageType('Status', (_message.Message,), {
+  'DESCRIPTOR' : _STATUS,
+  '__module__' : 'faceDataServer_pb2'
+  # @@protoc_insertion_point(class_scope:Status)
+  })
+_sym_db.RegisterMessage(Status)
 
 ReqCommand = _reflection.GeneratedProtocolMessageType('ReqCommand', (_message.Message,), {
   'DESCRIPTOR' : _REQCOMMAND,
@@ -148,16 +226,34 @@ _FACEDATASERVER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=121,
-  serialized_end=181,
+  serialized_start=177,
+  serialized_end=300,
   methods=[
   _descriptor.MethodDescriptor(
-    name='streamData',
-    full_name='FaceDataServer.streamData',
+    name='init',
+    full_name='FaceDataServer.init',
     index=0,
+    containing_service=None,
+    input_type=_VOIDCOM,
+    output_type=_STATUS,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='startStream',
+    full_name='FaceDataServer.startStream',
+    index=1,
     containing_service=None,
     input_type=_REQCOMMAND,
     output_type=_FACEDATA,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='stopStream',
+    full_name='FaceDataServer.stopStream',
+    index=2,
+    containing_service=None,
+    input_type=_VOIDCOM,
+    output_type=_STATUS,
     serialized_options=None,
   ),
 ])
