@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 service FaceDataServer {
-  rpc StartStream(stream ReqCommand) returns (stream FaceData) {}
+  rpc streamData(stream ReqCommand) returns (stream FaceData) {}
 }
 
 message ReqCommand {
