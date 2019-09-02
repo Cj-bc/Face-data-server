@@ -37,6 +37,8 @@ LANDMARK_NUM = {"TEMPLE_LEFT": 0
                 }
 
 
+
+# ExitCode {{{
 class ExitCode():
     """
     Exit Codes are constructed with these pattern:
@@ -56,6 +58,7 @@ class ExitCode():
     ERR_IO      = 0b00010000
 
     CameraNotFound = ERR_IO | 0b00000001
+# }}}
 
 
 # type aliases {{{
@@ -260,6 +263,7 @@ class EyeBrow(Part):
 # }}}
 
 
+# Face {{{
 class Face:
     center: AbsoluteCoord
     leftTemple: RelativeCoord
@@ -362,8 +366,10 @@ class Face:
 
         return cls(_c, _ltmp, _rtmp, _chin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
+# }}}
 
 
+# RawFaceData {{{
 @dataclasses.dataclass(frozen=True)
 class RawFaceData:
     eyeDistance: float
@@ -398,8 +404,10 @@ class RawFaceData:
         eD = min(self.eyeDistance, t.eyeDistance)
         fH = min(self.faceHeigh, t.faceHeigh)
         return RawFaceData(eD, fH, self.faceCenter)
+# }}}
 
 
+# FaceRotations {{{
 @dataclasses.dataclass(frozen=True)
 class FaceRotations:
     x: float
@@ -432,8 +440,10 @@ class FaceRotations:
         # v Is this correct code? v
         rotateZ = degreeZ
         return cls(rotateX, rotateY, rotateZ)
+# }}}
 
 
+# Exceptions {{{
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
     exitCode = ExitCode.ERR_UNKNOWN
@@ -453,3 +463,4 @@ class CapHasClosedError(FaceDetectionError):
 
     def __str__(self):
         return "The camera connection has been closed. Please try again"
+# }}}
