@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package FaceDataServer;
+
 service FaceDataServer {
   rpc init(VoidCom) returns (Status) {}
   rpc startStream(VoidCom) returns (stream FaceData) {}
