@@ -11,7 +11,7 @@ from FaceDataServer.faceDetection import (faceCalibration, facemark)
 from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError, Face, ExitCode)
 import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
-from FaceDataServer.faceDataServer_pb2 import (ReqCommand, FaceData)
+from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
 
 
 # Servicer {{{
@@ -27,8 +27,8 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         cap: cv2.VideoCapture = cv2.VideoCapture(0)
         if not cap.isOpened():
             cap.release()
-            return InitStatus(success=False,
-                              extCode=ExitCode.CameraNotFound | ExitCode.FILE_MAIN)
+            return Status(success=False,
+                              exitCode=ExitCode.CameraNotFound | ExitCode.FILE_MAIN)
 
         try:
             calibrated: RawFaceData = faceCalibration(cap)
