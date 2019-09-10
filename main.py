@@ -37,15 +37,15 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             print(f"ERROR: Unexpected things are happened: {e}")
             print("Aborting")
             if hasattr(e, 'exitCode'):
-                return InitStatus(success=False, exitCode=e.exitCode)
+                return Status(success=False, exitCode=e.exitCode)
             else:
-                return InitStatus(success=False
+                return Status(success=False
                                  , exitCode=ExitCode.FILE_MAIN
                                             | ExitCode.ERR_UNKNOWN
                                             | 0b00000001)
         self.calib = calibrated
         self.cap = cap
-        return InitStatus(success=True)
+        return Status(success=True)
 
     def startStream(self, req, context):
         """Streams face data to the client
