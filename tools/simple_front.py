@@ -1,8 +1,12 @@
+# Please execute this from tools/ dir
+# As the PATH manipulation is not written properly,
+# it won't work if executed from other path
 import sys
 sys.path.append("../")
 import grpc
 from FaceDataServer.faceDataServer_pb2_grpc import FaceDataServerStub
 from FaceDataServer.faceDataServer_pb2 import VoidCom
+
 
 def main():
     channel = grpc.insecure_channel('localhost:50052')
