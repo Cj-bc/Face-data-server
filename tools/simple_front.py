@@ -27,7 +27,7 @@ def main():
             print(f"Face faces {ud} {rl}")
     except KeyboardInterrupt:
         print("--- Calling stopStream")
-        stub.stopStream(VoidCom())
+        _ = stub.stopStream(VoidCom())
 
     print("Done")
     sys.exit(0)
