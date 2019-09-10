@@ -50,13 +50,13 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
     def startStream(self, req, context):
         """Streams face data to the client
         """
-        if not cap.isOpened():
+        if not self.cap.isOpened():
             yield None
 
         while self.do_stream == True:
             rots: FaceRotations = FaceRotations(0, 0, 0)
             face: Face = Face.default()
-            _, frame = cap.read()
+            _, frame = self.cap.read()
             landmark: Optional[dlib.points] = facemark(frame)
 
             if landmark is not None:
