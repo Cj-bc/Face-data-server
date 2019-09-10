@@ -18,8 +18,8 @@ def main():
     try:
         print("--- Calling startStream")
         for fd in stub.startStream(VoidCom()):
-            rl = "right" if 0 < fd.Y else "left"
-            ud = "upside" if 0 < fd.X else "downside"
+            rl = "right" if 0 < fd.y else "left"
+            ud = "upside" if 0 < fd.x else "downside"
             print(f"Face faces {ud} {rl}")
     except KeyboardInterrupt:
         print("--- Calling stopStream")
