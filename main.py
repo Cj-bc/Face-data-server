@@ -16,7 +16,7 @@ from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
 
 # Servicer {{{
 class Servicer(grpc_faceDataServer.FaceDataServerServicer):
-    do_stream: bool = False
+    do_stream: bool = True
     initialized: bool = False
 
     calib: RawFaceData = RawFaceData.default()
