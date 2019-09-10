@@ -16,6 +16,7 @@ opencv-python = "*"
 hypothesis = "*"
 numpy = "*"
 grpcio-tools = "*"
+cmake = "*"
 
 [requires]
 python_version = "3.7"
