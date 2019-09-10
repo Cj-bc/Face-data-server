@@ -45,30 +45,41 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
                                             | 0b00000001)
         self.calib = calibrated
         self.cap = cap
+        print("Calibrated.")  # DEBUG
+        print(f"cap: {cap}")  # DEBUG
         return Status(success=True)
 
     def startStream(self, req, context):
         """Streams face data to the client
         """
+        print("startStream called")  # DEBUG
         if not self.cap.isOpened():
+            print("camera isn't available")  # DEBUG
             yield None
 
         while self.do_stream == True:
+            print("in while loop; prepare for facemark")  # DEBUG
             rots: FaceRotations = FaceRotations(0, 0, 0)
             face: Face = Face.default()
             _, frame = self.cap.read()
             landmark: Optional[dlib.points] = facemark(frame)
+            print("Landmark is provided")  # DEBUG
 
             if landmark is not None:
                 face: Face = Face.fromDPoints(landmark)
                 rots: FaceRotations = FaceRotations.get(face, self.calib)
 
+            print(f"X: {rots.x}, Y: {rots.y}, Z: {rots.z}")  # DEBUG
             yield FaceData(x=rots.x, y=rots.y, z=rots.z)
+
+        print("Stream is closed")  # DEBUG
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
+        print("stopStream")  # DEBUG
         self.do_stream = False
         cap.release()
+        print("Stream closed")  # DEBUG
         return Status(success=True)
 
 # }}}
