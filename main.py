@@ -14,6 +14,36 @@ import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
 from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
 
 
+# FaceDataStore {{{
+class FaceDataStore():
+    """ Stores current FaceData
+    """
+    current: FaceData
+    cap: c2.VideoCapture = None
+    calib: RawFaceData = RawFaceData.default()
+
+    def __init__(self, _cap, _calib) -> None:
+        self.cap = _cap
+        self.calib = _calib
+        self.genData()
+
+    def genData(self) -> None:
+    """ generate FaceData from caps until the camera is closed.
+    """
+        while cap.isOpened() is not None:
+            rots: FaceRotations = FaceRotations(0, 0, 0)
+            face: Face = Face.default()
+            _, frame = self.cap.read()
+            landmark: Optional[dlib.points] = facemark(frame)
+
+            if landmark is not None:
+                face: Face = Face.fromDPoints(landmark)
+                rots: FaceRotations = FaceRotations.get(face, self.calib)
+
+            self.current = FaceData(x=rots.x, y=rots.y, z=rots.z)
+# }}}
+
+
 # Servicer {{{
 class Servicer(grpc_faceDataServer.FaceDataServerServicer):
     do_stream: bool = True
@@ -21,6 +51,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
 
     calib: RawFaceData = RawFaceData.default()
     cap: cv2.VideoCapture = None
+    dataStore: FaceDataStore = None
 
 
     def init(self, req, context):
@@ -45,7 +76,9 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
                                             | 0b00000001)
         self.calib = calibrated
         self.cap = cap
+        self.dataStore = FaceDataStore(cap, calib)
         return Status(success=True)
+
 
     def startStream(self, req, context):
         """Streams face data to the client
@@ -54,16 +87,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             yield None
 
         while self.do_stream == True:
-            rots: FaceRotations = FaceRotations(0, 0, 0)
-            face: Face = Face.default()
-            _, frame = self.cap.read()
-            landmark: Optional[dlib.points] = facemark(frame)
-
-            if landmark is not None:
-                face: Face = Face.fromDPoints(landmark)
-                rots: FaceRotations = FaceRotations.get(face, self.calib)
-
-            yield FaceData(x=rots.x, y=rots.y, z=rots.z)
+            yield self.dataStore.current
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
