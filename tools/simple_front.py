@@ -1,8 +1,12 @@
+# Please execute this from tools/ dir
+# As the PATH manipulation is not written properly,
+# it won't work if executed from other path
 import sys
 sys.path.append("../")
 import grpc
 from FaceDataServer.faceDataServer_pb2_grpc import FaceDataServerStub
 from FaceDataServer.faceDataServer_pb2 import VoidCom
+
 
 def main():
     channel = grpc.insecure_channel('localhost:50052')
@@ -18,12 +22,12 @@ def main():
     try:
         print("--- Calling startStream")
         for fd in stub.startStream(VoidCom()):
-            rl = "right" if 0 < fd.Y else "left"
-            ud = "upside" if 0 < fd.X else "downside"
+            rl = "right" if 0 < fd.y else "left"
+            ud = "upside" if 0 < fd.x else "downside"
             print(f"Face faces {ud} {rl}")
     except KeyboardInterrupt:
         print("--- Calling stopStream")
-        stub.stopStream(VoidCom())
+        _ = stub.stopStream(VoidCom())
 
     print("Done")
     sys.exit(0)

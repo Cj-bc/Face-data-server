@@ -75,22 +75,30 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         self.calib = calibrated
         self.cap = cap
         self.dataStore = FaceDataStore(cap, calib)
+        print("Calibrated.")  # DEBUG
+        print(f"cap: {cap}")  # DEBUG
         return Status(success=True)
 
 
     def startStream(self, req, context):
         """Streams face data to the client
         """
+        print("startStream called")  # DEBUG
         if not self.cap.isOpened():
+            print("camera isn't available")  # DEBUG
             yield None
 
         while self.do_stream == True:
             yield self.dataStore.current
+        print("Stream is closed")  # DEBUG
+
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
+        print("stopStream")  # DEBUG
         self.do_stream = False
         cap.release()
+        print("Stream closed")  # DEBUG
         return Status(success=True)
 
 # }}}
