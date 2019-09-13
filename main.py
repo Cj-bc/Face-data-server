@@ -49,8 +49,6 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
     do_stream: bool = True
     initialized: bool = False
 
-    calib: RawFaceData = RawFaceData.default()
-    cap: cv2.VideoCapture = None
     dataStore: FaceDataStore = None
 
 
