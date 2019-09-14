@@ -25,7 +25,6 @@ class FaceDataStore():
     def __init__(self, _cap, _calib) -> None:
         self.cap = _cap
         self.calib = _calib
-        self.genData()
 
     def genData(self) -> None:
     """ generate FaceData from caps until the camera is closed.
@@ -46,11 +45,21 @@ class FaceDataStore():
 
 # Servicer {{{
 class Servicer(grpc_faceDataServer.FaceDataServerServicer):
+    """
+        args:
+            do_stream: Set False when stream is closed
+            initialized: True after once self.init() is called
+            dataStore: FaceDataStore object that holds current faceData
+            dataStoreExecuter: an Executor object that holds threads used to run FaceDataStore.genData()
+    """
     do_stream: bool = True
     initialized: bool = False
 
     dataStore: FaceDataStore = None
+    dataStoreExecuter: future.Executer = None
 
+    def __init__(self, exe):
+        self.dataStoreExecuter = exe
 
     def init(self, req, context):
         cap: cv2.VideoCapture = cv2.VideoCapture(0)
@@ -72,9 +81,10 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
                                  , exitCode=ExitCode.FILE_MAIN
                                             | ExitCode.ERR_UNKNOWN
                                             | 0b00000001)
-        self.calib = calibrated
-        self.cap = cap
         self.dataStore = FaceDataStore(cap, calib)
+        self.dataStoreExecuter.submit(self.dataStore.genData)
+        self.initialized = True
+
         print("Calibrated.")  # DEBUG
         print(f"cap: {cap}")  # DEBUG
         return Status(success=True)
@@ -100,25 +110,25 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         cap.release()
         print("Stream closed")  # DEBUG
         return Status(success=True)
-
 # }}}
 
 
 
 def main():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    grpc_faceDataServer.add_FaceDataServerServicer_to_server(
-            Servicer(), server)
-    server.add_insecure_port('[::]:5039')
-    server.start()
-    print("server started...")
-    try:
-        while True:
-            _ONE_DAY_IN_SECONDS = 60 * 60 * 24
-            time.sleep(_ONE_DAY_IN_SECONDS)
-    except KeyboardInterrupt:
-        server.stop(0)
-        print("Server stopped.")
+    with futures.ThreadPoolExecutor(max_workers=4) as executor:
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        grpc_faceDataServer.add_FaceDataServerServicer_to_server(
+                Servicer(executor), server)
+        server.add_insecure_port('[::]:5039')
+        server.start()
+        print("server started...")
+        try:
+            while True:
+                _ONE_DAY_IN_SECONDS = 60 * 60 * 24
+                time.sleep(_ONE_DAY_IN_SECONDS)
+        except KeyboardInterrupt:
+            server.stop(0)
+            print("Server stopped.")
 
 
 if __name__ == '__main__':
