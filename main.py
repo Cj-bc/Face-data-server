@@ -51,7 +51,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             dataStore: FaceDataStore object that holds current faceData
             dataStoreExecuter: an Executor object that holds threads used to run FaceDataStore.genData()
     """
-    do_stream: bool = True
+    do_streams: int = 0
     initialized: bool = False
 
     dataStore: FaceDataStore = None
@@ -100,14 +100,15 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             print("camera isn't available")  # DEBUG
             yield None
 
-        while self.do_stream is True:
+        self.do_streams += 1
+        while 0 < self.do_streams:
             yield self.dataStore.current
         print("Stream is closed")  # DEBUG
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
         print("stopStream")  # DEBUG
-        self.do_stream = False
+        self.do_streams -= 1
         self.dataStore.cap.release()
         print("Stream closed")  # DEBUG
         return Status(success=True)
