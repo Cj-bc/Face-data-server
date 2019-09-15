@@ -93,7 +93,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         """Streams face data to the client
         """
         print("startStream called")  # DEBUG
-        if not self.cap.isOpened():
+        if not self.dataStore.cap.isOpened():
             print("camera isn't available")  # DEBUG
             yield None
 
@@ -105,7 +105,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         """ stop streaming FaceData """
         print("stopStream")  # DEBUG
         self.do_stream = False
-        self.cap.release()
+        self.dataStore.cap.release()
         print("Stream closed")  # DEBUG
         return Status(success=True)
 # }}}
