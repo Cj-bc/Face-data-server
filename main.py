@@ -55,7 +55,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
     initialized: bool = False
 
     dataStore: FaceDataStore = None
-    dataStoreExecuter: future.Executer = None
+    dataStoreExecuter: futures.Executor = None
 
     def __init__(self, exe):
         self.dataStoreExecuter = exe
@@ -81,7 +81,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
                                  , exitCode=ExitCode.FILE_MAIN
                                             | ExitCode.ERR_UNKNOWN
                                             | 0b00000001)
-        self.dataStore = FaceDataStore(cap, calib)
+        self.dataStore = FaceDataStore(cap, calibrated)
         self.dataStoreExecuter.submit(self.dataStore.genData)
         self.initialized = True
 
