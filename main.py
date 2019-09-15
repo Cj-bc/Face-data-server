@@ -61,6 +61,9 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         self.dataStoreExecuter = exe
 
     def init(self, req, context):
+        if self.initialized:
+            return Status(success=True)
+
         cap: cv2.VideoCapture = cv2.VideoCapture(0)
         if not cap.isOpened():
             cap.release()
