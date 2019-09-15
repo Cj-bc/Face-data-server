@@ -13,13 +13,12 @@ from FaceDataServer.Types import (RawFaceData, FaceRotations,
 import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
 from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
 
-
 # FaceDataStore {{{
 class FaceDataStore():
     """ Stores current FaceData
     """
     current: FaceData
-    cap: c2.VideoCapture = None
+    cap: cv2.VideoCapture = None
     calib: RawFaceData = RawFaceData.default()
 
     def __init__(self, _cap, _calib) -> None:
@@ -27,9 +26,9 @@ class FaceDataStore():
         self.calib = _calib
 
     def genData(self) -> None:
-    """ generate FaceData from caps until the camera is closed.
-    """
-        while cap.isOpened() is not None:
+        """ generate FaceData from caps until the camera is closed.
+        """
+        while self.cap.isOpened() is not None:
             rots: FaceRotations = FaceRotations(0, 0, 0)
             face: Face = Face.default()
             _, frame = self.cap.read()
@@ -66,7 +65,8 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         if not cap.isOpened():
             cap.release()
             return Status(success=False,
-                              exitCode=ExitCode.CameraNotFound | ExitCode.FILE_MAIN)
+                              exitCode=ExitCode.CameraNotFound
+                                       | ExitCode.FILE_MAIN)
 
         try:
             calibrated: RawFaceData = faceCalibration(cap)
@@ -89,7 +89,6 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         print(f"cap: {cap}")  # DEBUG
         return Status(success=True)
 
-
     def startStream(self, req, context):
         """Streams face data to the client
         """
@@ -98,20 +97,18 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             print("camera isn't available")  # DEBUG
             yield None
 
-        while self.do_stream == True:
+        while self.do_stream is True:
             yield self.dataStore.current
         print("Stream is closed")  # DEBUG
-
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
         print("stopStream")  # DEBUG
         self.do_stream = False
-        cap.release()
+        self.cap.release()
         print("Stream closed")  # DEBUG
         return Status(success=True)
 # }}}
-
 
 
 def main():
@@ -129,7 +126,6 @@ def main():
         except KeyboardInterrupt:
             server.stop(0)
             print("Server stopped.")
-
 
 if __name__ == '__main__':
     main()
