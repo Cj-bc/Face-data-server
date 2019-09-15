@@ -17,7 +17,7 @@ from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
 class FaceDataStore():
     """ Stores current FaceData
     """
-    current: FaceData
+    current: FaceData = FaceData(x=0.0, y=0.0, z=0.0)
     cap: cv2.VideoCapture = None
     calib: RawFaceData = RawFaceData.default()
 
