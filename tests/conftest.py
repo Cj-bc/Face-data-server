@@ -191,3 +191,6 @@ class MockedCap():
     def read(self) -> Cv2Image:
         ret = True if self.frame.all() == faceFrame.all() else False
         return (ret, self.frame)
+
+    def release(self) -> None:
+        pass
