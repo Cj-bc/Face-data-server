@@ -244,6 +244,11 @@ def test_RawFaceData_thresholded_affect():
             RawFaceData(0, 0, target.faceCenter)
 
 
+def test_RawFaceData_default():
+    assert RawFaceData.default() == \
+            RawFaceData(0.0, 0.0, AbsoluteCoord(0.0, 0.0))
+
+
 # --- RawFaceData.get
 
 
