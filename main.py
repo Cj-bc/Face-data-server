@@ -28,7 +28,7 @@ class FaceDataStore():
     def genData(self) -> None:
         """ generate FaceData from caps until the camera is closed.
         """
-        while self.cap.isOpened() is not None:
+        while self.cap.isOpened() is True:
             rots: FaceRotations = FaceRotations(0, 0, 0)
             face: Face = Face.default()
             _, frame = self.cap.read()
