@@ -62,14 +62,8 @@ class TestServicer():
                 response: Status = grpc_stub.init(request)
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> after getting response")  # DEBUG
                 _: Status = grpc_stub.shutdown(request)
-                assert response.success is True
-                # TODO: This commented out test is correct one.
-                # Above is just for test
-                # assert response.success is False
-                assert response.exitCode == 0
-                # TODO: This commented out test is correct one.
-                # Above is just for test
-                # assert response.exitCode == ExitCode.CameraNotFound | ExitCode.FILE_MAIN
+                assert response.success is False
+                assert response.exitCode == ExitCode.CameraNotFound | ExitCode.FILE_MAIN
 
 
     def test_init_2ndTime(self, grpc_stub):
