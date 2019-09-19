@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='FaceDataServer',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x14\x66\x61\x63\x65\x44\x61taServer.proto\x12\x0e\x46\x61\x63\x65\x44\x61taServer\"\t\n\x07VoidCom\"+\n\x06Status\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x10\n\x08\x65xitCode\x18\x02 \x01(\x05\"+\n\x08\x46\x61\x63\x65\x44\x61ta\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x32\x91\x02\n\x0e\x46\x61\x63\x65\x44\x61taServer\x12\x39\n\x04init\x12\x17.FaceDataServer.VoidCom\x1a\x16.FaceDataServer.Status\"\x00\x12\x44\n\x0bstartStream\x12\x17.FaceDataServer.VoidCom\x1a\x18.FaceDataServer.FaceData\"\x00\x30\x01\x12?\n\nstopStream\x12\x17.FaceDataServer.VoidCom\x1a\x16.FaceDataServer.Status\"\x00\x12=\n\x08shutdown\x12\x17.FaceDataServer.VoidCom\x1a\x16.FaceDataServer.Status\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x14\x66\x61\x63\x65\x44\x61taServer.proto\x12\x0e\x46\x61\x63\x65\x44\x61taServer\"\t\n\x07VoidCom\"\x16\n\x05Token\x12\r\n\x05token\x18\x01 \x01(\t\"Q\n\x06Status\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x10\n\x08\x65xitCode\x18\x02 \x01(\x05\x12$\n\x05token\x18\x03 \x01(\x0b\x32\x15.FaceDataServer.Token\"+\n\x08\x46\x61\x63\x65\x44\x61ta\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\x32\x8d\x02\n\x0e\x46\x61\x63\x65\x44\x61taServer\x12\x39\n\x04init\x12\x17.FaceDataServer.VoidCom\x1a\x16.FaceDataServer.Status\"\x00\x12\x42\n\x0bstartStream\x12\x15.FaceDataServer.Token\x1a\x18.FaceDataServer.FaceData\"\x00\x30\x01\x12=\n\nstopStream\x12\x15.FaceDataServer.Token\x1a\x16.FaceDataServer.Status\"\x00\x12=\n\x08shutdown\x12\x17.FaceDataServer.VoidCom\x1a\x16.FaceDataServer.Status\"\x00\x62\x06proto3')
 )
 
 
@@ -50,6 +50,37 @@ _VOIDCOM = _descriptor.Descriptor(
 )
 
 
+_TOKEN = _descriptor.Descriptor(
+  name='Token',
+  full_name='FaceDataServer.Token',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='token', full_name='FaceDataServer.Token.token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=51,
+  serialized_end=73,
+)
+
+
 _STATUS = _descriptor.Descriptor(
   name='Status',
   full_name='FaceDataServer.Status',
@@ -71,6 +102,13 @@ _STATUS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='token', full_name='FaceDataServer.Status.token', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -83,8 +121,8 @@ _STATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=51,
-  serialized_end=94,
+  serialized_start=75,
+  serialized_end=156,
 )
 
 
@@ -128,11 +166,13 @@ _FACEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=96,
-  serialized_end=139,
+  serialized_start=158,
+  serialized_end=201,
 )
 
+_STATUS.fields_by_name['token'].message_type = _TOKEN
 DESCRIPTOR.message_types_by_name['VoidCom'] = _VOIDCOM
+DESCRIPTOR.message_types_by_name['Token'] = _TOKEN
 DESCRIPTOR.message_types_by_name['Status'] = _STATUS
 DESCRIPTOR.message_types_by_name['FaceData'] = _FACEDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -143,6 +183,13 @@ VoidCom = _reflection.GeneratedProtocolMessageType('VoidCom', (_message.Message,
   # @@protoc_insertion_point(class_scope:FaceDataServer.VoidCom)
   })
 _sym_db.RegisterMessage(VoidCom)
+
+Token = _reflection.GeneratedProtocolMessageType('Token', (_message.Message,), {
+  'DESCRIPTOR' : _TOKEN,
+  '__module__' : 'faceDataServer_pb2'
+  # @@protoc_insertion_point(class_scope:FaceDataServer.Token)
+  })
+_sym_db.RegisterMessage(Token)
 
 Status = _reflection.GeneratedProtocolMessageType('Status', (_message.Message,), {
   'DESCRIPTOR' : _STATUS,
@@ -166,8 +213,8 @@ _FACEDATASERVER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=142,
-  serialized_end=415,
+  serialized_start=204,
+  serialized_end=473,
   methods=[
   _descriptor.MethodDescriptor(
     name='init',
@@ -183,7 +230,7 @@ _FACEDATASERVER = _descriptor.ServiceDescriptor(
     full_name='FaceDataServer.FaceDataServer.startStream',
     index=1,
     containing_service=None,
-    input_type=_VOIDCOM,
+    input_type=_TOKEN,
     output_type=_FACEDATA,
     serialized_options=None,
   ),
@@ -192,7 +239,7 @@ _FACEDATASERVER = _descriptor.ServiceDescriptor(
     full_name='FaceDataServer.FaceDataServer.stopStream',
     index=2,
     containing_service=None,
-    input_type=_VOIDCOM,
+    input_type=_TOKEN,
     output_type=_STATUS,
     serialized_options=None,
   ),

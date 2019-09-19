@@ -21,12 +21,12 @@ class FaceDataServerStub(object):
         )
     self.startStream = channel.unary_stream(
         '/FaceDataServer.FaceDataServer/startStream',
-        request_serializer=faceDataServer__pb2.VoidCom.SerializeToString,
+        request_serializer=faceDataServer__pb2.Token.SerializeToString,
         response_deserializer=faceDataServer__pb2.FaceData.FromString,
         )
     self.stopStream = channel.unary_unary(
         '/FaceDataServer.FaceDataServer/stopStream',
-        request_serializer=faceDataServer__pb2.VoidCom.SerializeToString,
+        request_serializer=faceDataServer__pb2.Token.SerializeToString,
         response_deserializer=faceDataServer__pb2.Status.FromString,
         )
     self.shutdown = channel.unary_unary(
@@ -78,12 +78,12 @@ def add_FaceDataServerServicer_to_server(servicer, server):
       ),
       'startStream': grpc.unary_stream_rpc_method_handler(
           servicer.startStream,
-          request_deserializer=faceDataServer__pb2.VoidCom.FromString,
+          request_deserializer=faceDataServer__pb2.Token.FromString,
           response_serializer=faceDataServer__pb2.FaceData.SerializeToString,
       ),
       'stopStream': grpc.unary_unary_rpc_method_handler(
           servicer.stopStream,
-          request_deserializer=faceDataServer__pb2.VoidCom.FromString,
+          request_deserializer=faceDataServer__pb2.Token.FromString,
           response_serializer=faceDataServer__pb2.Status.SerializeToString,
       ),
       'shutdown': grpc.unary_unary_rpc_method_handler(
