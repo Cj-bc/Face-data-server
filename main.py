@@ -132,6 +132,13 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         self.dataStore.cap.release()
         logger_servicer.debug("Stream closed")
         return Status(success=True)
+
+    def shutDown(self, req, context):
+        """ shutdown this server
+        """
+        # TODO: Implement this 
+        self.dataStore.cap.release()
+        return Status(success=True)
 # }}}
 
 
