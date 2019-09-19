@@ -6,6 +6,7 @@ service FaceDataServer {
   rpc init(VoidCom) returns (Status) {}
   rpc startStream(VoidCom) returns (stream FaceData) {}
   rpc stopStream(VoidCom) returns (Status) {}
+  rpc shutdown(VoidCom) returns (Status) {}
 }
 
 message VoidCom {}
