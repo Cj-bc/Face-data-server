@@ -1,7 +1,6 @@
 from unittest import mock
 import pytest
 from concurrent import futures
-from FaceDataServer.Types import ExitCode
 from FaceDataServer.faceDataServer_pb2 import VoidCom, Status
 from FaceDataServer.Types import ExitCode, RawFaceData
 from main import FaceDataStore
@@ -49,7 +48,7 @@ class TestServicer():
         request = VoidCom()
         with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(True, faceFrame)):
             with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
-                response: fDSpb2.Status = grpc_stub.init(request)
+                response: Status = grpc_stub.init(request)
                 _: Status = grpc_stub.shutdown(request)
                 assert response.success is True
 
@@ -60,7 +59,7 @@ class TestServicer():
         with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(False, faceFrame)):
             with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> before getting response")  # DEBUG
-                response: fDSpb2.Status = grpc_stub.init(request)
+                response: Status = grpc_stub.init(request)
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> after getting response")  # DEBUG
                 _: Status = grpc_stub.shutdown(request)
                 assert response.success is True
@@ -79,7 +78,7 @@ class TestServicer():
         with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(True, faceFrame)):
             with mock.patch('FaceDataServer.faceDetection.input', return_value=''):
                 _ = grpc_stub.init(request)
-                response: fDSpb2.Status = grpc_stub.init(request)
+                response: Status = grpc_stub.init(request)
                 _: Status = grpc_stub.shutdown(request)
                 assert response.success is True
 # }}}
