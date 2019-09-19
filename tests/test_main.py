@@ -43,16 +43,6 @@ class TestServicer():
             response: Status = grpc_stub.shutdown(request)
             assert response.success is True
 
-    def test_init(self, grpc_stub):
-        print("DEBUG: in TestServicer.test_init> start of here")
-        request = VoidCom()
-        with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(True, faceFrame)):
-            with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
-                response: Status = grpc_stub.init(request)
-                _: Status = grpc_stub.shutdown(request)
-                assert response.success is True
-
-
     def test_init_noCam(self, grpc_stub):
         print("DEBUG: in TestServicer.test_init_noCam> start of here")
         request = VoidCom()
@@ -65,6 +55,14 @@ class TestServicer():
                 assert response.success is False
                 assert response.exitCode == ExitCode.CameraNotFound | ExitCode.FILE_MAIN
 
+    def test_init(self, grpc_stub):
+        print("DEBUG: in TestServicer.test_init> start of here")
+        request = VoidCom()
+        with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(True, faceFrame)):
+            with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
+                response: Status = grpc_stub.init(request)
+                _: Status = grpc_stub.shutdown(request)
+                assert response.success is True
 
     def test_init_2ndTime(self, grpc_stub):
         print("DEBUG: in TestServicer.test_init_2ndTime> start of here")
