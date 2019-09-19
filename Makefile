@@ -34,4 +34,4 @@ uninstall:
 updateProto:
 	pipenv run python -m grpc_tools.protoc -Iprotos --python_out=FaceDataServer/ \
 		--grpc_python_out=FaceDataServer/ protos/faceDataServer.proto
-		$(SED_EXEC) 's/import faceDataServer_pb2/import FaceDataServer.faceDataServer_pb2/' FaceDataServer/faceDataServer_pb2_grpc.py
+	$(SED_EXEC) 's/import faceDataServer_pb2/import FaceDataServer.faceDataServer_pb2/' FaceDataServer/faceDataServer_pb2_grpc.py
