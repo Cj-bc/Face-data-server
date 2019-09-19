@@ -1,9 +1,10 @@
 from unittest import mock
 import pytest
 from concurrent import futures
-from FaceDataServer.faceDataServer_pb2 import VoidCom
-import FaceDataServer.faceDataServer_pb2 as fDSpb2
 from FaceDataServer.Types import ExitCode
+from FaceDataServer.faceDataServer_pb2 import VoidCom, Status
+from FaceDataServer.Types import ExitCode, RawFaceData
+from main import FaceDataStore
 from conftest import MockedCap, faceFrame
 
 
@@ -37,6 +38,11 @@ class TestServicer():
         print("teardown_class: called")  # DEBUG
         executor.shutdown()
 
+    def test_shutdown(self, grpc_stub):
+        request = VoidCom()
+        with mock.patch('main.Servicer.dataStore', return_value=FaceDataStore(MockedCap, RawFaceData.default())):
+            response: Status = grpc_stub.shutdown(request)
+            assert response.success is True
 
     def test_init(self, grpc_stub):
         print("DEBUG: in TestServicer.test_init> start of here")
