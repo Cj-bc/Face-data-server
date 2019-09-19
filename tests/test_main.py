@@ -50,7 +50,7 @@ class TestServicer():
         with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(True, faceFrame)):
             with mock.patch('FaceDataServer.faceDetection.input', return_value=None):
                 response: fDSpb2.Status = grpc_stub.init(request)
-                _: fDSpb2.Status = grpc_stub.stopStream(request)
+                _: Status = grpc_stub.shutdown(request)
                 assert response.success is True
 
 
@@ -62,7 +62,7 @@ class TestServicer():
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> before getting response")  # DEBUG
                 response: fDSpb2.Status = grpc_stub.init(request)
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> after getting response")  # DEBUG
-                _: fDSpb2.Status = grpc_stub.stopStream(request)
+                _: Status = grpc_stub.shutdown(request)
                 assert response.success is True
                 # TODO: This commented out test is correct one.
                 # Above is just for test
@@ -80,6 +80,6 @@ class TestServicer():
             with mock.patch('FaceDataServer.faceDetection.input', return_value=''):
                 _ = grpc_stub.init(request)
                 response: fDSpb2.Status = grpc_stub.init(request)
-                _: fDSpb2.Status = grpc_stub.stopStream(request)
+                _: Status = grpc_stub.shutdown(request)
                 assert response.success is True
 # }}}
