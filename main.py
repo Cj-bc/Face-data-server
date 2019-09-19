@@ -3,15 +3,16 @@ import dlib
 import time
 import datetime
 import sys
+import secrets
 import grpc
 from concurrent import futures
-from typing import (Optional)
+from typing import (Optional, List)
 
 from FaceDataServer.faceDetection import (faceCalibration, facemark)
 from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError, Face, ExitCode)
 import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
-from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
+from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status, Token)
 from logging import getLogger, Logger
 import logging.config as loggingConfig
 
@@ -71,7 +72,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             dataStore: FaceDataStore object that holds current faceData
             dataStoreExecuter: an Executor object that holds threads used to run FaceDataStore.genData()
     """
-    do_streams: int = 0
+    clients: List[str] = []
     initialized: bool = False
 
     dataStore: FaceDataStore = None
@@ -110,7 +111,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
 
         logger_servicer.debug("Calibrated.")
         logger_servicer.debug(f"cap: {cap}")
-        return Status(success=True)
+        return Status(success=True, token=Token(token=secrets.token_hex()))
 
     def startStream(self, req, context):
         """Streams face data to the client
@@ -120,23 +121,28 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             logger_servicer.info("camera isn't available")
             yield None
 
-        self.do_streams += 1
-        while 0 < self.do_streams:
+        self.clients.append(req.token)
+        while req.token in self.clients:
             yield self.dataStore.current
         logger_servicer.debug("finished: startStream")
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
         logger_servicer.info("stopStream")
-        self.do_streams -= 1
-        self.dataStore.cap.release()
+
+        if req.token in self.clients:
+            self.clients.remove(req.token)
+
         logger_servicer.debug("Stream closed")
         return Status(success=True)
 
     def shutdown(self, req, context):
         """ shutdown this server
         """
-        # TODO: Implement this 
+        if 0 < len(self.clients):
+            return Status(success=False, exitCode=ExitCode.FILE_MAIN
+                                        | ExitCode.ServerIsStillUsed)
+
         self.dataStore.cap.release()
         return Status(success=True)
 # }}}

@@ -58,6 +58,7 @@ class ExitCode():
     ERR_IO      = 0b00010000
 
     CameraNotFound = ERR_IO | 0b00000001
+    ServerIsStillUsed = ERR_IO | 0b00000010
 # }}}
 
 
