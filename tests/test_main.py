@@ -51,7 +51,6 @@ class TestServicer():
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> before getting response")  # DEBUG
                 response: Status = grpc_stub.init(request)
                 print("DEBUG: in TestServicer.test_Servicer_init_noCam> after getting response")  # DEBUG
-                _: Status = grpc_stub.shutdown(request)
                 assert response.success is False
                 assert response.exitCode == ExitCode.CameraNotFound | ExitCode.FILE_MAIN
 
