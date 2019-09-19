@@ -24,4 +24,3 @@ python_version = "3.7"
 
 [scripts]
 test = "pipenv run pytest"
-updateProto = "pipenv run python -m grpc_tools.protoc -Iprotos --python_out=FaceDataServer/ --grpc_python_out=FaceDataServer/ protos/faceDataServer.proto"
