@@ -133,7 +133,7 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         logger_servicer.debug("Stream closed")
         return Status(success=True)
 
-    def shutDown(self, req, context):
+    def shutdown(self, req, context):
         """ shutdown this server
         """
         # TODO: Implement this 
