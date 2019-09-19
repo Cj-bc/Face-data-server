@@ -12,6 +12,26 @@ from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError, Face, ExitCode)
 import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
 from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status)
+from logging import getLogger, Logger
+import logging.config as loggingConfig
+
+# Loggers {{{
+configuu = { "version": 1
+           , "handlers": {"console": {"class": "logging.StreamHandler"}
+                        , "file": {"class": "logging.FileHandler"
+                            , "filename": "faceDataServer.log"
+                            , "formatter": "simpleFormatter"}}
+           , "loggers": {"Servicer": {}}
+           , "root": {"level": "DEBUG"
+                     , "handlers": ["file"]
+                     , "formatters": ["simpleFormatter"]}
+           , "formatters": {"simpleFormatter": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}}
+           }
+loggingConfig.dictConfig(configuu)
+logger: Logger = getLogger('main')
+logger_servicer: Logger = getLogger('Servicer')
+# }}}
+
 
 # FaceDataStore {{{
 class FaceDataStore():
@@ -75,8 +95,8 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             calibrated: RawFaceData = faceCalibration(cap)
         except FaceDetectionError as e:
             cap.release()
-            print(f"ERROR: Unexpected things are happened: {e}")
-            print("Aborting")
+            logger_servicer.info(f"ERROR: Unexpected things are happened: {e}")
+            logger_servicer.info("Aborting")
             if hasattr(e, 'exitCode'):
                 return Status(success=False, exitCode=e.exitCode)
             else:
@@ -88,29 +108,29 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
         self.dataStoreExecuter.submit(self.dataStore.genData)
         self.initialized = True
 
-        print("Calibrated.")  # DEBUG
-        print(f"cap: {cap}")  # DEBUG
+        logger_servicer.debug("Calibrated.")
+        logger_servicer.debug(f"cap: {cap}")
         return Status(success=True)
 
     def startStream(self, req, context):
         """Streams face data to the client
         """
-        print("startStream called")  # DEBUG
+        logger_servicer.info("called: startStream")
         if not self.dataStore.cap.isOpened():
-            print("camera isn't available")  # DEBUG
+            logger_servicer.info("camera isn't available")
             yield None
 
         self.do_streams += 1
         while 0 < self.do_streams:
             yield self.dataStore.current
-        print("Stream is closed")  # DEBUG
+        logger_servicer.debug("finished: startStream")
 
     def stopStream(self, req, context):
         """ stop streaming FaceData """
-        print("stopStream")  # DEBUG
+        logger_servicer.info("stopStream")
         self.do_streams -= 1
         self.dataStore.cap.release()
-        print("Stream closed")  # DEBUG
+        logger_servicer.debug("Stream closed")
         return Status(success=True)
 # }}}
 
