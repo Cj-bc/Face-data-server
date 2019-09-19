@@ -193,4 +193,4 @@ class MockedCap():
         return (ret, self.frame)
 
     def release(self) -> None:
-        pass
+        self.opened = False
