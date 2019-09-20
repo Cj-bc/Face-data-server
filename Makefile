@@ -11,7 +11,7 @@ run:
 	./face-data-server
 
 test:
-	pipenv run pytest
+	pipenv run pytest --cov-report=html --cov=main --cov=FaceDataServer
 
 lint:
 	pipenv run flake8 .
