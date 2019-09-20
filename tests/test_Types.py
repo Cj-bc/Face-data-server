@@ -13,7 +13,7 @@ from conftest import (face_front, face_right, face_left
                      , face_lean_left, face_lean_right
                      , finiteFloatCallable, PartStrategies, CoordStrategies
                      , AbsoluteCoordStrategies, RelativeCoordStrategies
-                     , FaceStrategies
+                     , FaceStrategies, NoseStrategies
                      , round_Part, round_Coord, round_Face)
 
 
@@ -181,6 +181,27 @@ def test_Nose__init__(a, b, c):
     assert nose.top == Coord(0, 0)
     assert nose.leftSide == b
     assert nose.rightSide == c
+
+
+@given(NoseStrategies)
+def test_Nose__neg__(a):
+    assert -(-a) == a
+
+
+@given(NoseStrategies, NoseStrategies, NoseStrategies)
+def test_Nose__add__(a, b, c):
+    """ the properties are taken from here:
+        http://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#t:Num
+    """
+    assert round_Part((a + b) + c) == round_Part(a + (b + c))
+    assert a + b == b + a
+    assert a + Nose.default() == a
+    assert a + -a == Nose(Coord(0, 0), Coord(0, 0), Coord(0, 0))
+
+
+@given(NoseStrategies)
+def test_Nose__sub__(a):
+    assert a - a == Nose(Coord(0, 0), Coord(0, 0), Coord(0, 0))
 
 
 def test_Nose_default():
