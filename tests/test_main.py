@@ -62,16 +62,6 @@ class TestServicer():
                 assert response.success is False
                 assert response.exitCode == ExitCode.ERR_UNKNOWN | 1
 
-    def test_init_FaceDetectionError_using_ex(self, grpc_stub):
-        """ test init() returns proper erro code when FaceDetectionError is generated with 'ex' arg
-        """
-        request = VoidCom()
-        with mock.patch('main.cv2.VideoCapture', return_value=MockedCap(True, faceFrame)):
-            with mock.patch('main.faceCalibration', side_effect=FaceDetectionError(0, ex=1)):
-                response: Status = grpc_stub.init(request)
-                assert response.success is False
-                assert response.exitCode == 1
-
     def test_init(self, grpc_stub):
         print("DEBUG: in TestServicer.test_init> start of here")
         request = VoidCom()
