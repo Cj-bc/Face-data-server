@@ -449,14 +449,11 @@ class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
     exitCode = ExitCode.ERR_UNKNOWN
 
-    def __init__(self, e_fileCode, ex=None):
+    def __init__(self, ex=None):
         """ Use ex to force the class to have that value as exit code
         """
         if ex is not None:
             self.exitCode = ex
-        else:
-            self.exitCode = self.exitCode | e_fileCode
-
 
 class CapHasClosedError(FaceDetectionError):
     """Exception raised for unexpected cv2.VideoCapture close"""
