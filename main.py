@@ -98,13 +98,8 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             cap.release()
             logger_servicer.info(f"ERROR: Unexpected things are happened: {e}")
             logger_servicer.info("Aborting")
-            if hasattr(e, 'exitCode'):
-                return Status(success=False, exitCode=e.exitCode)
-            else:
-                return Status(success=False
-                                 , exitCode=ExitCode.FILE_MAIN
-                                            | ExitCode.ERR_UNKNOWN
-                                            | 0b00000001)
+            return Status(success=False, exitCode=e.exitCode)
+
         self.dataStore = FaceDataStore(cap, calibrated)
         self.dataStoreExecuter.submit(self.dataStore.genData)
         self.initialized = True
