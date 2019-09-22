@@ -135,7 +135,7 @@ def test_Part__init__(b, t, l, r):
 
 def test_Part__init__typeMismatch():
     with pytest.raises(TypeError):
-        Part(0, 1, 2, 3, 4)
+        Part(0, 0, 0, 0)
 
 
 @given(PartStrategies)
