@@ -207,27 +207,12 @@ class Mouth(Part):
 
 
 class Nose(Part):
-    top = Coord(0, 0)
-
     def __repr__(self):
         return f"Nose({self.bottom}, {self.top}"\
                f", {self.leftSide}, {self.rightSide})"
 
-    # TODO:
-    # can't I do something like:
-    #   super.__init__(b, None, l, r)
     def __init__(self, b, l, r):
-        def _coord(c):
-            if type(c) == Coord:
-                return c
-            elif type(c) == dlib.dpoint:
-                return Coord.fromDPoint(c)
-            else:
-                raise TypeError
-
-        self.bottom = _coord(b)
-        self.leftSide = _coord(l)
-        self.rightSide = _coord(r)
+        super().__init__(b, Coord.default(), l, r)
 
     def __neg__(self: S) -> S:
         return self.__class__(-self.bottom
