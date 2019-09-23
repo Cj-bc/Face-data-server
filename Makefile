@@ -10,8 +10,9 @@ init:
 run:
 	./face-data-server
 
+# This will generate coverage information under docs/pytestCov
 test:
-	pipenv run pytest --cov-report=html --cov=main --cov=FaceDataServer
+	pipenv run pytest --cov-report=html --cov-report=term --cov=main --cov=FaceDataServer
 
 lint:
 	pipenv run flake8 .
