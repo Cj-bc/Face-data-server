@@ -21,14 +21,15 @@ def main():
 
     try:
         print("--- Calling startStream")
-        for fd in stub.startStream(VoidCom()):
+        for fd in stub.startStream(initStat.token):
             rl = "right" if 0 < fd.y else "left"
             ud = "upside" if 0 < fd.x else "downside"
             print(f"Face faces {ud} {rl}")
     except KeyboardInterrupt:
         print("--- Calling stopStream")
-        _ = stub.stopStream(VoidCom())
+        _ = stub.stopStream(initStat.token)
 
+    stub.shutdown(VoidCom())
     print("Done")
     sys.exit(0)
 
