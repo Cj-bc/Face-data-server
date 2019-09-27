@@ -23,7 +23,8 @@ RelativeCoordStrategies = st.builds(RelativeCoord
                                    , finiteFloatCallable, finiteFloatCallable)
 PartStrategies = st.builds(Part, CoordStrategies, CoordStrategies
                           , CoordStrategies, CoordStrategies)
-NoseStrategies = st.builds(Nose, CoordStrategies, CoordStrategies, CoordStrategies)
+NoseStrategies = st.builds(Nose, CoordStrategies
+                          , CoordStrategies, CoordStrategies)
 FaceStrategies = st.builds(Face, AbsoluteCoordStrategies
                           , RelativeCoordStrategies
                           , RelativeCoordStrategies, RelativeCoordStrategies

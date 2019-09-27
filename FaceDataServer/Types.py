@@ -37,7 +37,6 @@ LANDMARK_NUM = {"TEMPLE_LEFT": 0
                 }
 
 
-
 # ExitCode {{{
 class ExitCode():
     """
@@ -439,6 +438,7 @@ class FaceDetectionError(Exception):
         """
         if ex is not None:
             self.exitCode = ex
+
 
 class CapHasClosedError(FaceDetectionError):
     """Exception raised for unexpected cv2.VideoCapture close"""

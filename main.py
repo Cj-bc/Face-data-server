@@ -1,8 +1,6 @@
 import cv2
 import dlib
 import time
-import datetime
-import sys
 import secrets
 import grpc
 from concurrent import futures
@@ -12,12 +10,12 @@ from FaceDataServer.faceDetection import (faceCalibration, facemark)
 from FaceDataServer.Types import (RawFaceData, FaceRotations,
                                  FaceDetectionError, Face, ExitCode)
 import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
-from FaceDataServer.faceDataServer_pb2 import (VoidCom, FaceData, Status, Token)
+from FaceDataServer.faceDataServer_pb2 import (FaceData, Status, Token)
 from logging import getLogger, Logger
 import logging.config as loggingConfig
 
 # Loggers {{{
-configuu = { "version": 1
+configuu = {"version": 1
            , "handlers": {"console": {"class": "logging.StreamHandler"}
                         , "file": {"class": "logging.FileHandler"
                             , "filename": "faceDataServer.log"
@@ -26,8 +24,13 @@ configuu = { "version": 1
            , "root": {"level": "DEBUG"
                      , "handlers": ["file"]
                      , "formatters": ["simpleFormatter"]}
-           , "formatters": {"simpleFormatter": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"}}
-           }
+           , "formatters":
+                {"simpleFormatter":
+                    {"format": "%(asctime)s - %(name)s "
+                               "- %(levelname)s - %(message)s"
+                     }
+                 }
+            }
 loggingConfig.dictConfig(configuu)
 logger: Logger = getLogger('main')
 logger_servicer: Logger = getLogger('Servicer')
@@ -70,7 +73,9 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
             do_stream: Set False when stream is closed
             initialized: True after once self.init() is called
             dataStore: FaceDataStore object that holds current faceData
-            dataStoreExecuter: an Executor object that holds threads used to run FaceDataStore.genData()
+            dataStoreExecuter: an Executor object that
+                               holds threads used to
+                               run FaceDataStore.genData()
     """
     clients: List[str] = []
     initialized: bool = False
@@ -147,7 +152,7 @@ def main():
     with futures.ThreadPoolExecutor(max_workers=4) as executor:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         grpc_faceDataServer.add_FaceDataServerServicer_to_server(
-                Servicer(executor), server)
+            Servicer(executor), server)
         server.add_insecure_port('[::]:5039')
         server.start()
         print("server started...")
@@ -158,6 +163,7 @@ def main():
         except KeyboardInterrupt:
             server.stop(0)
             print("Server stopped.")
+
 
 if __name__ == '__main__':
     main()

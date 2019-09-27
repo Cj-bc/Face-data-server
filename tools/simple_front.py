@@ -2,7 +2,7 @@
 # As the PATH manipulation is not written properly,
 # it won't work if executed from other path
 import sys
-sys.path.append("../")
+sys.path.append("../")  # noqa: E402
 import grpc
 from FaceDataServer.faceDataServer_pb2_grpc import FaceDataServerStub
 from FaceDataServer.faceDataServer_pb2 import VoidCom

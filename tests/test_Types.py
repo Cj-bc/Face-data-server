@@ -267,7 +267,7 @@ def test_RawFaceData_thresholded_affect():
 
 def test_RawFaceData_default():
     assert RawFaceData.default() == \
-            RawFaceData(0.0, 0.0, AbsoluteCoord(0.0, 0.0))
+        RawFaceData(0.0, 0.0, AbsoluteCoord(0.0, 0.0))
 
 
 # --- RawFaceData.get
