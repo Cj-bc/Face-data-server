@@ -1,0 +1,24 @@
+@startuml
+
+actor App
+activate Frontend
+App -> Frontend : Set up Frontend
+
+activate Server
+App -> Server : 
+
+Frontend ->  Server : Request to initialize
+Frontend <-- Server : Return Initializing status
+
+Frontend ->  Server : Request to send FaceData
+Frontend <<-- Server : Return FaceData by stream
+
+' STOP server
+Frontend ->> Server : STOP message
+Frontend <-- Server : Return sattus
+
+' EXIT
+Frontend ->  Server : EXIT message
+Frontend <-- Server : Return status and shut down
+
+@enduml
