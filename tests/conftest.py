@@ -23,6 +23,8 @@ RelativeCoordStrategies = st.builds(RelativeCoord
                                    , finiteFloatCallable, finiteFloatCallable)
 PartStrategies = st.builds(Part, CoordStrategies, CoordStrategies
                           , CoordStrategies, CoordStrategies)
+NoseStrategies = st.builds(Nose, CoordStrategies
+                          , CoordStrategies, CoordStrategies)
 FaceStrategies = st.builds(Face, AbsoluteCoordStrategies
                           , RelativeCoordStrategies
                           , RelativeCoordStrategies, RelativeCoordStrategies
@@ -191,3 +193,6 @@ class MockedCap():
     def read(self) -> Cv2Image:
         ret = True if self.frame.all() == faceFrame.all() else False
         return (ret, self.frame)
+
+    def release(self) -> None:
+        pass

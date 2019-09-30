@@ -15,6 +15,9 @@ dlib = "*"
 opencv-python = "*"
 hypothesis = "*"
 numpy = "*"
+grpcio-tools = "*"
+cmake = "*"
+pytest-grpc = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,6 +1,7 @@
 PREFIX := /usr/local
 DST_FILES := $(PREFIX)/share
 DST_BIN := $(PREFIX)/bin
+SED_EXEC := $(if $(shell sed --version 2>/dev/null | grep "GNU"),sed -i, sed -i "")
 
 init:
 	which pipenv >/dev/null 2>&1 || pip install pipenv
@@ -9,8 +10,9 @@ init:
 run:
 	./face-data-server
 
+# This will generate coverage information under docs/pytestCov
 test:
-	pipenv run pytest
+	pipenv run pytest --cov-report=html --cov-report=term --cov=FaceDataServer
 
 lint:
 	pipenv run flake8 .
@@ -28,3 +30,9 @@ install: init
 uninstall:
 	unlink $(DST_BIN)/face-data-server
 	rm -r $(DST_FILES)/face-data-server
+
+
+updateProto:
+	pipenv run python -m grpc_tools.protoc -Iprotos --python_out=FaceDataServer/ \
+		--grpc_python_out=FaceDataServer/ protos/faceDataServer.proto
+	$(SED_EXEC) 's/import faceDataServer_pb2/import FaceDataServer.faceDataServer_pb2/' FaceDataServer/faceDataServer_pb2_grpc.py
