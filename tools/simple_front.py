@@ -4,17 +4,18 @@
 import sys
 sys.path.append("../")  # noqa: E402
 import grpc
+import curses
 from FaceDataServer.faceDataServer_pb2_grpc import FaceDataServerStub
 from FaceDataServer.faceDataServer_pb2 import VoidCom
 
 
-def main():
+def main(stdscr):
     channel = grpc.insecure_channel('localhost:50052')
     stub = FaceDataServerStub(channel)
-    print("--- Initializing... Please watch server's stdout")
+    stdscr.addstr(0, 0, "--- Initializing... Please watch server's stdout")
     initStat = stub.init(VoidCom())
     if not initStat.success:
-        print("Initialization failed.")
+        stdscr.addstr(0, 0, "Initialization failed.")
         sys.exit(initStat.exitCode)
 
     print("Initialized")
@@ -35,4 +36,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    curses.wrapper(main)
