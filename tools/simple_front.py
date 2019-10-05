@@ -4,9 +4,26 @@
 import sys
 sys.path.append("../")  # noqa: E402
 import grpc
+import math
 import curses
 from FaceDataServer.faceDataServer_pb2_grpc import FaceDataServerStub
 from FaceDataServer.faceDataServer_pb2 import VoidCom
+
+def coordPad(x: float, y: float, p=None):
+    """ make pad with coordinate axis  """
+    padX = 20
+    padY = 20
+    if p is None:
+        p = curses.newpad(padY, padX)
+    else:
+        p.erase()
+
+    p.border()
+    p.hline(int(padY / 2), 1, ord('-'), padX)
+    p.vline(1, int(padX / 2), ord('|'), padY)
+
+    p.addch(int((padY / 2) - x), int((padX /2) + y), '*')
+    return p
 
 
 def main(stdscr):
@@ -22,10 +39,14 @@ def main(stdscr):
 
     try:
         print("--- Calling startStream")
+        p = coordPad(0, 0)
         for fd in stub.startStream(initStat.token):
-            rl = "right" if 0 < fd.y else "left"
-            ud = "upside" if 0 < fd.x else "downside"
-            print(f"Face faces {ud} {rl}")
+            p = coordPad(fd.x, fd.y, p)
+            stdscr.addstr(0, 0, f"x: {math.degrees(fd.x)}, "
+                                f"y: {math.degrees(fd.y)}, "
+                                f"z: {math.degrees(fd.z)}" )
+            p.refresh(0, 0, 5, 5, 70, 100)
+            stdscr.refresh()
     except KeyboardInterrupt:
         print("--- Calling stopStream")
         _ = stub.stopStream(initStat.token)
