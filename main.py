@@ -1,8 +1,10 @@
 import cv2
 import dlib
+from contextlib import closing
 import time
 import secrets
 import grpc
+import socket
 from concurrent import futures
 from typing import (Optional, List)
 
@@ -149,20 +151,61 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
 
 
 def main():
-    with futures.ThreadPoolExecutor(max_workers=4) as executor:
-        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        grpc_faceDataServer.add_FaceDataServerServicer_to_server(
-            Servicer(executor), server)
-        server.add_insecure_port('[::]:5039')
-        server.start()
-        print("server started...")
-        try:
+    # Server setting
+    server_address = "0.0.0.0"
+    server_port = 5039
+    multicast_group = '235.255.255.255'
+
+    # Preparing camera
+    cap: cv2.VideoCapture = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        cap.release()
+
+    # ========== calibration ==========
+    try:
+        calib: RawFaceData = faceCalibration(cap)
+    except FaceDetectionError as e:
+        cap.release()
+        logger_servicer.info(f"ERROR: Unexpected things are happened: {e}")
+        logger_servicer.info("Aborting")
+        return
+
+    logger_servicer.debug("Calibrated.")
+    logger_servicer.debug(f"cap: {cap}")
+
+    try:
+        # Preparing socket
+        with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as sock:
+            # Some options. See `man setsockopt'
+            sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1) # enable BROADCAST
+            sock.setsockopt(IPPROTO_IP, IP_MULTCAST_IF, socket.inet_aton(server_address)) # set sender ip address ?
+
+
+            # ========== Main loop ==========
             while True:
-                _ONE_DAY_IN_SECONDS = 60 * 60 * 24
-                time.sleep(_ONE_DAY_IN_SECONDS)
-        except KeyboardInterrupt:
-            server.stop(0)
-            print("Server stopped.")
+                if cap.isOpened() is not True:
+                    break
+
+                face: Face = Face.default()
+                rots: FaceRotations = FaceRotations(0, 0, 0)
+                _, frame = cap.read()
+                landmark: Optional[dlib.points] = facemark(frame)
+
+                face: Face          = Face.default()
+                                        if landmark is None\
+                                        else Face.fromDPoints(landmark)
+
+                rots: FaceRotations = FaceRotations(0, 0, 0)
+                                        if landmark is None\
+                                        else FaceRotations.get(face, calib)
+
+                sock.send(toBinary(generatedData))
+
+
+
+    except KeyboardInterrupt:
+        cam.release()
+
 
 
 if __name__ == '__main__':
