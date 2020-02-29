@@ -187,8 +187,6 @@ def main():
                 if cap.isOpened() is not True:
                     break
 
-                face: Face = Face.default()
-                rots: FaceRotations = FaceRotations(0, 0, 0)
                 _, frame = cap.read()
                 landmark: Optional[dlib.points] = facemark(frame)
 
@@ -196,13 +194,11 @@ def main():
                                         if landmark is None\
                                         else Face.fromDPoints(landmark)
 
-                rots: FaceRotations = FaceRotations(0, 0, 0)\
+                data: FaceData = FaceData.default()\
                                         if landmark is None\
-                                        else FaceRotations.get(face, calib)
+                                        else FaceData.get(face, calib)
 
-                sock.send(toBinary(generatedData))
-
-
+                # sock.send(data.toBinary())
 
     except KeyboardInterrupt:
         cap.release()
