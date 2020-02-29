@@ -360,10 +360,14 @@ class RawFaceData:
     eyeDistance: float
     faceHeigh: float
     faceCenter: AbsoluteCoord
+    mouthHeight: float
+    mouthWidth: float
+    leftEyeHeight: float
+    rightEyeHeight: float
 
     @staticmethod
     def default() -> S:
-        return RawFaceData(0.0, 0.0, AbsoluteCoord.default())
+        return RawFaceData(0.0, 0.0, AbsoluteCoord.default(), 0, 0, 0, 0)
 
     @classmethod
     def get(cls: S, face: Face) -> S:
@@ -380,8 +384,15 @@ class RawFaceData:
         faceHeigh = round(math.sqrt(_faceHeighVector.x ** 2
                                    + _faceHeighVector.y ** 2)
                          , 15)
-        faceCenter = face.center
-        return cls(eyeDistance, faceHeigh, faceCenter)
+
+        return cls(eyeDistance
+                  , faceHeigh
+                  , face.center
+                  , face.mouth.top - face.mouth.bottom
+                  , abs(face.mouth.leftSide - face.mouth.rightSide)
+                  , face.leftEye.top - face.leftEye.bottom
+                  , face.rightEye.top - face.rightEye.bottom
+                   )
 
     def thresholded(self, t):
         """Force eyeDistance / faceHeigh to be smaller than threshold
