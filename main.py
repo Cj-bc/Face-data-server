@@ -177,9 +177,10 @@ def main():
         # Preparing socket
         with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as sock:
             # Some options. See `man setsockopt'
-            sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1) # enable BROADCAST
-            sock.setsockopt(IPPROTO_IP, IP_MULTCAST_IF, socket.inet_aton(server_address)) # set sender ip address ?
-
+            sock.setsockopt(sock.SOL_SOCKET
+                           , sock.SO_BROADCAST, 1)  # enable BROADCAST
+            sock.setsockopt(sock.IPPROTO_IP, sock.IP_MULTCAST_IF
+                           , socket.inet_aton(server_address))
 
             # ========== Main loop ==========
             while True:
@@ -191,11 +192,11 @@ def main():
                 _, frame = cap.read()
                 landmark: Optional[dlib.points] = facemark(frame)
 
-                face: Face          = Face.default()
+                face: Face          = Face.default()\
                                         if landmark is None\
                                         else Face.fromDPoints(landmark)
 
-                rots: FaceRotations = FaceRotations(0, 0, 0)
+                rots: FaceRotations = FaceRotations(0, 0, 0)\
                                         if landmark is None\
                                         else FaceRotations.get(face, calib)
 
@@ -204,8 +205,7 @@ def main():
 
 
     except KeyboardInterrupt:
-        cam.release()
-
+        cap.release()
 
 
 if __name__ == '__main__':
