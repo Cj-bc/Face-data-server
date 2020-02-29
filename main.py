@@ -153,8 +153,8 @@ class Servicer(grpc_faceDataServer.FaceDataServerServicer):
 def main():
     # Server setting
     server_address = "0.0.0.0"
-    server_port = 5039
-    multicast_group = '235.255.255.255'
+    server_port = 5032
+    multicast_group = '226.0.0.1'
 
     # Preparing camera
     cap: cv2.VideoCapture = cv2.VideoCapture(0)
