@@ -403,42 +403,6 @@ class RawFaceData:
 # }}}
 
 
-# FaceRotations {{{
-@dataclasses.dataclass(frozen=True)
-class FaceRotations:
-    x: float
-    y: float
-    z: float
-
-    @classmethod
-    def get(cls: S, face: Face, calib: RawFaceData) -> S:
-        """ calculate face rotations from calibration data and landmark
-        """
-        eyeLineVector = face.rightEye.bottom - face.leftEye.bottom
-        raw = RawFaceData.get(face).thresholded(calib)
-        # those values are used in the near future.Just ignore this for linting
-        leftEdge2Center  = face.leftTemple - raw.faceCenter # noqa
-        rightEdge2Center = raw.faceCenter - face.rightTemple # noqa
-        chin2Center = raw.faceCenter - face.chinCenter # noqa
-
-        # TODO: how can I notice which side does face face to?
-        #       I can't simply compare eyes sizes, 'cus sometimes
-        #       user might wink. In that case, I can't recognize properly.
-        degreeY = math.acos(round(raw.eyeDistance / calib.eyeDistance, 15))
-        degreeX = math.acos(round(raw.faceHeigh / calib.faceHeigh, 15))
-        degreeZ = math.atan(round(eyeLineVector.y / eyeLineVector.x, 15))
-        # TODO: ^ This some times got error 'Division by 0'
-
-        rotateX = degreeX if raw.faceCenter.y > calib.faceCenter.y\
-                            else -1 * degreeX
-        rotateY = degreeY if raw.faceCenter.x > calib.faceCenter.x\
-                            else -1 * degreeY
-        # v Is this correct code? v
-        rotateZ = degreeZ
-        return cls(rotateX, rotateY, rotateZ)
-# }}}
-
-
 # Exceptions {{{
 class FaceDetectionError(Exception):
     """Base class for exceptions in this module"""
@@ -458,3 +422,5 @@ class CapHasClosedError(FaceDetectionError):
     def __str__(self):
         return "The camera connection has been closed. Please try again"
 # }}}
+
+
