@@ -195,7 +195,7 @@ def main():
                                         if landmark is None\
                                         else FaceData.get(face, calib)
 
-                # sock.send(data.toBinary())
+                sock.sendto(data.toBinary(), (multicast_group, server_port))
 
     except KeyboardInterrupt:
         cap.release()
