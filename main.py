@@ -174,9 +174,9 @@ def main():
         # Preparing socket
         with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as sock:
             # Some options. See `man setsockopt'
-            sock.setsockopt(sock.SOL_SOCKET
-                           , sock.SO_BROADCAST, 1)  # enable BROADCAST
-            sock.setsockopt(sock.IPPROTO_IP, sock.IP_MULTCAST_IF
+            sock.setsockopt(socket.SOL_SOCKET
+                           , socket.SO_BROADCAST, 1)  # enable BROADCAST
+            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_IF
                            , socket.inet_aton(server_address))
 
             # ========== Main loop ==========
