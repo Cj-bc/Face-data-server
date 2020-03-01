@@ -403,7 +403,13 @@ class RawFaceData:
         """
         eD = min(self.eyeDistance, t.eyeDistance)
         fH = min(self.faceHeigh, t.faceHeigh)
-        return RawFaceData(eD, fH, self.faceCenter)
+        return RawFaceData(eD, fH, self.faceCenter
+                          , self.mouthHeight
+                          , self.mouthWidth
+                          , self.leftEyeHeight
+                          , self.rightEyeHeight
+                           )
+
 # }}}
 
 
