@@ -1,18 +1,15 @@
 import cv2
 import dlib
 from contextlib import closing
-import time
 import secrets
-import grpc
 import socket
 from concurrent import futures
 from typing import (Optional, List)
 
 from FaceDataServer.faceDetection import (faceCalibration, facemark)
-from FaceDataServer.Types import (RawFaceData, FaceRotations,
-                                 FaceDetectionError, Face, ExitCode)
-import FaceDataServer.faceDataServer_pb2_grpc as grpc_faceDataServer
-from FaceDataServer.faceDataServer_pb2 import (FaceData, Status, Token)
+from FaceDataServer.Types import (RawFaceData,
+                                 FaceDetectionError, Face, ExitCode,
+                                 FaceData)
 from logging import getLogger, Logger
 import logging.config as loggingConfig
 
