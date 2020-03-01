@@ -3,6 +3,10 @@ import numpy
 import dlib
 import dataclasses
 import math
+import struct
+
+majorVersionNum = 1
+minorVersionNum = 0
 
 
 # Those values are defined based on this site image:
@@ -473,3 +477,23 @@ class FaceData:
                   , mouthHPercent, mouthWPercent
                   , lEyePercent, rEyePercent
                    )
+
+    def toBinary(s):
+        """ convert FaceData into binary format
+        """
+        def encodeNum(n: int) -> bytes:
+            """ encode int in 4 bit
+            """
+            return struct.pack('!i', n).split(b'\x00', maxsplit=2)[2]
+
+        header = encodeNum(majorVersionNum).join([encodeNum(minorVersionNum)])
+        body = struct.pack('!fffiiii'
+                          , s.face_x_radian
+                          , s.face_y_radian
+                          , s.face_z_radian
+                          , s.mouth_height_percent
+                          , s.mouth_width_percent
+                          , s.left_eye_percent
+                          , s.right_eye_percent
+                           )
+        return header.join([body])
