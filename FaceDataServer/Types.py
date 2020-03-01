@@ -445,8 +445,17 @@ class FaceData:
     left_eye_percent: int
     right_eye_percent: int
 
+    def __init__(self, x, y, z, mh, mw, le, re):
+        self.face_x_radian        = x
+        self.face_y_radian        = y
+        self.face_z_radian        = z
+        self.mouth_height_percent = mh
+        self.mouth_width_percent  = mw
+        self.left_eye_percent     = le
+        self.right_eye_percent    = re
+
     def default() -> S:
-        return FaceData(0.0, 0.0, 100, 100, 100, 100)
+        return FaceData(0.0, 0.0, 0.0, 100, 100, 100, 100)
 
     @classmethod
     def get(cls: S, face: Face, calib: RawFaceData) -> S:
