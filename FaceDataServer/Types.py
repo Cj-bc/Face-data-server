@@ -392,10 +392,10 @@ class RawFaceData:
         return cls(eyeDistance
                   , faceHeigh
                   , face.center
-                  , face.mouth.top - face.mouth.bottom
-                  , abs(face.mouth.leftSide - face.mouth.rightSide)
-                  , face.leftEye.top - face.leftEye.bottom
-                  , face.rightEye.top - face.rightEye.bottom
+                  , face.mouth.top.y - face.mouth.bottom.y
+                  , abs(face.mouth.leftSide.x - face.mouth.rightSide.x)
+                  , face.leftEye.top.y - face.leftEye.bottom.y
+                  , face.rightEye.top.y - face.rightEye.bottom.y
                    )
 
     def thresholded(self, t):
