@@ -118,6 +118,9 @@ class Coord:
     def fromDPoint(cls: S, p: dlib.dpoint) -> S:
         return cls(p.x, p.y)
 
+    def toTuple(self):
+        return (self.x, self.y)
+
 
 class AbsoluteCoord(Coord):
     def __repr__(self):
