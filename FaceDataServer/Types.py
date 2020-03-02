@@ -483,10 +483,10 @@ class FaceData:
         # v Is this correct code? v
         rotateZ = degreeZ
 
-        mouthHPercent = round(raw.mouthHeight / calib.mouthHeight) * 100
-        mouthWPercent = round(raw.mouthWidth / calib.mouthWidth) * 100
-        lEyePercent = round(raw.leftEyeHeight / calib.leftEyeHeight) * 100
-        rEyePercent = round(raw.rightEyeHeight / calib.rightEyeHeight) * 100
+        mouthHPercent = round((raw.mouthHeight / calib.mouthHeight) * 100)
+        mouthWPercent = round((raw.mouthWidth / calib.mouthWidth) * 100)
+        lEyePercent = round((raw.leftEyeHeight / calib.leftEyeHeight) * 100)
+        rEyePercent = round((raw.rightEyeHeight / calib.rightEyeHeight) * 100)
 
         return cls(rotateX, rotateY, rotateZ
                   , mouthHPercent, mouthWPercent
