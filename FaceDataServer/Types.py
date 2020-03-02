@@ -496,13 +496,8 @@ class FaceData:
     def toBinary(s):
         """ convert FaceData into binary format
         """
-        def encodeNum(n: int) -> bytes:
-            """ encode int in 4 bit
-            """
-            return struct.pack('!i', n).split(b'\x00', maxsplit=2)[2]
-
-        header = encodeNum(majorVersionNum).join([encodeNum(minorVersionNum)])
-        body = struct.pack('!fffiiii'
+        return struct.pack('!bfffiiii'
+                          , (majorVersionNum << 4) + minorVersionNum
                           , s.face_x_radian
                           , s.face_y_radian
                           , s.face_z_radian
@@ -511,4 +506,3 @@ class FaceData:
                           , s.left_eye_percent
                           , s.right_eye_percent
                            )
-        return header.join([body])
