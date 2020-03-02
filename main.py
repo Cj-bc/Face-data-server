@@ -69,7 +69,7 @@ def face2Image(size, face: Face) -> Cv2Image:
                , (face.mouth.top, face.mouth.leftSide)
                , (face.mouth.leftSide, face.mouth.bottom)
                 ]
-    lines(blank_img, lineEnds)
+    return lines(blank_img, lineEnds)
 
 
 def main():
