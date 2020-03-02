@@ -125,7 +125,8 @@ def main():
 
                 sock.sendto(data.toBinary(), (multicast_group, server_port))
 
-                cv2.imshow(face2Image(videoSize, face))
+                cv2.imshow('face wire test', face2Image(videoSize, face))
+                cv2.waitKey(1)
 
     except KeyboardInterrupt:
         pass
