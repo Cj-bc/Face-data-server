@@ -87,6 +87,8 @@ def main():
                 sock.sendto(data.toBinary(), (multicast_group, server_port))
 
     except KeyboardInterrupt:
+        pass
+    finally:
         cap.release()
 
 
