@@ -41,10 +41,11 @@ def lines(img: Cv2Image, ends: List[Tuple[Coord, Coord]]):
     if ends == []:
         return img
 
-    def round_(a):
-        return tuple(map(round, a))
+    def mapInt(a):
+        return tuple(map(int, a))
+
     s, e = ends[0]
-    img_ = cv2.line(img, round_(s.toTuple()), round_(e.toTuple()), (0, 70, 0))
+    img_ = cv2.line(img, mapInt(s.toTuple()), mapInt(e.toTuple()), (0, 256, 0))
     tail = ends[1:]
     return lines(img_, tail)
 
