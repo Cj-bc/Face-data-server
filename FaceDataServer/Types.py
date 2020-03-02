@@ -496,7 +496,7 @@ class FaceData:
     def toBinary(s):
         """ convert FaceData into binary format
         """
-        return struct.pack('!bfffiiii'
+        return struct.pack('!BfffBBBB'
                           , (majorVersionNum << 4) + minorVersionNum
                           , s.face_x_radian
                           , s.face_y_radian
