@@ -37,6 +37,8 @@ logger_servicer: Logger = getLogger('Servicer')
 # }}}
 
 
+def mapInt(a):
+    return tuple(map(int, a))
 
 
 def lines(img: Cv2Image, center: Tuple[int, int]
@@ -44,8 +46,6 @@ def lines(img: Cv2Image, center: Tuple[int, int]
     if ends == []:
         return img
 
-    def mapInt(a):
-        return tuple(map(int, a))
     def addOffset(a: Tuple[int, int], b: Tuple[int, int]):
         a1, a2 = a
         b1, b2 = b
@@ -59,10 +59,18 @@ def lines(img: Cv2Image, center: Tuple[int, int]
     return lines(img_, center, tail)
 
 
-def face2Image(size, face: Face) -> Cv2Image:
+def face2Image(size: Tuple[float, float], face: Face
+              , frame: Optional[Cv2Image]=None) -> Cv2Image:
     h, w = size
     blank_img = np.zeros((round(h), round(w), 3), np.uint8)
     blank_img[:, :] = (60, 60, 60)
+    center = (round(h / 2), round(w / 2))\
+             if frame is None\
+             else mapInt(face.center.toTuple())
+    img = blank_img\
+          if frame is None\
+          else frame
+
     lineEnds = [(face.leftEye.bottom, face.leftEye.rightSide)
                , (face.leftEye.rightSide, face.leftEye.top)
                , (face.leftEye.top, face.leftEye.leftSide)
@@ -78,7 +86,7 @@ def face2Image(size, face: Face) -> Cv2Image:
                , (face.mouth.top, face.mouth.leftSide)
                , (face.mouth.leftSide, face.mouth.bottom)
                 ]
-    return lines(blank_img, (w / 2, h / 2), lineEnds)
+    return lines(img, center, lineEnds)
 
 
 def main():
@@ -134,7 +142,7 @@ def main():
 
                 sock.sendto(data.toBinary(), (multicast_group, server_port))
 
-                cv2.imshow('face wire test', face2Image(videoSize, face))
+                cv2.imshow('face wire test', face2Image(videoSize, face, frame))
                 cv2.waitKey(1)
 
     except KeyboardInterrupt:
