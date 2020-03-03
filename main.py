@@ -37,17 +37,26 @@ logger_servicer: Logger = getLogger('Servicer')
 # }}}
 
 
-def lines(img: Cv2Image, ends: List[Tuple[Coord, Coord]]):
+
+
+def lines(img: Cv2Image, center: Tuple[int, int]
+         , ends: List[Tuple[Coord, Coord]]):
     if ends == []:
         return img
 
     def mapInt(a):
         return tuple(map(int, a))
+    def addOffset(a: Tuple[int, int], b: Tuple[int, int]):
+        a1, a2 = a
+        b1, b2 = b
+        return (a1 + b1, a2 + b2)
 
     s, e = ends[0]
-    img_ = cv2.line(img, mapInt(s.toTuple()), mapInt(e.toTuple()), (0, 256, 0))
+    s_centerized = addOffset(mapInt(s.toTuple()), center)
+    e_centerized = addOffset(mapInt(e.toTuple()), center)
+    img_ = cv2.line(img, s_centerized, e_centerized, (0, 256, 0))
     tail = ends[1:]
-    return lines(img_, tail)
+    return lines(img_, center, tail)
 
 
 def face2Image(size, face: Face) -> Cv2Image:
@@ -69,7 +78,7 @@ def face2Image(size, face: Face) -> Cv2Image:
                , (face.mouth.top, face.mouth.leftSide)
                , (face.mouth.leftSide, face.mouth.bottom)
                 ]
-    return lines(blank_img, lineEnds)
+    return lines(blank_img, (w / 2, h / 2), lineEnds)
 
 
 def main():
