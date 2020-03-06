@@ -66,7 +66,7 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
     if len(wholeFace) == 0:
         return None
 
-    absolute_coord = _normalization(_getBiggestFace(wholeFace))
+    absolute_coord = _sortDpoints(_getBiggestFace(wholeFace))
     center = absolute_coord[49]
     return _toRelative(absolute_coord, center)
 # }}}
@@ -112,9 +112,9 @@ def _getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints:
 # }}}
 
 
-# _normalization(face: dlib.dpoints) -> dlib.dpoints {{{
-def _normalization(face: dlib.dpoints) -> dlib.dpoints:
-    """Normalize facemark result. FOR INTERNAL USE
+# _sortDpoints(face: dlib.dpoints) -> dlib.dpoints {{{
+def _sortDpoints(face: dlib.dpoints) -> dlib.dpoints:
+    """Sort facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
 
         This code was written by @kekeho(Qiita), refer to:
