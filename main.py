@@ -9,7 +9,9 @@ from typing import (Optional, List, Tuple)
 from FaceDataServer.faceDetection import (faceCalibration, facemark)
 from FaceDataServer.Types import (RawFaceData,
                                  FaceDetectionError, Face, ExitCode,
-                                 FaceData, Cv2Image, Coord)
+                                 FaceData, Cv2Image, Coord,
+                                 defaultPortNumber, defaultGroupAddr
+                                  )
 from logging import getLogger, Logger
 import logging.config as loggingConfig
 import numpy as np
@@ -92,8 +94,8 @@ def face2Image(size: Tuple[float, float], face: Face
 def main():
     # Server setting
     server_address = "0.0.0.0"
-    server_port = 5032
-    multicast_group = '226.0.0.1'
+    server_port = defaultPortNumber
+    multicast_group = defaultGroupAddr
 
     # Preparing camera
     cap: cv2.VideoCapture = cv2.VideoCapture(0)

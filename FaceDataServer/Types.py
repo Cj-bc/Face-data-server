@@ -7,6 +7,8 @@ import struct
 
 majorVersionNum = 1
 minorVersionNum = 0
+defaultGroupAddr = "226.70.68.83"
+defaultPortNumber = 5032
 
 
 # Those values are defined based on this site image:
