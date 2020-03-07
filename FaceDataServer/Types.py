@@ -123,6 +123,11 @@ class Coord:
     def toTuple(self):
         return (self.x, self.y)
 
+    def map(self: S, f):
+        self.x = f(self.x)
+        self.y = f(self.y)
+        return self
+
 
 class AbsoluteCoord(Coord):
     def __repr__(self):
@@ -195,6 +200,13 @@ class Part():
         # I don't know why but the expr below won't work correctly
         # return self * (1 / other)
 
+    def map(self: S, f):
+        self.bottom    = self.bottom.map(f)
+        self.top       = self.top.map(f)
+        self.leftSide  = self.leftSide.map(f)
+        self.rightSide = self.rightSide.map(f)
+        return self
+
     @classmethod
     def default(cls):
         """return default coordinate."""
@@ -248,6 +260,12 @@ class Nose(Part):
     def default(cls):
         """return default coordinate."""
         return cls(Coord.default(), Coord.default(), Coord.default())
+
+    def map(self: S, f):
+        self.top       = self.top.map(f)
+        self.leftSide  = self.leftSide.map(f)
+        self.rightSide = self.rightSide.map(f)
+        return self
 
 
 class EyeBrow(Part):
