@@ -303,28 +303,3 @@ def test_RawFaceData_get(face, eD, fH, fC):
             " correctRawFaceData.faceCenter.y:"\
             " [{correctRawFaceData.faceCenter.y}]"
 # }}}
-
-
-@pytest.mark.parametrize("points,th", [(face_front, (0, 0, 0)),
-                                       (face_right, (0, -1, 0)),
-                                       (face_left, (0, 1, 0)),
-                                       (face_upside, (1, 0, 0)),
-                                       (face_bottom, (-1, 0, 0)),
-                                       (face_lean_left, (0, 0, 1)),
-                                       (face_lean_right, (0, 0, -1))])
-def test_FaceRotations_get(points, th):
-    calib = RawFaceData(6.0, 100.0, dlib.dpoint(0, 0))
-
-    result = FaceRotations.get(points, calib)
-
-    def _assert(n, threshold):
-        if threshold == -1:
-            assert n < 0
-        elif threshold == 0:
-            assert math.isclose(n, 0)
-        else:
-            assert n > 0
-
-    _assert(result.x, th[0])
-    _assert(result.y, th[1])
-    _assert(result.z, th[2])

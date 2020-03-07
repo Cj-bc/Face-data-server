@@ -5,7 +5,7 @@ import cv2
 import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
-                    RawFaceData, Face, ExitCode)
+                    RawFaceData, Face, ExitCode, Tuple)
 from functools import reduce
 
 
@@ -18,7 +18,7 @@ _detector = dlib.get_frontal_face_detector()
 
 
 # faceCalibration(cap: cv2.VideoCapture) -> RawFaceData {{{
-def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
+def faceCalibration(cap: cv2.VideoCapture) -> Tuple[RawFaceData, float]:
     """Calibrate individuals' differences.
 
     What this function does are:
@@ -28,9 +28,9 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     input("Please face front and press enter:")
     frame = _waitUntilFaceDetect(cap)
     print("got your face... wait for a second...")
-    face: Face = Face.fromDPoints(facemark(frame))
+    face, ratio = Face.fromDPointsWithRatio(facemark(frame))
     print("done :)")
-    return RawFaceData.get(face)
+    return (RawFaceData.get(face), ratio)
 # }}}
 
 
@@ -66,7 +66,7 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
     if len(wholeFace) == 0:
         return None
 
-    absolute_coord = _normalization(_getBiggestFace(wholeFace))
+    absolute_coord = _sortDpoints(_getBiggestFace(wholeFace))
     center = absolute_coord[49]
     return _toRelative(absolute_coord, center)
 # }}}
@@ -112,9 +112,9 @@ def _getBiggestFace(faces: List[dlib.dpoints]) -> dlib.dpoints:
 # }}}
 
 
-# _normalization(face: dlib.dpoints) -> dlib.dpoints {{{
-def _normalization(face: dlib.dpoints) -> dlib.dpoints:
-    """Normalize facemark result. FOR INTERNAL USE
+# _sortDpoints(face: dlib.dpoints) -> dlib.dpoints {{{
+def _sortDpoints(face: dlib.dpoints) -> dlib.dpoints:
+    """Sort facemark result. FOR INTERNAL USE
         Please refer to [this image]() [WIP]
 
         This code was written by @kekeho(Qiita), refer to:
@@ -212,6 +212,12 @@ def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
 
 # _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints: {{{
 def _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints:
+    """ convert target into relative coordinates
+        Only Center will be left as is.
+    """
+    # convert all points to relative
     converted = list(map(lambda p: p - center, target))
+    # center position holds absolute coordinate
+    converted[49] = center
     return dlib.dpoints(converted)
 # }}}
