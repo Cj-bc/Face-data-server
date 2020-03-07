@@ -3,6 +3,7 @@ import numpy
 import dlib
 import dataclasses
 import math
+from math import pi
 import struct
 
 majorVersionNum = 1
