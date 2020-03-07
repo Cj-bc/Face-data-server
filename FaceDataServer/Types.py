@@ -411,6 +411,31 @@ class Face:
 
         return cls(_c, _ltmp, _rtmp, _chin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
+
+    def fixWithRatio(self: S, init: float, current: float):
+        """ Fix Face values along with ratio
+
+            init: initial ratio
+            current: current ratio
+
+            A 'ratio' is (faceHeigh / faceWidth)
+            It usually be the same, but when we open mouth,
+            it'll be different value as faceHeigh will be grater.
+            This affects Parts percentages. So fix it with this.
+            Related issue on Github: Cj-bc/Face-Data-Server #40
+        """
+        ratioMagnif = current / init
+        surplus = lambda a: a * ratioMagnif # noqa
+        self.center.y       /= ratioMagnif
+        self.leftTemple.y   /= ratioMagnif
+        self.rightTemple.y  /= ratioMagnif
+        self.chinCenter.y   /= ratioMagnif
+        self.leftEye        = self.leftEye.map(surplus)
+        self.rightEye.y     = self.rightEye.map(surplus)
+        self.mouth.y        = self.mouth.map(surplus)
+        self.nose.y         = self.nose.map(surplus)
+        self.leftEyeBrow.y  = self.leftEyeBrow.map(surplus)
+        self.rightEyeBrow.y = self.rightEyeBrow.map(surplus)
 # }}}
 
 

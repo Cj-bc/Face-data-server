@@ -137,6 +137,7 @@ def main():
                 face, ratio = Face.defaultWithRatio(initialRatio)\
                                if landmark is None\
                                else Face.fromDPointsWithRatio(landmark)
+                face.fixWithRatio(initialRatio, ratio)
 
                 data: FaceData = FaceData.default()\
                                         if landmark is None\
