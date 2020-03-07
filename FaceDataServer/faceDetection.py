@@ -212,6 +212,12 @@ def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
 
 # _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints: {{{
 def _toRelative(target: dlib.dpoints, center: dlib.dpoint) -> dlib.dpoints:
+    """ convert target into relative coordinates
+        Only Center will be left as is.
+    """
+    # convert all points to relative
     converted = list(map(lambda p: p - center, target))
+    # center position holds absolute coordinate
+    converted[49] = center
     return dlib.dpoints(converted)
 # }}}
