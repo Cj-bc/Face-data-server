@@ -330,33 +330,54 @@ class Face:
     @classmethod
     def fromDPoints(cls: S, points: dlib.dpoints) -> S:
         """return 'Face' object based on given 'facemark'"""
-        _c     = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
-        _ltmp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
-        _rtmp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]])
-        _chin  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["CHIN_CENTER"]])
-        _leye  = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
-                    , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
-                    , points[LANDMARK_NUM["LEFT_EYE_L"]]
-                    , points[LANDMARK_NUM["LEFT_EYE_R"]])
-        _reye  = Eye(points[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
-                    , points[LANDMARK_NUM["RIGHT_EYE_TOP"]]
-                    , points[LANDMARK_NUM["RIGHT_EYE_L"]]
-                    , points[LANDMARK_NUM["RIGHT_EYE_R"]])
-        _mouth = Mouth(points[LANDMARK_NUM["MOUSE_BOTTOM"]]
-                      , points[LANDMARK_NUM["MOUSE_TOP"]]
-                      , points[LANDMARK_NUM["MOUSE_L"]]
-                      , points[LANDMARK_NUM["MOUSE_R"]])
-        _nose  = Nose(points[LANDMARK_NUM["NOSE_BOTTOM"]]
-                     , points[LANDMARK_NUM["NOSE_L"]]
-                     , points[LANDMARK_NUM["NOSE_R"]])
-        _leb   = EyeBrow(points[LANDMARK_NUM["EYEBROW_LEFT_BOTTOM"]]
-                        , points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]]
-                        , points[LANDMARK_NUM["EYEBROW_LEFT_L"]]
-                        , points[LANDMARK_NUM["EYEBROW_LEFT_R"]])
-        _reb   = EyeBrow(points[LANDMARK_NUM["EYEBROW_RIGHT_BOTTOM"]]
-                        , points[LANDMARK_NUM["EYEBROW_RIGHT_TOP"]]
-                        , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
-                        , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
+
+        def _normalize(smallest: float, biggest: float, current: float) -> float: # noqa
+            # move smallest to be 0
+            movedCurrent = (-smallest) + current
+            movedBiggest = (-smallest) + biggest
+            between0to1  = movedCurrent / movedBiggest
+            # make it between -100 to 100
+            return (200 * between0to1) - 100
+
+        def _normalizePoint(p: dlib.dpoint) -> dlib.dpoint:
+            smallestX = points[LANDMARK_NUM["TEMPLE_LEFT"]].x
+            biggestX  = points[LANDMARK_NUM["TEMPLE_RIGHT"]].x
+            smallestY = points[LANDMARK_NUM["CHIN_CENTER"]].y
+            biggestY  = points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]].y
+            return dlib.dpoint(_normalize(smallestX, biggestX, p.x)
+                              , _normalize(smallestY, biggestY, p.y)
+                               )
+
+        def _point(name: str) -> dlib.dpoint:
+            return _normalizePoint(points[LANDMARK_NUM[name]])
+
+        _c     = AbsoluteCoord.fromDPoint(_point("NOSE_BOTTOM"))
+        _ltmp  = RelativeCoord.fromDPoint(_point("TEMPLE_LEFT"))
+        _rtmp  = RelativeCoord.fromDPoint(_point("TEMPLE_RIGHT"))
+        _chin  = RelativeCoord.fromDPoint(_point("CHIN_CENTER"))
+        _leye  = Eye(_point("LEFT_EYE_BOTTOM")
+                    , _point("LEFT_EYE_TOP")
+                    , _point("LEFT_EYE_L")
+                    , _point("LEFT_EYE_R"))
+        _reye  = Eye(_point("RIGHT_EYE_BOTTOM")
+                    , _point("RIGHT_EYE_TOP")
+                    , _point("RIGHT_EYE_L")
+                    , _point("RIGHT_EYE_R"))
+        _mouth = Mouth(_point("MOUSE_BOTTOM")
+                      , _point("MOUSE_TOP")
+                      , _point("MOUSE_L")
+                      , _point("MOUSE_R"))
+        _nose  = Nose(_point("NOSE_BOTTOM")
+                     , _point("NOSE_L")
+                     , _point("NOSE_R"))
+        _leb   = EyeBrow(_point("EYEBROW_LEFT_BOTTOM")
+                        , _point("EYEBROW_LEFT_TOP")
+                        , _point("EYEBROW_LEFT_L")
+                        , _point("EYEBROW_LEFT_R"))
+        _reb   = EyeBrow(_point("EYEBROW_RIGHT_BOTTOM")
+                        , _point("EYEBROW_RIGHT_TOP")
+                        , _point("EYEBROW_RIGHT_L")
+                        , _point("EYEBROW_RIGHT_R"))
 
         return cls(_c, _ltmp, _rtmp, _chin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
