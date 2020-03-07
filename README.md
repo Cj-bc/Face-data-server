@@ -4,7 +4,7 @@ Japanese document is more accurate(as I'm Japanese) so I recommend you to read t
 
 ---
 
-# A face data server (temp name)
+# A face data server
 
 [![Build Status](https://travis-ci.com/Cj-bc/Face-data-server.svg?branch=master)](https://travis-ci.com/Cj-bc/Face-data-server)
 
@@ -18,6 +18,7 @@ This is piece of [Yozakura Project](https://github.com/Cj-bc/yozakura-project)
 This project aims to make a server that streams face data.
 *face data* is series of data which points the position of each face parts
 
+For detail: [Cj-bc/FDS-protos](https://github.com/Cj-bc/FDS-protos)
 
 # Installation
 
@@ -54,4 +55,6 @@ $ pipenv run python main.py
 
 # Front end for this server
 
-Currently, I want to make 3 official front end for different UI
+- [Cj-bc/faclig](https://github.com/Cj-bc/faclig) -- front end for ASCII Art model
+
+and more...

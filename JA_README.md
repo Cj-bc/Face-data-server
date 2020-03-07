@@ -2,7 +2,7 @@ English: [README.md](README.md)
 
 ---
 
-# A face data server (仮)
+# A face data server
 
 [![Build Status](https://travis-ci.com/Cj-bc/Face-data-server.svg?branch=master)](https://travis-ci.com/Cj-bc/Face-data-server)
 
@@ -16,6 +16,7 @@ English: [README.md](README.md)
 このプロジェクトの目的は、フェイスデータをストリーミング配信するサーバーの作成です。
 *フェイスデータ*: 顔の各パーツの位置情報の集まり
 
+詳しいデータについては[Cj-bc/FDS-protos](https://github.com/Cj-bc/FDS-protos)
 
 # Installation
 
@@ -52,4 +53,6 @@ $ pipenv run python main.py
 
 # フロントエンド
 
-現状では、3種類のフロントエンドを作成予定です。
+- [Cj-bc/faclig](https://github.com/Cj-bc/faclig) -- ASCII Artモデルを動かすフロントエンドです
+
+...and more
