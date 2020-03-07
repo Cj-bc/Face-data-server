@@ -526,9 +526,13 @@ class FaceData:
         lEyePercent = round((raw.leftEyeHeight / calib.leftEyeHeight) * 100)
         rEyePercent = round((raw.rightEyeHeight / calib.rightEyeHeight) * 100)
 
-        return cls(rotateX, rotateY, rotateZ
-                  , mouthHPercent, mouthWPercent
-                  , lEyePercent, rEyePercent
+        return cls(clamp(rotateX, -1 / pi, 1 / pi)
+                  , clamp(rotateY, -1 / pi, 1 / pi)
+                  , clamp(rotateZ, -1 / pi, 1 / pi)
+                  , clamp(mouthHPercent, 0, 150)
+                  , clamp(mouthWPercent, 0, 150)
+                  , clamp(lEyePercent, 0, 150)
+                  , clamp(rEyePercent, 0, 150)
                    )
 
     def toBinary(s):
@@ -544,3 +548,12 @@ class FaceData:
                           , s.left_eye_percent
                           , s.right_eye_percent
                            )
+
+
+def clamp(a, _min, _max):
+    if a <= _min:
+        return _min
+    elif _max <= a:
+        return _max
+    else:
+        return a
