@@ -5,7 +5,7 @@ import cv2
 import dlib
 from typing import List, Optional
 from .Types import (Cv2Image, CapHasClosedError,
-                    RawFaceData, Face, ExitCode)
+                    RawFaceData, Face, ExitCode, Tuple)
 from functools import reduce
 
 
@@ -18,7 +18,7 @@ _detector = dlib.get_frontal_face_detector()
 
 
 # faceCalibration(cap: cv2.VideoCapture) -> RawFaceData {{{
-def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
+def faceCalibration(cap: cv2.VideoCapture) -> Tuple[RawFaceData, float]:
     """Calibrate individuals' differences.
 
     What this function does are:
@@ -28,9 +28,9 @@ def faceCalibration(cap: cv2.VideoCapture) -> RawFaceData:
     input("Please face front and press enter:")
     frame = _waitUntilFaceDetect(cap)
     print("got your face... wait for a second...")
-    face: Face = Face.fromDPoints(facemark(frame))
+    face, ratio = Face.fromDPointsWithRatio(facemark(frame))
     print("done :)")
-    return RawFaceData.get(face)
+    return (RawFaceData.get(face), ratio)
 # }}}
 
 

@@ -1,4 +1,4 @@
-from typing import NewType, TypeVar, Union
+from typing import NewType, TypeVar, Union, Tuple
 import numpy
 import dlib
 import dataclasses
@@ -326,6 +326,18 @@ class Face:
                   , Eye.default(), Eye.default()
                   , Mouth.default(), Nose.default(), EyeBrow.default()
                   , EyeBrow.default())
+
+    @classmethod
+    def fromDPointsWithRatio(cls: S, points: dlib.dpoints) -> Tuple[S, float]: # noqa
+        """ Return '<Face y length> / <Face x length>' ratio
+            along with 'fromDPoints' result
+        """
+        xLength = abs(points[LANDMARK_NUM["TEMPLE_LEFT"]].x
+                        - points[LANDMARK_NUM["TEMPLE_RIGHT"]].x)
+        yLength = abs(points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]].x
+                        - points[LANDMARK_NUM["CHIN_CENTER"]].x)
+        ratio = yLength / xLength
+        return (Face.fromDPoints(points), ratio)
 
     @classmethod
     def fromDPoints(cls: S, points: dlib.dpoints) -> S:

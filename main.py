@@ -107,7 +107,7 @@ def main():
 
     # ========== calibration ==========
     try:
-        calib: RawFaceData = faceCalibration(cap)
+        calib, initialRatio = faceCalibration(cap)
     except FaceDetectionError as e:
         cap.release()
         logger_servicer.info(f"ERROR: Unexpected things are happened: {e}")
@@ -134,9 +134,9 @@ def main():
                 _, frame = cap.read()
                 landmark: Optional[dlib.points] = facemark(frame)
 
-                face: Face          = Face.default()\
-                                        if landmark is None\
-                                        else Face.fromDPoints(landmark)
+                face, ratio = Face.defaultWithRatio(initialRatio)\
+                               if landmark is None\
+                               else Face.fromDPointsWithRatio(landmark)
 
                 data: FaceData = FaceData.default()\
                                         if landmark is None\
