@@ -1,8 +1,15 @@
-from typing import NewType, TypeVar, Union
+from typing import NewType, TypeVar, Union, Tuple
 import numpy
 import dlib
 import dataclasses
 import math
+from math import pi
+import struct
+
+majorVersionNum = 1
+minorVersionNum = 0
+defaultGroupAddr = "226.70.68.83"
+defaultPortNumber = 5032
 
 
 # Those values are defined based on this site image:
@@ -114,6 +121,14 @@ class Coord:
     def fromDPoint(cls: S, p: dlib.dpoint) -> S:
         return cls(p.x, p.y)
 
+    def toTuple(self):
+        return (self.x, self.y)
+
+    def map(self: S, f):
+        self.x = f(self.x)
+        self.y = f(self.y)
+        return self
+
 
 class AbsoluteCoord(Coord):
     def __repr__(self):
@@ -186,6 +201,13 @@ class Part():
         # I don't know why but the expr below won't work correctly
         # return self * (1 / other)
 
+    def map(self: S, f):
+        self.bottom    = self.bottom.map(f)
+        self.top       = self.top.map(f)
+        self.leftSide  = self.leftSide.map(f)
+        self.rightSide = self.rightSide.map(f)
+        return self
+
     @classmethod
     def default(cls):
         """return default coordinate."""
@@ -239,6 +261,12 @@ class Nose(Part):
     def default(cls):
         """return default coordinate."""
         return cls(Coord.default(), Coord.default(), Coord.default())
+
+    def map(self: S, f):
+        self.top       = self.top.map(f)
+        self.leftSide  = self.leftSide.map(f)
+        self.rightSide = self.rightSide.map(f)
+        return self
 
 
 class EyeBrow(Part):
@@ -310,6 +338,10 @@ class Face:
                    , s.rightEyeBrow / o)
 
     @classmethod
+    def defaultWithRatio(cls: S, defRatio: float) -> Tuple[S, float]:
+        return (cls.default(), defRatio)
+
+    @classmethod
     def default(cls):
         """return default coordinate."""
         return cls(AbsoluteCoord.default(), RelativeCoord.default()
@@ -319,38 +351,96 @@ class Face:
                   , EyeBrow.default())
 
     @classmethod
+    def fromDPointsWithRatio(cls: S, points: dlib.dpoints) -> Tuple[S, float]: # noqa
+        """ Return '<Face y length> / <Face x length>' ratio
+            along with 'fromDPoints' result
+        """
+        xLength = abs(points[LANDMARK_NUM["TEMPLE_LEFT"]].x
+                        - points[LANDMARK_NUM["TEMPLE_RIGHT"]].x)
+        yLength = abs(points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]].x
+                        - points[LANDMARK_NUM["CHIN_CENTER"]].x)
+        ratio = yLength / xLength
+        return (Face.fromDPoints(points), ratio)
+
+    @classmethod
     def fromDPoints(cls: S, points: dlib.dpoints) -> S:
         """return 'Face' object based on given 'facemark'"""
-        _c     = AbsoluteCoord.fromDPoint(points[LANDMARK_NUM["NOSE_BOTTOM"]])
-        _ltmp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_LEFT"]])
-        _rtmp  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["TEMPLE_RIGHT"]])
-        _chin  = RelativeCoord.fromDPoint(points[LANDMARK_NUM["CHIN_CENTER"]])
-        _leye  = Eye(points[LANDMARK_NUM["LEFT_EYE_BOTTOM"]]
-                    , points[LANDMARK_NUM["LEFT_EYE_TOP"]]
-                    , points[LANDMARK_NUM["LEFT_EYE_L"]]
-                    , points[LANDMARK_NUM["LEFT_EYE_R"]])
-        _reye  = Eye(points[LANDMARK_NUM["RIGHT_EYE_BOTTOM"]]
-                    , points[LANDMARK_NUM["RIGHT_EYE_TOP"]]
-                    , points[LANDMARK_NUM["RIGHT_EYE_L"]]
-                    , points[LANDMARK_NUM["RIGHT_EYE_R"]])
-        _mouth = Mouth(points[LANDMARK_NUM["MOUSE_BOTTOM"]]
-                      , points[LANDMARK_NUM["MOUSE_TOP"]]
-                      , points[LANDMARK_NUM["MOUSE_L"]]
-                      , points[LANDMARK_NUM["MOUSE_R"]])
-        _nose  = Nose(points[LANDMARK_NUM["NOSE_BOTTOM"]]
-                     , points[LANDMARK_NUM["NOSE_L"]]
-                     , points[LANDMARK_NUM["NOSE_R"]])
-        _leb   = EyeBrow(points[LANDMARK_NUM["EYEBROW_LEFT_BOTTOM"]]
-                        , points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]]
-                        , points[LANDMARK_NUM["EYEBROW_LEFT_L"]]
-                        , points[LANDMARK_NUM["EYEBROW_LEFT_R"]])
-        _reb   = EyeBrow(points[LANDMARK_NUM["EYEBROW_RIGHT_BOTTOM"]]
-                        , points[LANDMARK_NUM["EYEBROW_RIGHT_TOP"]]
-                        , points[LANDMARK_NUM["EYEBROW_RIGHT_L"]]
-                        , points[LANDMARK_NUM["EYEBROW_RIGHT_R"]])
+
+        def _normalize(smallest: float, biggest: float, current: float) -> float: # noqa
+            # move smallest to be 0
+            movedCurrent = (-smallest) + current
+            movedBiggest = (-smallest) + biggest
+            between0to1  = movedCurrent / movedBiggest
+            # make it between -100 to 100
+            return (200 * between0to1) - 100
+
+        def _normalizePoint(p: dlib.dpoint) -> dlib.dpoint:
+            smallestX = points[LANDMARK_NUM["TEMPLE_LEFT"]].x
+            biggestX  = points[LANDMARK_NUM["TEMPLE_RIGHT"]].x
+            smallestY = points[LANDMARK_NUM["CHIN_CENTER"]].y
+            biggestY  = points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]].y
+            return dlib.dpoint(_normalize(smallestX, biggestX, p.x)
+                              , _normalize(smallestY, biggestY, p.y)
+                               )
+
+        def _point(name: str) -> dlib.dpoint:
+            return _normalizePoint(points[LANDMARK_NUM[name]])
+
+        _c     = AbsoluteCoord.fromDPoint(_point("NOSE_BOTTOM"))
+        _ltmp  = RelativeCoord.fromDPoint(_point("TEMPLE_LEFT"))
+        _rtmp  = RelativeCoord.fromDPoint(_point("TEMPLE_RIGHT"))
+        _chin  = RelativeCoord.fromDPoint(_point("CHIN_CENTER"))
+        _leye  = Eye(_point("LEFT_EYE_BOTTOM")
+                    , _point("LEFT_EYE_TOP")
+                    , _point("LEFT_EYE_L")
+                    , _point("LEFT_EYE_R"))
+        _reye  = Eye(_point("RIGHT_EYE_BOTTOM")
+                    , _point("RIGHT_EYE_TOP")
+                    , _point("RIGHT_EYE_L")
+                    , _point("RIGHT_EYE_R"))
+        _mouth = Mouth(_point("MOUSE_BOTTOM")
+                      , _point("MOUSE_TOP")
+                      , _point("MOUSE_L")
+                      , _point("MOUSE_R"))
+        _nose  = Nose(_point("NOSE_BOTTOM")
+                     , _point("NOSE_L")
+                     , _point("NOSE_R"))
+        _leb   = EyeBrow(_point("EYEBROW_LEFT_BOTTOM")
+                        , _point("EYEBROW_LEFT_TOP")
+                        , _point("EYEBROW_LEFT_L")
+                        , _point("EYEBROW_LEFT_R"))
+        _reb   = EyeBrow(_point("EYEBROW_RIGHT_BOTTOM")
+                        , _point("EYEBROW_RIGHT_TOP")
+                        , _point("EYEBROW_RIGHT_L")
+                        , _point("EYEBROW_RIGHT_R"))
 
         return cls(_c, _ltmp, _rtmp, _chin, _leye, _reye
                   , _mouth, _nose, _leb, _reb)
+
+    def fixWithRatio(self: S, init: float, current: float):
+        """ Fix Face values along with ratio
+
+            init: initial ratio
+            current: current ratio
+
+            A 'ratio' is (faceHeigh / faceWidth)
+            It usually be the same, but when we open mouth,
+            it'll be different value as faceHeigh will be grater.
+            This affects Parts percentages. So fix it with this.
+            Related issue on Github: Cj-bc/Face-Data-Server #40
+        """
+        ratioMagnif = current / init
+        surplus = lambda a: a * ratioMagnif # noqa
+        self.center.y       /= ratioMagnif
+        self.leftTemple.y   /= ratioMagnif
+        self.rightTemple.y  /= ratioMagnif
+        self.chinCenter.y   /= ratioMagnif
+        self.leftEye        = self.leftEye.map(surplus)
+        self.rightEye.y     = self.rightEye.map(surplus)
+        self.mouth.y        = self.mouth.map(surplus)
+        self.nose.y         = self.nose.map(surplus)
+        self.leftEyeBrow.y  = self.leftEyeBrow.map(surplus)
+        self.rightEyeBrow.y = self.rightEyeBrow.map(surplus)
 # }}}
 
 
@@ -360,10 +450,14 @@ class RawFaceData:
     eyeDistance: float
     faceHeigh: float
     faceCenter: AbsoluteCoord
+    mouthHeight: float
+    mouthWidth: float
+    leftEyeHeight: float
+    rightEyeHeight: float
 
     @staticmethod
     def default() -> S:
-        return RawFaceData(0.0, 0.0, AbsoluteCoord.default())
+        return RawFaceData(0.0, 0.0, AbsoluteCoord.default(), 0, 0, 0, 0)
 
     @classmethod
     def get(cls: S, face: Face) -> S:
@@ -380,24 +474,74 @@ class RawFaceData:
         faceHeigh = round(math.sqrt(_faceHeighVector.x ** 2
                                    + _faceHeighVector.y ** 2)
                          , 15)
-        faceCenter = face.center
-        return cls(eyeDistance, faceHeigh, faceCenter)
+
+        return cls(eyeDistance
+                  , faceHeigh
+                  , face.center
+                  , face.mouth.top.y - face.mouth.bottom.y
+                  , abs(face.mouth.leftSide.x - face.mouth.rightSide.x)
+                  , face.leftEye.top.y - face.leftEye.bottom.y
+                  , face.rightEye.top.y - face.rightEye.bottom.y
+                   )
 
     def thresholded(self, t):
         """Force eyeDistance / faceHeigh to be smaller than threshold
         """
         eD = min(self.eyeDistance, t.eyeDistance)
         fH = min(self.faceHeigh, t.faceHeigh)
-        return RawFaceData(eD, fH, self.faceCenter)
+        return RawFaceData(eD, fH, self.faceCenter
+                          , self.mouthHeight
+                          , self.mouthWidth
+                          , self.leftEyeHeight
+                          , self.rightEyeHeight
+                           )
+
 # }}}
 
 
-# FaceRotations {{{
-@dataclasses.dataclass(frozen=True)
-class FaceRotations:
-    x: float
-    y: float
-    z: float
+# Exceptions {{{
+class FaceDetectionError(Exception):
+    """Base class for exceptions in this module"""
+    exitCode = ExitCode.ERR_UNKNOWN
+
+    def __init__(self, ex=None):
+        """ Use ex to force the class to have that value as exit code
+        """
+        if ex is not None:
+            self.exitCode = ex
+
+
+class CapHasClosedError(FaceDetectionError):
+    """Exception raised for unexpected cv2.VideoCapture close"""
+    exitCode = ExitCode.CameraNotFound
+
+    def __str__(self):
+        return "The camera connection has been closed. Please try again"
+# }}}
+
+
+class FaceData:
+    """ contains FaceData
+    """
+    face_x_radian: float
+    face_y_radian: float
+    face_z_radian: float
+    mouth_height_percent: int
+    mouth_width_percent: int
+    left_eye_percent: int
+    right_eye_percent: int
+
+    def __init__(self, x, y, z, mh, mw, le, re):
+        self.face_x_radian        = x
+        self.face_y_radian        = y
+        self.face_z_radian        = z
+        self.mouth_height_percent = mh
+        self.mouth_width_percent  = mw
+        self.left_eye_percent     = le
+        self.right_eye_percent    = re
+
+    def default() -> S:
+        return FaceData(0.0, 0.0, 0.0, 100, 100, 100, 100)
 
     @classmethod
     def get(cls: S, face: Face, calib: RawFaceData) -> S:
@@ -424,26 +568,40 @@ class FaceRotations:
                             else -1 * degreeY
         # v Is this correct code? v
         rotateZ = degreeZ
-        return cls(rotateX, rotateY, rotateZ)
-# }}}
 
+        mouthHPercent = round((raw.mouthHeight / calib.mouthHeight) * 100)
+        mouthWPercent = round((raw.mouthWidth / calib.mouthWidth) * 100)
+        lEyePercent = round((raw.leftEyeHeight / calib.leftEyeHeight) * 100)
+        rEyePercent = round((raw.rightEyeHeight / calib.rightEyeHeight) * 100)
 
-# Exceptions {{{
-class FaceDetectionError(Exception):
-    """Base class for exceptions in this module"""
-    exitCode = ExitCode.ERR_UNKNOWN
+        return cls(clamp(rotateX, -1 / pi, 1 / pi)
+                  , clamp(rotateY, -1 / pi, 1 / pi)
+                  , clamp(rotateZ, -1 / pi, 1 / pi)
+                  , clamp(mouthHPercent, 0, 150)
+                  , clamp(mouthWPercent, 0, 150)
+                  , clamp(lEyePercent, 0, 150)
+                  , clamp(rEyePercent, 0, 150)
+                   )
 
-    def __init__(self, ex=None):
-        """ Use ex to force the class to have that value as exit code
+    def toBinary(s):
+        """ convert FaceData into binary format
         """
-        if ex is not None:
-            self.exitCode = ex
+        return struct.pack('!BdddBBBB'
+                          , (majorVersionNum << 4) + minorVersionNum
+                          , s.face_x_radian
+                          , s.face_y_radian
+                          , s.face_z_radian
+                          , s.mouth_height_percent
+                          , s.mouth_width_percent
+                          , s.left_eye_percent
+                          , s.right_eye_percent
+                           )
 
 
-class CapHasClosedError(FaceDetectionError):
-    """Exception raised for unexpected cv2.VideoCapture close"""
-    exitCode = ExitCode.CameraNotFound
-
-    def __str__(self):
-        return "The camera connection has been closed. Please try again"
-# }}}
+def clamp(a, _min, _max):
+    if a <= _min:
+        return _min
+    elif _max <= a:
+        return _max
+    else:
+        return a
