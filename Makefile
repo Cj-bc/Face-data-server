@@ -19,11 +19,9 @@ lint:
 
 install: init
 	test -d $(DST_FILES)/face-data-server || mkdir $(DST_FILES)/face-data-server
-	cp -r face-data-server main.py Pipfile Pipfile.lock pytest.ini tests Makefile $(DST_FILES)/face-data-server
-	test -d $(DST_FILES)/face-data-server/faceDetection || mkdir $(DST_FILES)/face-data-server/faceDetection
-	cp faceDetection/*py $(DST_FILES)/face-data-server/faceDetection
-	test -d $(DST_FILES)/face-data-server/faceDetection/learned-models || mkdir $(DST_FILES)/face-data-server/faceDetection/learned-models
-	cp faceDetection/learned-models/helen-dataset.dat $(DST_FILES)/face-data-server/faceDetection/learned-models/
+	cp -r face-data-server main.py Pipfile Pipfile.lock pytest.ini tests Makefile FaceDataServer $(DST_FILES)/face-data-server
+	test -d $(DST_FILES)/face-data-server/src || mkdir $(DST_FILES)/face-data-server/src
+	cp src/helen-dataset.dat $(DST_FILES)/face-data-server/src
 	cd $(DST_FILES)/face-data-server; ln -s "$(DST_FILES)/face-data-server/face-data-server" $(DST_BIN)/face-data-server; pipenv install
 
 uninstall:
