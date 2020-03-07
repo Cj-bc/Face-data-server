@@ -337,6 +337,10 @@ class Face:
                    , s.rightEyeBrow / o)
 
     @classmethod
+    def defaultWithRatio(cls: S, defRatio: float) -> Tuple[S, float]:
+        return (cls.default(), defRatio)
+
+    @classmethod
     def default(cls):
         """return default coordinate."""
         return cls(AbsoluteCoord.default(), RelativeCoord.default()
