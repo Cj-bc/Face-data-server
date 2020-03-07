@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2020-03-07
+
+### Changed
+- Use UDP/Multicast instead of gRPC
+- Rename _normalization to _sortDpoints
+- Normalize coordinates
+
+### Added
+- Implement FDS protocol at [Cj-bc/FDS-protos](https://github.com/Cj-bc/FDS-protos)
+- RawFaceData.{left,right}EyeHeight
+- RawFaceData.mouth{Height,Width}
+- New FaceData -- Which contains values defined in [Cj-bc/FDS-protos]
+- Coord.toTuple()
+- environment variable 'DEBUG' to enable debugging
+- Debug.py for collection of debug codes
+- Face.defaultWithRatio()
+- Types.defaultGroupAddr
+- Types.defaultPortNumber
+- Coord.map()
+- Part.map()
+- Nose.map()
+
+### Removed
+- Types.FaceRottions
+- main.FaceData
+- FaceDataServer/faceDataServer_pb2.py
+- FaceDataServer/faceDataServer_pb2_grpc.py
+- Unused test codes
+
+
 ## [0.8.2] - 2019-10-03
 
 ### Fixed
