@@ -357,8 +357,8 @@ class Face:
         """
         xLength = abs(points[LANDMARK_NUM["TEMPLE_LEFT"]].x
                         - points[LANDMARK_NUM["TEMPLE_RIGHT"]].x)
-        yLength = abs(points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]].x
-                        - points[LANDMARK_NUM["CHIN_CENTER"]].x)
+        yLength = abs(points[LANDMARK_NUM["EYEBROW_LEFT_TOP"]].y
+                        - points[LANDMARK_NUM["CHIN_CENTER"]].y)
         ratio = yLength / xLength
         return (Face.fromDPoints(points), ratio)
 
