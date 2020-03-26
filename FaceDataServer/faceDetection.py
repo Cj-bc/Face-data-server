@@ -202,11 +202,18 @@ def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
         All points() are should be converted to dpoints,
         as we use float values
     """
-    ret = dlib.dpoints()
-    for p in ps:
-        ret.append(dlib.dpoint(float(p.x), float(p.y)))
+    ret: dlib.dpoints = dlib.dpoints()
+    map(lambda p: ret.append(_point2dpoint(p)), ps)
 
     return ret
+# }}}
+
+
+# def _point2dpoint(p: dlib.point) -> dlib.dpoint: {{{
+def _point2dpoint(p: dlib.point) -> dlib.dpoint:
+    """convert dlib.point object to dlib.dpoint object.
+    """
+    return dlib.dpoint(float(p.x), float(p.y))
 # }}}
 
 
