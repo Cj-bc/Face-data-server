@@ -5,7 +5,7 @@ import hypothesis.strategies as st
 from timeout_decorator import timeout, TimeoutError
 from typing import Tuple
 from FaceDataServer.faceDetection import (_isFaceExist, _getBiggestFace
-                                         , _normalization
+                                         , _sortDpoints
                                          , facemark, _waitUntilFaceDetect
                                          , faceCalibration, _toRelative)
 from conftest import (faceFrame, noFaceFrame, MockedCap, finiteFloatCallable)
@@ -67,8 +67,8 @@ def test_getBiggestFace_noface():
 # }}}
 
 
-# _normalization {{{
-def test_normalization():
+# _sortDpoints {{{
+def test_sortDpoints():
     # inList {{{
     inList = [0, 1, 10, 86, 87, 88, 89, 90, 91, 92,
               93, 94, 95, 11, 96, 97, 98, 99, 114, 115,
@@ -96,7 +96,7 @@ def test_normalization():
                               inList)))
     correct = dlib.dpoints(list(map(lambda n: dlib.dpoint(n, n),
                                     list(range(0, 194)))))
-    assert _normalization(testPoints) == correct
+    assert _sortDpoints(testPoints) == correct
 # }}}
 
 
