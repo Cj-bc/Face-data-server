@@ -549,10 +549,6 @@ class FaceData:
         """
         eyeLineVector = face.rightEye.bottom - face.leftEye.bottom
         raw = RawFaceData.get(face).thresholded(calib)
-        # those values are used in the near future.Just ignore this for linting
-        leftEdge2Center  = face.leftTemple - raw.faceCenter # noqa
-        rightEdge2Center = raw.faceCenter - face.rightTemple # noqa
-        chin2Center = raw.faceCenter - face.chinCenter # noqa
 
         # TODO: how can I notice which side does face face to?
         #       I can't simply compare eyes sizes, 'cus sometimes
