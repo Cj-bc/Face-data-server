@@ -14,33 +14,36 @@ defaultPortNumber = 5032
 
 # Those values are defined based on this site image:
 #   https://qiita.com/kekeho/items/0b2d4ed5192a4c90a0ac
-# ignore
+# As annotation of the model is wrong,
+# some points doesn't correspond to the image.
+# Please refer to the comment on the website
 LANDMARK_NUM = {"TEMPLE_LEFT": 0
-               , "CHIN_CENTER": 19
-               , "TEMPLE_RIGHT": 40
-               , "NOSE_R": 44
-               , "NOSE_BOTTOM": 49
-               , "NOSE_L": 54
-               , "MOUSE_R": 58
-               , "MOUSE_TOP": 65
-               , "MOUSE_L": 71
-               , "MOUSE_BOTTOM": 79
-               , "LEFT_EYE_R": 114
-               , "LEFT_EYE_TOP": 120
-               , "LEFT_EYE_L": 124
-               , "LEFT_EYE_BOTTOM": 129
-               , "RIGHT_EYE_L": 135
-               , "RIGHT_EYE_TOP": 140
-               , "RIGHT_EYE_R": 145
-               , "RIGHT_EYE_BOTTOM": 149
-               , "EYEBROW_LEFT_R": 154
-               , "EYEBROW_LEFT_TOP": 159
-               , "EYEBROW_LEFT_L": 164
-               , "EYEBROW_LEFT_BOTTOM": 169
-               , "EYEBROW_RIGHT_L": 174
-               , "EYEBROW_RIGHT_TOP": 179
-               , "EYEBROW_RIGHT_R": 185
-               , "EYEBROW_RIGHT_BOTTOM": 190
+               , "CHIN_CENTER": 90
+               , "TEMPLE_RIGHT": 127
+               , "NOSE_R": 133
+               , "NOSE_BOTTOM": 137
+               , "NOSE_L": 142
+               , "MOUSE_R": 147
+               , "MOUSE_TOP": 155
+               , "MOUSE_L": 162
+               , "MOUSE_BOTTOM": 171
+               , "LEFT_EYE_R": 193
+               , "LEFT_EYE_TOP": 23
+               , "LEFT_EYE_L": 28
+               , "LEFT_EYE_BOTTOM": 33
+               , "RIGHT_EYE_L": 40
+               , "RIGHT_EYE_TOP": 45
+               , "RIGHT_EYE_R": 51
+               , "RIGHT_EYE_BOTTOM": 55
+               # TODO: EYEBROW_LEFT and EYEBROW_RIGHT seems switched
+               , "EYEBROW_LEFT_R": 61
+               , "EYEBROW_LEFT_TOP": 66
+               , "EYEBROW_LEFT_L": 61
+               , "EYEBROW_LEFT_BOTTOM": 77
+               , "EYEBROW_RIGHT_L": 83
+               , "EYEBROW_RIGHT_TOP": 88
+               , "EYEBROW_RIGHT_R": 95
+               , "EYEBROW_RIGHT_BOTTOM": 100
                 }
 
 
