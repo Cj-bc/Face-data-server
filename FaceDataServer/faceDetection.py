@@ -56,7 +56,9 @@ def facemark(gray_img: Cv2Image) -> Optional[dlib.dpoints]:
         [154-173]: right eyebrows
         [174-193]: left eyebrows
     """
+    # Find biggest face from image
     rects: dlib.rectangles = _detector(gray_img, 1)
+
     wholeFace: List[dlib.dpoints] = []
     for rect in rects:
         parts: dlib.dpoints =\
