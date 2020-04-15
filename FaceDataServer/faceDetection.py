@@ -121,7 +121,8 @@ def _points2dpoints(ps: dlib.points) -> dlib.dpoints:
         as we use float values
     """
     ret: dlib.dpoints = dlib.dpoints()
-    map(lambda p: ret.append(_point2dpoint(p)), ps)
+    for p in ps:
+        ret.append(_point2dpoint(p))
 
     return ret
 # }}}
